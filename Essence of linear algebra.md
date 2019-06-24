@@ -104,13 +104,37 @@
   - 令向量$\overrightarrow{x}$对向量$\overrightarrow{y}$做投影，将投影结果与向量$\overrightarrow{y}$相乘，结果即为点积；
     - 点积结果可正可负，取决于两个向量之间的相对位置关系；
   - Intuition: $\begin{bmatrix}x_1 & y_1 \end{bmatrix}\begin{bmatrix}x_2 \\y_2 \end{bmatrix}=x_1\cdot x_2+y_1\cdot y_2​$;
-    - 将$\begin{bmatrix}x_1 & y_1 \end{bmatrix}​$视为一种空间变换；
+    - 将$\begin{bmatrix}x_1 & y_1 \end{bmatrix}$视为一种空间变换，将二维空间压缩为一维空间；
+  - 更一般的情况，$\begin{bmatrix}x_1 & x_2 & \cdots & x_n \end{bmatrix}\begin{bmatrix}y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}=\sum_{i=1}^nx_iy_i​$;
+      - 向量（空间变化）$\begin{bmatrix}x_1 & x_2 & \cdots & x_n \end{bmatrix}$将n维空间压缩为一维空间；
+      - 换言之，每个从n维空间压缩为一维空间的变换，都对应一个n维空间中的向量；
 
 
 
 # 9. Cross products in the light of linear transformations
 
+- `Cross product/Vector product`：叉积 [2];
+  - $\overrightarrow{c}=\overrightarrow{a}\times \overrightarrow{b}​$；
+  - $\overrightarrow{c}$的模长：等于以$\overrightarrow{a}，\overrightarrow{b}​$为边的平行四边形的面积；
+  - $\overrightarrow{c}$的方向：满足右手定则；
+    - 在计算结果上表现为，叉积的结果有正负之分；
+  - 若两个向量方向相同或相反（即它们非线性无关），亦或任意一个的模长为零，那么它们的叉积为零；
+- 叉积与线性变换的关系：
+  - 对某个线性变换（即矩阵）求行列式，行列式的值表示，相对于空间变换前的单位面积$\overrightarrow{i}\times \overrightarrow{j}​$变化的比例，即平行四边形的面积；
+  - 二维向量的叉积：对两个二维向量组成的矩阵求行列式，即可得模长；
+- 三维向量的叉积：$\begin{bmatrix}x_1 \\ y_1 \\ z_1 \end{bmatrix} \times \begin{bmatrix}x_2 \\ y_2 \\ z_2 \end{bmatrix}=det\left(\begin{bmatrix}\widehat{i} & x_1 & x_2 \\ \widehat{j} & y_1 & y_2 \\ \widehat{k} & z_1 & z_2 \end{bmatrix}\right)​$；
+  - 等式右侧的行列式的几何意义：由三个向量在空间中构成的六边形的体积；
+  - 推导过程：
+    - 对于$\begin{bmatrix}p_1 \\ p_2 \\ p_3 \end{bmatrix} \times \begin{bmatrix}x \\ y \\ z \end{bmatrix}=det\left(\begin{bmatrix}x & x_1 & x_2 \\ y & y_1 & y_2 \\ z & z_1 & z_2 \end{bmatrix}\right)​$，当且仅当向量$\begin{bmatrix}p_1 \\ p_2 \\ p_3 \end{bmatrix}​$模长等于$\begin{bmatrix}x_1 \\ y_1 \\ z_1 \end{bmatrix}​$和$\begin{bmatrix}x_2 \\ y_2 \\ z_2 \end{bmatrix}​$构成的平行四边形的面积时，该式成立；
+    - 若取$\begin{bmatrix}x \\ y \\ z \end{bmatrix}=\begin{bmatrix}\widehat{i} \\ \widehat{j} \\ \widehat{k} \end{bmatrix}$，则$\begin{bmatrix}p_1 \\ p_2 \\ p_3 \end{bmatrix} \times \begin{bmatrix}\widehat{i} \\ \widehat{j} \\ \widehat{k} \end{bmatrix}=det\left(\begin{bmatrix}\widehat{i} & x_1 & x_2 \\ \widehat{j} & y_1 & y_2 \\ \widehat{k} & z_1 & z_2 \end{bmatrix}\right)$；
+      - 等式左侧表示向量$\overrightarrow{p}=p_1\overrightarrow{i}+p_2\overrightarrow{j}+p_3\overrightarrow{k}$，该向量的模长等于$\begin{bmatrix}x_1 \\ y_1 \\ z_1 \end{bmatrix}$和$\begin{bmatrix}x_2 \\ y_2 \\ z_2 \end{bmatrix}$构成的平行四边形的面积；
+      - 因此可用$det\left(\begin{bmatrix}\widehat{i} & x_1 & x_2 \\ \widehat{j} & y_1 & y_2 \\ \widehat{k} & z_1 & z_2 \end{bmatrix}\right)​$表示叉积所得的向量；
+
+# 10. Change of basis（基变换）
+
 - ==unsolved==
+
+
 
 # n. Plan
 - 周计划：2+2+2，6月26日完成全部内容；
@@ -125,4 +149,6 @@
 
 
 # References
-[1] https://space.bilibili.com/88461692
+[1] 3Blue1Brown. 线性代数的本质[DB/OL]. https://www.bilibili.com/video/av6731067. 2016-10-18/2019-06-24.
+
+[2] 维基百科. 叉积[DB/OL]. https://zh.wikipedia.org/wiki/叉积. 2019-01-05/2019-06-24.
