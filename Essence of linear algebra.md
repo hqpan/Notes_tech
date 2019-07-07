@@ -49,7 +49,7 @@
 
 # 5. The determinant （行列式）
   - 由“网格线保持平行且等距分布”这一事实可知，只需要分析原空间中单位正方形的面积变化，即可知空间中任一大小的其它方格均有相同变化（空间面积变化的比例相同）；
-- 行列式的值表示线性变换后，二维空间中面积发生改变的比例（对三维空间则表示体积变化的比例）；
+- 行列式的值表示线性变换后，二维空间中面积缩放的比例（对三维空间则表示体积变化的比例）；
   - E.g. 若一个表示线性变换的矩阵，其行列式的值为2，则表示该线性变换将原空间中单位正方形的面积放大2倍；
   - E.g. 若一个表示线性变换的矩阵，其行列式的值为-2，则表示该线性变换将原空间中单位正方形的面积放大2倍，且空间翻转（以二维平面为例，空间翻了个面）；
   - E.g. 若一个表示线性变换的矩阵，其行列式的值为0，则表示该线性变换将原空间压缩到更低的维度上；
@@ -59,7 +59,10 @@
   - bc 表示平行四边形在对角方向上拉伸或压缩了多少；
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190507164738411.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L01heGltaXplMQ==,size_16,color_FFFFFF,t_70)
 
+- 行列式$\begin{vmatrix}a & b\\ c & d\end{vmatrix}$还可表示由向量$\begin{bmatrix}a  \\ c  \end{bmatrix}$、$\begin{bmatrix}b  \\d  \end{bmatrix}​$组成的平行四边形的面积；
+
 # 6. Inverse matrices, column space, rank and null space（逆矩阵，列空间，秩，零向量）
+
 - E.g. 求解线性方程组：
   - 求解线性方程组 $A\overrightarrow{X}=\overrightarrow{b}$ 的含义：寻找一个向量 $\overrightarrow{X}$，对其执行变换 A 后，使得 $\overrightarrow{X}$ 恰与 $\overrightarrow{b}$ 重合；
     - 当 $det(A)\neq0$ 时，存在唯一的向量 $\overrightarrow{X}$ 与向量 $\overrightarrow{b}$ 对应，即线性方程组存在唯一解；
@@ -181,22 +184,35 @@
     - 特征基：用特征向量作为基向量；
     - 矩阵对角化带来的计算优势：
       - E.g. $\begin{bmatrix}1 & -1 \\0 & 1 \end{bmatrix}^1\begin{bmatrix}3 & 1 \\0 & 2 \end{bmatrix}\begin{bmatrix}1 & -1 \\0 & 1 \end{bmatrix}=\begin{bmatrix}3 & 0 \\0 & 2 \end{bmatrix}​$；
-      - 计算$\begin{bmatrix}3 & 1 \\0 & 2 \end{bmatrix}^{100}$；
+      - 计算$\begin{bmatrix}3 & 1 \\0 & 2 \end{bmatrix}^{100}​$；
 
 
 
 # 12. 抽象向量空间
 
-- ==unsolved==
+- 用矩阵实现求导：由于求导是线性变换，因此该过程得以实现；
+  - $\begin{bmatrix}0 & 1 & 0 & 0 & \cdots \\0 & 0 & 2 & 0 & \cdots \\ 0 & 0 & 0 & 3 & \cdots \\ 0 & 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \\ \end{bmatrix}​$；
+    - 该矩阵中的非零值分别表示$x^n\rightarrow nx^{n-1}​$中乘上的系数n；
+  - 直接求导：$\frac{\text{d}}{\text{d}x}(1x^3+5x^2+4x+5)=3x^2+10x+4​$；
+  - 矩阵求导：$\begin{bmatrix}0 & 1 & 0 & 0 & \cdots \\0 & 0 & 2 & 0 & \cdots \\ 0 & 0 & 0 & 3 & \cdots \\ 0 & 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \\ \end{bmatrix}\begin{bmatrix}5 \\ 4 \\ 5 \\ 1 \\ \vdots \end{bmatrix}=\begin{bmatrix}1\cdot 4 \\ 2\cdot 5 \\ 3\cdot 1 \\ 0 \\ \vdots \end{bmatrix}​$；
+    - 向量$\begin{bmatrix}5 \\ 4 \\ 5 \\ 1 \\ \vdots \end{bmatrix}​$中的元素表示各次项的系数；
+    - 向量$\begin{bmatrix}1\cdot 4 \\ 2\cdot 5 \\ 3\cdot 1 \\ 0 \\ \vdots \end{bmatrix}$表示求导结果；
 
-# n. Plan
-- 周计划：2+2+2，6月26日完成全部内容；
+- 如果一个理论或概念满足的8条公理 [3]，则该概念适用于一个线性空间；
+
+# 13. Cramer 法则
+
+- Cramer 法则不是求解线性方程组最有效率的方法；
+  - 未知数与方程个数相等时适用于该方法；
+- E.g. $\begin{bmatrix}3 & 2 \\-1 & 2 \end{bmatrix}\begin{bmatrix}x \\ y \end{bmatrix}=\begin{bmatrix}-4 \\ -2 \end{bmatrix}​$；
+  - 求解该方程组的几何含义：对向量$\begin{bmatrix}x \\ y \end{bmatrix}$执行线性变换$\begin{bmatrix}3 & 2 \\-1 & 2 \end{bmatrix}$，可得向量$\begin{bmatrix}-4 \\ -2 \end{bmatrix}$；
+  - 对上式变形有 $x\begin{bmatrix}3  \\-1  \end{bmatrix}+y\begin{bmatrix}2 \\ 2 \end{bmatrix}=\begin{bmatrix}-4 \\ -2 \end{bmatrix}​$；
+    - $x\begin{bmatrix}3  \\-1  \end{bmatrix}​$表示将新空间中的基向量缩放 x 倍；
+    - $y\begin{bmatrix}2 \\ 2 \end{bmatrix}​$表示将新空间中的基向量缩放 y 倍；
 
 
 
-
-
-
+10:21
 
 
 
@@ -205,3 +221,5 @@
 [1] 3Blue1Brown. 线性代数的本质[DB/OL]. https://www.bilibili.com/video/av6731067. 2016-10-18/2019-06-24.
 
 [2] 维基百科. 叉积[DB/OL]. https://zh.wikipedia.org/wiki/叉积. 2019-01-05/2019-06-24.
+
+[3] 维基百科. 向量空间[DB/OL]. https://zh.wikipedia.org/wiki/向量空间. 2019-02-14/2019-06-28.
