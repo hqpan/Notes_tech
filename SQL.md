@@ -811,6 +811,70 @@
 
 
 
+# 15. 插入数据
+
+## 15.1 INSERT 语句
+
+- `INSERT`语句的功能：
+  - 插入完整行；
+  - 插入行中的部分项；
+  - 插入某些查询的结果；
+
+
+
+## 15.2 插入完整行
+
+- 对未指定值的项，将其赋值为`NULL`；
+
+- 尽量使用明确指定列名的`INSERT`语句；
+
+  - 即使列的次序发生变化，也能正确填充数据；
+
+  ```sql
+  INSERT INTO Customers(cust_id,cust_name)
+  VALUES('1000000006', 'Toy Land');
+  
+  INSERT INTO Customers				-- 不指定列名的填充；
+  VALUES('1000000006', 'Toy Land');
+  ```
+
+
+
+## 15.3 插入行中的部分项
+
+- 使用指定列名的`INSERT`语句，可省略部分项不填充，但须满足以下某个条件：
+  - 在表的定义中，允许该列的值为`NULL`；
+  - 在表的定义中给出默认值；
+  - 即省略部分项时，将使用`NULL`或默认值；
+
+
+
+## 15.4 插入某些查询的检索结果
+
+- `INSERT  ... SELECT ...`语句根据列的位置填充，而非根据列名填充；
+
+  - 即`SELECT`中的第一列填充至`INSERT`中的第一列；
+
+  ```sql
+  INSERT INTO Customers(cust_name, cust_id)
+  SELECT cust_name, cust_id
+  FROM CustNew;
+  ```
+
+
+
+## 15.5 将数据从一张表复制到另一张表
+
+```sql
+CREATE TABLE Customers AS
+SELECT *
+FROM Customers;
+```
+
+  
+
+
+
 
 # ==Schedule==
 
