@@ -107,9 +107,13 @@
 
 ### 3.3.4 Unicode 和 char 类型
 
-- code point（码点）：编码表中某个字符对应的代码值；
+- code point（码点）与code unit（代码单元）：
 
-  code unit（代码单元）：每个字符用16位表示；
+  - 码点：编码表中某个字符对应的代码值；
+
+  - 代码单元：每个字符用16位表示；
+    - 常用 Unicode 字符使用一个代码单元表示；
+    - 辅助字符使用两个代码单元表示；
 
 - 在 Java 中，char 类型描述 UTF16 编码中的一个代码单元；
 
@@ -117,6 +121,20 @@
 
   - 除非需要处理 UTF16 代码单元；
   - 最好将字符串作为抽象数据类型处理；
+
+- 返回代码单元数量：
+
+```java
+str1.length();			// 返回代码单元数量；
+str2.codePointCount();	// 返回码点数量；
+str3.charAt(n);			// 返回第 n 个代码单元；
+
+// 获取第 i 个码点；
+int index = str4.offsetByCodePoints(0, i);
+int cp = str4.codePointAt(index);
+```
+
+  
 
 
 
@@ -235,7 +253,7 @@
 
 
 
-### 3.6.1 子串
+### 3.6.2 子串
 
 - `String`类的`substring(a,b)`方法：
   - 从字符串中提取第 a 至 b-1 个字符，组成新的字符串；
@@ -243,7 +261,7 @@
 
 
 
-### 3.6.2 拼接
+### 3.6.3 拼接
 
 - 字符串拼接：使用`+`；
 
@@ -258,7 +276,7 @@
 
 
 
-### 3.6.3 检测字符串是否相等
+### 3.6.4 检测字符串是否相等
 
 - 检测字符串的内容是否相同：
 
@@ -280,13 +298,71 @@
   // 直接在内存中开辟一个存储空间，并将该对象地址赋值给 str2；
   ```
 
+
+
+
+### 3.6.5 空串与 NULL 串
+
+- 空串：长度为0，```""```；
+
+  - 判断字符串是否为空串：
+
+  ```java
+  if(str.length()==0)						// 判断空串；
+  if(str.euqals(""))						// 判断空串；	
+  ```
+
+- NULL 值上不能调用方法，会报错：
+
+  - 因此先判断是否为 NULL 串，后判断是否为空串；
+
+  ```java
+  // 判断该字符串不是 NULL 串，也不是空串；
+  if(str != null && str.length() != 0)
+  ```
+
   
 
- 
+ ### 3.6.6 构建字符串
+
+- 频繁使用字符串连接（`+`）效率低下，使用`StringBuilder`类避免该问题；
+
+```Java
+StringBuilder builder = new StringBuilder();
+builder.append("ch");
+builder.append("str");
+String completedString = builder.toString();  
+// 返回一个与构建器或缓冲器内容相同的字符串；
+```
 
   
+
+## 3.7 输入输出
+
+## 3.7.1 读取输入
+
+- 若使用的类不在`java.lang`包中，则应使用`import`加载该包；
+
+  - `Scanner`类定义在`java.util`中；
+
+- 构造一个`Scanner`对象，并与标准输入流`System.in`关联；
+
+```java  
+Scanner in = new Scanner(System.in);
+String name = in.nextLine();		
+// nextLine 方法读取一行；
+// next 方法读取一个单词；
+
+int age = in.nextInt();				
+// nextInt 方法读取一个整数；
+// nextDouble 方法读取一个浮点数；
+```
+
+
+
+
+
 
 # References
 
 [1] Cay S. Horstmann. Java 核心技术 卷I 基础知识（第10版）[M]. 周立新,陈波,叶乃文 等译. 北京: 机械工业出版社, 2016. ︎
-

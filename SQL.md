@@ -873,6 +873,46 @@ FROM Customers;
 
   
 
+# 16. 更新和删除数据
+
+## 16.1 更新数据
+
+```sql
+UPDATE Customers					-- 指定待更新的表名；
+SET cust_contact = 'Sam Roberts'	-- 待更新的项用逗号分隔；
+	cust_email = 'Sam@toyland.com'
+WHERE cust_id = '1000000006';		-- 筛选待更新的行；
+```
+
+
+
+## 16.2 删除数据
+
+- 使用外键的优点：确保引用完整性；
+
+  - 避免删除某个与其他表相关联的行；
+
+- 删除数据：
+
+  - 删除某项：使用`UPDATE`将该项的值更新为`NULL`；
+
+  - 删除整行：使用`DELETE`；
+
+  ```SQL
+  DELETE FROM Customers
+  WHERE cust_id = '1000000006';
+  ```
+
+  - 删除所有行，但不删除表：
+
+    - `DELETE`；
+
+    - 更好的方法：`TRUNCATE TABLE`；
+
+      - truncate，vt. 截断，舍位；
+
+      - 因为不记录数据的表动，因此速度更快；
+
 
 
 
