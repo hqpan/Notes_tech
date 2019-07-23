@@ -36,6 +36,8 @@
   - 每行的主键值不能为`NULL`；
   - 主键值不得修改、重用；
   - 若将多列作为主键，则各列的组合值必须唯一（单个列的值允许相同）；
+- SQL 语句执行时，忽略语句中的空格；
+  - 可以使用缩进、换行提高程序可读性；
 
 
 
@@ -471,7 +473,11 @@
   SUBSTRING();		-- 提取字符串的组成部分；
   CONVERT();			-- 数据类型转换；
   
+  NOW();				-- 返回语句开始执行的时间和日期；
+  SYSDATE();			-- 返回执行该语句时的时间和日期；
   CURDATE();			-- 取当前日期；
+  CURDATE();			-- 取当前日期；
+  CURTIME();			-- 取当前时间；
   YEAR();				-- 从日期中提取年份；
   
   LENGTH();			-- 返回字符串的长度；
@@ -912,6 +918,44 @@ WHERE cust_id = '1000000006';		-- 筛选待更新的行；
       - truncate，vt. 截断，舍位；
 
       - 因为不记录数据的表动，因此速度更快；
+
+
+
+# 17. 创建、操纵表
+
+## 17.1 创建表
+
+```sql
+CREATE TABLE Products
+(
+    prod_id 	CHAR(10) 		NOT NULL,
+    quantity	INTEGER			NOT NULL		DEFAULT 1,
+    prod_desc	TEXT(1000)		NULL
+);
+```
+
+- 创建表的注意事项：
+  - 创建表时，`NULL`为默认设置，无需额外声明；
+  - 允许`NULL`的列不能作为主键；
+  - 使用`DEFAULT`指定默认值；
+
+
+
+## 17.2 更新、删除表
+
+```sql
+ALTER TABLE Vendors			-- 增加一列；
+ADD vend_hone CHAR(20);
+
+ALTER TABLE Vendors			-- 删除一列；
+DROP COLUMN vend_phone;
+
+DROP TABLE CustCopy;		-- 删除表；
+```
+
+
+
+
 
 
 
