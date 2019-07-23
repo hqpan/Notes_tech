@@ -339,7 +339,7 @@ String completedString = builder.toString();
 
 ## 3.7 输入输出
 
-## 3.7.1 读取输入
+### 3.7.1 读取输入
 
 - 若使用的类不在`java.lang`包中，则应使用`import`加载该包；
 
@@ -359,6 +359,46 @@ int age = in.nextInt();
 ```
 
 
+
+### 3.7.2 格式化输出
+
+- `println()`、`printf()`；
+  - `printf()`支持格式化输出，用法类似于 C 语言；
+
+
+
+## 3.8 控制流程
+
+### 3.8.1 术语
+
+|      英文       |  中文  | 释义 |
+| :-------------: | :----: | :--: |
+|      block      |   块   |  -   |
+| block statement | 块语句 |  -   |
+
+- Java 不允许在两个嵌套的块中声明同名变量；
+- `else`与相距最近的`if`配对；
+- 循环结构：`for`、`while`、`do...while`；
+  - `do...while`：先执行一次，然后循环；
+- 在`switch`中使用枚举常量时，不必在标签中指明枚举名，可由`switch`的表达式值确定；
+
+
+
+### 3.8.2 中断控制流程语句
+
+- Java 中提供带标签的`break`语句；
+  - 跳转至带标签语句块的末尾；
+  - 功能类似于`goto`语句；
+  - 不提倡使用该语句；
+
+```java
+labelSample:
+while(condition1)
+{
+    if(condition2)
+        break labelSample;
+}
+```
 
 
 
