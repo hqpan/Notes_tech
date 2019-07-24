@@ -222,14 +222,15 @@
   - 具体差异参见相应 DBMS 文档；
 
   - 操作符存在冗余现象；
-  
-  | 操作符  |             含义             |
-  | :-----: | :--------------------------: |
-  |   <>    |      不等于（等同于!=）      |
-  |   !>    | 不大于（等同于“小于等于”<=） |
-  |   !<    | 不小于（等同于“大于等于”>=） |
-  | BETWEEN |      在指定的两个值之间      |
-  | IS NULL |           为NULL值           |
+
+|   操作符    |             含义             |
+| :---------: | :--------------------------: |
+|     <>      |      不等于（等同于!=）      |
+|     !>      | 不大于（等同于“小于等于”<=） |
+|     !<      | 不小于（等同于“大于等于”>=） |
+|   BETWEEN   |      在指定的两个值之间      |
+|   IS NULL   |           为NULL值           |
+| IS NOT NULL |          不为NULL值          |
 
 
 
@@ -951,6 +952,37 @@ ALTER TABLE Vendors			-- 删除一列；
 DROP COLUMN vend_phone;
 
 DROP TABLE CustCopy;		-- 删除表；
+```
+
+
+
+# 18. 使用视图
+
+## 18.1 视图的概念
+
+- 视图自身不包含数据，仅包含查询语句；
+- 视图命名不得与表名或其它视图相同；
+
+- 覆盖或更新视图：先删除，后创建；
+
+```sql
+CREATE VIEW
+DROP VIEW viewname;
+
+CREATE VIEW ProductCustomers AS
+SELECT ...
+FROM ...
+WHERE ... AND ...;
+```
+
+## 18.2 简化复杂 SQL 语句
+
+- 使用视图，隐藏复杂的联结语句：
+
+```sql
+SELECT cust_name, cust_contact
+FROM ProductCustomers			-- 此为视图名；
+WHERE prod_id = 'RGAN01';
 ```
 
 
