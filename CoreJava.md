@@ -400,7 +400,11 @@ while(condition1)
 }
 ```
 
+## 3.9 大数值
 
+- BigInteger 类  BigDecimal 类：
+  - 不能使用`+，-，×，/`进行四则运算；
+  - 应使用`add`、`subtract`等方法；
 
 
 # References

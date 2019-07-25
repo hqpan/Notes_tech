@@ -987,6 +987,38 @@ WHERE prod_id = 'RGAN01';
 
 
 
+# 19. 使用存储过程(==本章内容不可靠，未完善==)
+
+- 什么是存储过程：
+
+
+
+## 19.2 执行存储过程
+
+```sql
+CALL productpricing(@pricelow, @pricehigh, @priceaverage);
+```
+
+- 存储过程可显示结果，也可不显示结果；
+
+
+
+## 19.3 创建存储过程
+
+```sql
+CREATE PROCEDURE productpricing()
+BEGIN
+	-- SQL 语句；
+END;
+```
+
+## 19.4 删除存储过程
+
+```sql
+DROP PROCEDURE productpricing;
+
+```
+
 
 
 
