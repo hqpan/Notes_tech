@@ -26,17 +26,13 @@
       - `main`方法必须为`public`类型；
     - 将自定义的方法添加到类中，并在`main`方法中调用其他方法；
 - Java 区分大小写；
-- `public`：访问修饰符（access modifier），用于控制程序的其他部分对这段代码的访问级别；
+- `public`：访问修饰符（access modifier）；
 - 类名以大写字母开头，若由多个单词构成，则采用驼峰命名法；
 - 源码文件命名：源代码的文件必须与 `public` 类的名字相同，扩展名为 `.java`；
 - 字节码文件：编译器将源码文件的名字，作为字节码文件名字，使用 `.class`作为扩展名，与原文件存储在同一个目录下；
-- 方法的代码用大括号括起来，用大括号划分程序的各个部分（称之为“块”）；
-  - 空白符会被编译器忽略，因此使用不同风格的大括号均可；
-
 - `object.method(parameter)`：E.g. System.out.println("Hello, world!")，使用`System.out`对象调用`println`方法；
-  - 每次调用`println`都会在新的一行上显示输出，然后终止该输出行；
   - `.print`方法输出时不换行；
-  - 仅有`()`表明不带参数；
+
 
 
 
@@ -70,14 +66,11 @@
 
 ### 3.3.2 浮点类型
 
-- 浮点数值存在舍入误差；
-  - 计算机使用二进制存储数值存在舍入误差；
-  - Solution：使用`BigDecimal`类（不是一种数据类型），可表示任意精度；
-
 - 表示数值：
   - float：后缀`F`或`f`；
     - 无后缀的浮点数默认为double类型；
   - （可选）double：后缀`D`或`d`；
+
 - 三个特殊的浮点数：
   - 正无穷：
     - Float.POSITIVE_INFINITY；
@@ -85,7 +78,7 @@
   - 负无穷：
     - Float.NEGATIVE_INFINITY；
     - Double.NEGATIVE_INFINITY；
-  - NaN：不是一个数，各个NaN被认为不相同；
+  - NaN：not a number，各个NaN被认为不相同；
     - Float.NaN；
     - Double.NaN；
   - 检测某个值是否等于`Double.NaN`：
@@ -182,7 +175,7 @@ int cp = str4.codePointAt(index);
 - 若被除数和除数均为整数，则表示整数除法；
   - 否则表示浮点除法；
   - 整数除以0，产生异常；
-  - 浮点数除以0，结果为无穷大或NaN；
+  - 浮点数除以0，结果为无穷大或NaN（not a number）；
 
 ### 3.5.1 数学函数与常量
 
@@ -362,8 +355,15 @@ int age = in.nextInt();
 
 ### 3.7.2 格式化输出
 
-- `println()`、`printf()`；
+- `print`、`println()`、`printf()`；
+
   - `printf()`支持格式化输出，用法类似于 C 语言；
+
+- 在`printf`中输出一个`%`：`printf("%%")`；
+
+  - `printf`中的转义字符为`%`；
+
+  
 
 
 
@@ -412,7 +412,6 @@ while(condition1)
 
 - 声明、创建数组：
   - 数组的长度可为变量；
-  - 一旦数组创建后，其长度不能改变；
   - 允许匿名数组和长度为0的数组；
     - 长度为0的数组不同于 NULL；
   - `array.length`：获取数组长度；
@@ -422,6 +421,7 @@ int[] a;					// 声明数组（推荐），将类型与变量名分开；
 int a[];					// 声明数组；
 int[] a = new int[100];		// 创建数组；
 Arrays.toString(a)			// 返回结果，E.g.[1,2,3]；
+Arrays.deepToString(a)		// 返回二维数组；
 ```
 
 - `for each`语句依次处理数组中的所有元素；
@@ -449,7 +449,24 @@ Arrays.sort(arrayName);		// 快速排序算法；
 Math.random();				// 生成区间为[0,1)的一个随机浮点数；
 ```
 
+### 3.10.5 不规则数组
 
+- 不规则数组：
+  - Java 中没有多维数组，用“数组的数组”表示多维数组；
+  - E.g. 二维数组中，每行对应的一维数组长度可以不同；
+
+- 简化的初始化方式：
+
+```java
+int[][] arrayName = 
+{
+    {1, 2},
+    {3, 4},
+};
+
+arrayName.length		// 数组的行数；
+arrayName[i].length		// 第i行的项数；
+```
 
   
 

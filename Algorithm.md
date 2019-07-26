@@ -38,7 +38,42 @@
   - E.g. 下图中有3个连通分量；
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2019051020271037.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L01heGltaXplMQ==,size_16,color_FFFFFF,t_70#pic_center)
 
+
+
+# N. 杨辉三角
+
+- 对于不符合公式的部分结果，单独予以计算；
+```java
+// 定义二维不规则数组；
+int rowNum = 7;
+int[][] array = new int[rowNum][];
+for(int i=0; i<rowNum; i++)
+{
+	array[i] = new int[i+1];
+}
+
+// 计算结果并填充数组；
+// 当j=0时，k<=j不成立，因此不进入第三层循环，计算结果为1；
+// 当j=array[i].length-1时，计算结果恰为1；
+int defaultNum;
+for(int i=0; i<rowNum; i++)
+{
+    for(int j=0; j<array[i].length; j++)
+    {
+        defaultNum = 1;
+        for(int k=1; k<=j; k++)
+        {
+            defaultNum = defaultNum*(i-k+1)/k;
+        }
+        array[i][j] = defaultNum;
+    }
+}
+```
+
+
+
 # References
+
 [1] https://www.coursera.org/learn/algorithms-part1?.
 [2] https://www.coursera.org/learn/algorithms-part2?.
 [3] Sedgewick, R. & Wayne, K. (2016). *Algorithms Fourth Edition*. Boston: Addison-Wesley.
