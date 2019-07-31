@@ -10,7 +10,7 @@
 
 
 
-# 1. Java的基本程序设计结构
+# 3. Java的基本程序设计结构
 
 - `console`：n. 控制台，仪表板；
 
@@ -164,9 +164,22 @@ int cp = str4.codePointAt(index);
   - `static final`：定义类常量；
 
     - 类常量定义于`main`方法的外部；
-
     - 可在一个类的多个方法中使用；
     - 若一个常量被声明为`public`，则其他类中的方法也可使用该常量；
+
+  - `final`修饰符大多用于基本域类型和不可变类型；
+
+    - E.g. `String`为不可变类型，未提供修改字符串的方法；
+
+    - 对于可变的类不应使用`final`，令人费解；
+
+      - E.g. 以下错误示例中`final`表示存储在`evaluations`变量中的对象引用，不会再指向其他的`StringBuilder`对象，但该对象可以修改；
+
+      ```java
+      private final StringBuilder evaluations;
+      ```
+
+      
 
 
 
@@ -289,6 +302,8 @@ int cp = str4.codePointAt(index);
   new String str1 = "hello";
   new String str2 = "hello";
   // 直接在内存中开辟一个存储空间，并将该对象地址赋值给 str2；
+  
+  // new 操作符返回的是引用；
   ```
 
 
@@ -358,10 +373,12 @@ int age = in.nextInt();
 - `print`、`println()`、`printf()`；
 
   - `printf()`支持格式化输出，用法类似于 C 语言；
-
 - 在`printf`中输出一个`%`：`printf("%%")`；
 
   - `printf`中的转义字符为`%`；
+- `\t`：
+  - 对字符串：补全当前长度到4的整数倍；
+  - 对数字：补全当前长度到8的整数倍；
 
   
 
@@ -447,6 +464,10 @@ for(int element: a)
 ```java
 Arrays.sort(arrayName);		// 快速排序算法；
 Math.random();				// 生成区间为[0,1)的一个随机浮点数；
+
+import java,util.*;
+Random()					// 构造一个新的随机数生成器；
+int nextInt(int n);			// 返回一个 0-n-1 之间的随机数；
 ```
 
 ### 3.10.5 不规则数组
@@ -470,7 +491,297 @@ arrayName[i].length		// 第i行的项数；
 
   
 
+# 4. 对象与类
+
+## 4.1 面向对象程序设计 OOP
+
+### 4.1.1 术语
+
+- OOP：Object-oriented programming；
+- instance：实例，由类构造的对象；
+- instance field：实例域，即对象中的数据；
+- state：状态，某个对象中实例域的集合；
+- method：操纵数据的过程；
+- 如何区分业务场景中的类和方法：名词作为类，动词作为方法；
+
+
+
+### 4.1.2 类之间的关系
+
+- uses-a：依赖（dependence），即一个类的方法操纵另一个类的对象；
+  - 尽量减少类之间的相互依赖，即让类之间的耦合度最小；
+- has-a：聚合（aggregation），类A的对象包含类B的对象；
+- is-a：继承（inheritance）;
+- UML：unified modeling language，统一建模语言，用于绘制类图；
+
+
+
+## 4.2 使用预定义类
+
+### 4.2.1 对象变量
+
+- 构造器（constructor）：一种特殊的方法，用于构造并初始化对象；
+  - 构造器的名称与类名相同；
+- 对象变量：不包含对象本身，而是一个对“对象”的引用；
+  - 可将对象变量设置为 NULL；
+  - 若将 method 应用于未初始化的对象上，将产生编译错误；
+  - 若将 method 应用于值为 NULL 的对象上，将产生运行时错误（runtime error）；
+```java
+Date birthday = new Date()；
+birthday = NULL;
+```
+
+
+
+### 4.2.2 LocalDate 类
+
+- UTC：coordinated university time，协调世界时/世界统一时间；
+```java
+LocalDate.now()			// 构造新对象表示当前日期；
+LocalDate.of(2000,1,1)	// 提供年月日构造特定日期的对象；
+.getYear()
+.getMonthValue()
+.getDayOfMonth()
+```
+
+
+
+### 4.2.3 更改器方法与访问器方法
+
+- 更改器方法与访问器方法：
+
+  - mutator method：更改器方法，修改对象；
+  - accessor method：访问器方法，只访问而不修改对象；
+    - 域访问器：只返回实例域值；
+
+
+
+## 4.3 用户自定义类
+
+### 4.3.1 类
+
+- 一个源文件中仅能有一个公有类，可以有任意数量的非公有类；
+  - 源文件名必须与 public 类一致；
+
+  - 编译器将为每个类创建对应的类文件`.class`；
+
+    - 不同的类可放置于不同源文件中（推荐），也可放置于同一源文件中；
+
+  - 编译源程序的两种方法：
+
+
+  ```java
+  javac Empolyee*.java			// 使用通配符；
+  javac EmployeeTest.java		// 编译含有main函数的文件;
+  ```
+
+- 关于实例域的要求：
+  - 实例域应设置为 private 类型，以免破坏封装；
+  - 不能在任何方法中命名与实例域同名的变量；
+    - 以免同名变量在方法内部屏蔽实例域中命名的变量；
+- 隐式参数：出现在方法名前面的对象；
+  - E.g. `number007.salary`；
+  - 关键字`this`可用于表示隐式参数；
+- 不要编写返回引用可变对象的访问器方法；==未理解，page110-111==
+  - 如需返回一个可变数据域的拷贝，应使用`clone`；
+
+
+
+### 4.3.2 构造器
+
+- 构造器与类同名；
+
+- 每个类可有一个以上的构造器；
+
+- 构造器无返回值，不带任何返回参数类型，不能写作`void`；
+
+  - 构造器：任何情况下均不允许有返回值；
+
+  - `void`：表示该函数无返回值，但可将`void`修改后，返回其他类型的值；
+
+  ```java
+  public Employee(String n, double s);
+  ```
+
   
+
+- 构造器总是与`new`操作符一起使用；
+  - 构造器中不能重新声明与实例域重名的变量，否则会在构造器中屏蔽实例域；
+  - 不能对已存在的实例域重新设置实例域；
+
+
+
+### 4.3.3 静态域与静态方法
+
+- 静态域：亦称类域；
+
+- `static`变量：
+
+  - 被所有对象共享，在内存中仅有一个副本；
+  - 不需要通过类的对象进行访问，可以通过类名直接使用；
+
+  - 非静态变量：每个对象都有各自的副本，副本之间互不影响；
+
+- 静态方法：
+
+  - 没有`this`参数；
+  - 不需要使用对象调用静态方法；
+  - `main`方法是一种静态方法，不对任何对象进行操作；
+
+- factory method：工厂方法，不借助于`new`，通过使用静态方法对外提供自身实例；
+
+
+
+### 4.3.4 main 方法
+
+- 每个类中可有一个main方法，用于对类进行单元测试（unity test）；
+
+  ```java
+  java Employee;		// 运行Employee类；
+  ```
+
+
+
+## 4.4 方法参数
+
+- 参数传递方式;
+  - call by value：按值调用；
+  - call by reference：按引用调用；
+- Java中总是使用按值调用；
+  - Java 中的对象引用是按值传递的；
+
+
+
+## 4.5 对象构造
+
+### 4.5.1 重载
+
+- Java 允许重载任何方法；
+  - 方法的签名：signature，包括方法名及参数类型，不包括返回值类型；
+    - 不能有两个名字相同、参数类型相同，但具有不同返回类型的方法；
+
+- overloading resolution：重载解析，编译器根据调用时提供的参数和值类型，选择具体执行哪一种方法；
+
+- 使用构造器初始化：
+
+  - 若编写一个类时，没有编写构造器，则系统将提供一个无参数的构造器；
+
+  - 无参数的构造器：将所有实例域设置为默认值；
+
+    - 数值型数据的默认值：0；
+    - 布尔型数据的默认值：`false`；
+    - 对象引用的默认值：`null`；
+
+  - 可在声明的同时，为实例域赋值；
+
+    - 当一个类中的所有构造器均需要为某个实例域赋相同值时，可使用该方法；
+
+  - 参数变量命名技巧：
+
+    - 使用与实例域相同的名字命名参数变量，则参数变量将在块内屏蔽实例域；
+
+    - 在块内使用`this`访问实例域；
+  ```java
+  public Employee(String name)
+  {this.name = name;}
+  ```
+
+  - 在一个构造器中调用另一个构造器：
+
+    - 意义：初始化代码中的公共部分仅编写一次；
+
+    - 如何实现：构造器中的第一个语句中使用`this`；
+  ```java
+  public Employee(double s)
+  {this("Andrew", 1000)}		
+  // call Employee(String, double)
+  ```
+
+  - 初始化的3种实现方法：
+
+    - 构造器；
+
+    - 在声明的时候赋值；
+
+    - 初始化块；
+
+    ```java
+    {
+        id = nextId;
+    }  
+    
+    static				// 静态初始化块；
+    {
+        id = nextId;
+    }
+    ```
+
+    
+### 4.5.2 对象析构与finalize方法
+
+- Java 不支持析构器，有自动的垃圾回收器，不需要人工回收内存；
+- 可以为任何类添加`finalize`方法；
+
+
+
+## 4.6 包
+
+### 4.6.1 类的导入与静态导入
+
+- 所有标准的 Java 包都处于`java`、`javax`包中；
+
+- 使用`import java.time.*;`语句，不影响代码的大小；
+
+- 可将因特网域名以逆序的形式作为包名；
+
+- 导入的两个包中有同名类：
+
+  - 若程序中需要使用两个同名类，则使用完整的包名；
+
+  - 若仅使用同名类中的某一个类，则补充一个特定的`import`语句；
+
+  ```java
+  import java.util.*;
+  import java.sql.*;
+  import java.util.date.*;	// 补充该语句消除歧义；
+  ```
+
+- 导入静态方法和静态域；
+```java
+import static java.lang.System.*;
+```
+
+
+
+### 4.6.2 将类放入包中
+
+- 包的名字应置于源文件的开头，出现在定义类的代码之前；
+- 若未使用`package`语句，则该类将被放置于 default package 中；
+  - default package 是一个没有名字的包；
+
+```java
+package com.horstmann.corejava;
+```
+
+- 从及目录编译、运行类；
+  - 编译器对文件（带有文件分隔符和扩展名）进行操作；
+  - Java 解释器加载类（带有`.`分隔符）；
+```java
+javac com/mycompany/PayrollApp.java
+java com.mycompany.PayroolApp
+```
+
+- 编译器在编译源文件时不检查目录结构，即使目录中不包含相关包，编译器也不报错，但无法运行；
+
+
+
+### 4.6.3 包作用域
+
+- 未指定访问修饰符（access modifier）的部分（类、方法、变量）可被同一个包中的所有方法访问；
+
+
+
+
 
 
 # References
