@@ -915,6 +915,7 @@ if(boss instanceof staff[1])
   - 减少每次调用方法时的搜索时间开销；
 - 在覆盖一个方法时，子类方法的可见性不能低于超类方法的可见性；
   - E.g. 若超类方法的访问修饰符为`public`，子类方法一定要申明为`public`；
+  - 可在子类中的访问修饰符前加上`@Override`标记，若该方法未覆盖超类中的任何方法，编译器将报错；
 
 
 
@@ -936,6 +937,72 @@ if(boss instanceof staff[1])
   - 抽象类不能被实例化；
     - 可定义抽象类的对象变量，但其只能引用非抽象子类的对象；
 - 若不在超类中定义抽象方法，仅在子类中定义该方法，则无法通过超类的对象变量调用该方法；
+
+
+
+## 5.2 Object：所有类的超类
+
+### 5.2.1 Object
+
+- 可使用`Object`类型的变量引用任何类型的对象；
+  - 如需操作其中的具体内容，应进行相应的类型转换；
+- 编写`equals`方法的建议：
+  - 将显式参数设为`Object`类型，用于覆盖超类中的`equals`方法；
+  - 检测`this`与显式参数是否引用同一个变量；
+  - 检测显式参数是否为`null`；
+  - 检测隐式参数与显式参数是否为同一个类；
+    - 若`equals`的语义在每个子类中有所改变，则使用`getClass`检测；
+    - 若所有的子类中`equals`的语义相同，则使用`instanceof`检测；
+  - 将`otherObject`转换为相应的类型；
+  - 比较各个域；
+    - 为防止部分实例域为空（不能对空值使用方法），使用`Objects.equals(a,b)`取代`a.equals(b)`；
+
+```java
+Public class Employee
+{
+    ...
+    public boolean equals(Object otherObject)
+    {
+        if(this == otherObject) return true;
+        
+        if(otherObject == null) return false;
+        
+        if(getClass() != otherObject.getClass())
+            return false;
+        
+        Employee other = (Employee) otherObject;
+        
+        return name.equals(other.name)
+            && salary == other.salary
+            && hireDay.equals(other.hireDay);
+    }
+}
+```
+
+
+
+### 5.2.2 hashCode 方法
+
+- 在自定义的类中需要覆盖的方法：
+
+  - `equals`；
+
+  - 若重新定义`equals`方法，则需重新`hashCode`方法，以便用户将对象插入到散列表中；
+  - `toString`，以便用户获取有关对象状态的必要信息；
+
+- `hashCode`：该方法定义在`Object`类中，因此每个对象均有默认的散列码；
+  - 若参数为`null`，则该方法返回0；
+- 如需组合多个参数的散列值时，可调用`Objects.hash`，并提供多个参数；
+  - 该方法将对各个参数调用`Objects.hashCode`，并组合这些散列值；
+
+- 对`double`类型的数据使用`hashCode`方法：
+
+```java
+return super.hashCode() + 13*new Double(salary).hashCode();	
+// 创建Double对象；
+return super.hashCode() + 13*Double.hashCode(salary);	
+// 使用静态方法避免创建Double对象；
+```
 
 
 
