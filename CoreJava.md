@@ -827,7 +827,7 @@ java com.mycompany.PayroolApp
 - free-form text：自由格式文本；
 
   
-# 5. 继承
+# 5. 继承（==反射部分暂且跳过==）
 ## 5.1 定义子类
 
 ### 5.1.1 超类与子类
@@ -1032,6 +1032,41 @@ return super.hashCode() + 13*Double.hashCode(salary);
 
 
 ## 5.7 反射
+
+### 5.7.1 Class 类
+
+- `Class`用于“保存运行时的类型”信息；
+
+- 获取`Class`类对象的方式：
+
+  - 对`getClass()`方法返回的类型实例使用`getName()`，返回类名；
+
+  - 返回某个类型对应的类对象：`Class Cl = AnyType.class`；
+
+  - `Object`类中的`getClass()`方法返回一个`Class`类型的实例；
+
+    - package 的名字也作为类名的一部分；
+
+    - 返回类名为`className`的`Class`对象；
+
+    ```java
+    static Class forName(String className);
+    ```
+
+- `newInstance(Object[] args)`：创建某个类型的实例，默认调用无参数构造器；
+
+  
+### 5.7.2 异常
+
+- 异常：
+  - 未检查异常：编译器将不检查是否提供了处理器（handler），这些问题可通过精心编写代码解决；
+  - 已检查异常；
+- `Throwable`是`Exception`的超类；
+
+
+
+
+
 
 
 
