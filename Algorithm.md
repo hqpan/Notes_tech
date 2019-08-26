@@ -147,22 +147,23 @@ while(!in.hasNext())
   - $NlogN>N>>logN>1$；
   - 处理大规模的问题，应设计对数级别、线性级别、线性对数级别的算法；
 
-- 
+
+
+## 1.5 Union-find (并查集算法)
+
+- 动态连通性问题：
+  - 触点：指对象；
+  - 分量/连通分量：指等价类，即具有连接关系的对象组成的最大集合；
+- 并查集算法仅能判断两个对象之间是否存在连接，但不能给出连接路径；
+- 归并：几个合在一起或一个合到另一个里去；
 
 
 
-==Schedule==
+
+
+# ==Schedule==
 
 - 每日20页，9月23日前完成；
-
-
-
-
-# 2. Union-find (并查集算法)
-- 并查集算法仅能判断两个对象之间是否存在连接，但不能给出连接路径；
-- Connected component (连通分量)：具有连接关系的对象组成的最大集合；
-  - E.g. 下图中有3个连通分量；
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2019051020271037.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L01heGltaXplMQ==,size_16,color_FFFFFF,t_70#pic_center)
 
 
 
