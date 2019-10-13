@@ -2,6 +2,26 @@
 
 # 1. Data Structure
 
+- 二维数组的行数和列数：
+
+  - 行数：`arr.length()`；
+  - 第 i 行的列数：`arr[i].length()`；
+
+- 动态数组：
+
+  - 声明与创建：`ArrayList<Integer> ans = new ArrayList<>()`；
+  - 向二维动态数组添加元素：
+
+  ```java
+  List<List<Integer>> ans = new ArrayList<>();
+  List<Integer> newRow = new ArrayList<>();
+  row.add(x);
+  row.add(y);			// 生成行；
+  ans.add(row);		// 将某一行添加到二维动态数组中；
+  ```
+
+  
+
 - 堆栈；
 
 ```java
