@@ -54,3 +54,9 @@ if ((character > 'A') && (character < 'Z')) // 基本类型可直接比较
 .toLowerCase()
 .toUpperCase()    
 ```
+
+
+
+# 3. Java grammar
+
+- `@SuppressWarnings("unchecked")`：使编译器对代码中的某些警告保持静默；
