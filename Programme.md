@@ -34,7 +34,20 @@ Stack<char> stack = new Stack<>();
 .search(Object o) // 返回从栈顶至当前元素的索引，从1开始计数；    
 ```
 
+- 队列：
 
+```java
+Queue<String> queue = new LinkedList<>();
+// method
+.add()
+.poll()	 // Retrieves and removes the head of this queue, or returns null if this queue is empty.  
+.peek()  
+.size()  // 该方法来自 LinkedList；
+```
+
+- 词汇;
+  - poll, vt. vi. & n. 投票，民意调查；
+  - peek, vi. & n. 窥视；
 
 # 2. I/O
 
@@ -60,3 +73,4 @@ if ((character > 'A') && (character < 'Z')) // 基本类型可直接比较
 # 3. Java grammar
 
 - `@SuppressWarnings("unchecked")`：使编译器对代码中的某些警告保持静默；
+- `int max = Integer.MAX_VALUE`；
