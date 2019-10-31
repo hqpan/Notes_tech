@@ -4,8 +4,8 @@
 
 - 二维数组的行数和列数：
 
-  - 行数：`arr.length()`；
-  - 第 i 行的列数：`arr[i].length()`；
+  - 行数：`arr.length`；
+  - 第 i 行的列数：`arr[i].length`；
 
 - 动态数组：
 
@@ -49,12 +49,13 @@ Queue<String> queue = new LinkedList<>();
   - poll, vt. vi. & n. 投票，民意调查；
   - peek, vi. & n. 窥视；
 
-# 2. I/O
+# 2. 字符串
 
 - 字符的大小写转换：
   - 大写转换为小写，加32；
   - 小写转换为大写，减32；
-  - 注意：`char`加上`int`，则自动转换为`int`类型；
+  - 记忆策略：先大后小；
+  - 注意：`char`加上`int`，则自动转换为`int`类型，可使用显式类型转换将`int`转换为`char`；
 
 ```java
 if ((character > 'A') && (character < 'Z')) // 基本类型可直接比较
@@ -66,6 +67,12 @@ if ((character > 'A') && (character < 'Z')) // 基本类型可直接比较
 // *** method ***
 .toLowerCase()
 .toUpperCase()    
+```
+
+- 创建格式化字符串;
+
+```java
+return String.format("%d-%d, %.2f", vertex1, vertex2, weight);
 ```
 
 
