@@ -45,7 +45,18 @@ Queue<String> queue = new LinkedList<>();
 .size()  // 该方法来自 LinkedList；
 ```
 
+- 最小优先队列：
+  
+```java
+PriorityQueue<Integer> queue = new PriorityQueue<>();
+.add()
+.poll()	 
+.peek()  
+.size()
+```
+
 - 词汇;
+  
   - poll, vt. vi. & n. 投票，民意调查；
   - peek, vi. & n. 窥视；
 
@@ -80,4 +91,6 @@ return String.format("%d-%d, %.2f", vertex1, vertex2, weight);
 # 3. Java grammar
 
 - `@SuppressWarnings("unchecked")`：使编译器对代码中的某些警告保持静默；
-- `int max = Integer.MAX_VALUE`；
+- 基本数据类型：
+  - `int max = Integer.MAX_VALUE`；
+  - `double max = Double.POSITIVE_INFINITY`；
