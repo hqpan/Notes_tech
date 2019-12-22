@@ -34,6 +34,9 @@
   - windows；
   - UNIX；
   - 类UNIX：Linux，MAC OS；
+- JavaDoc 文档：
+  - 带有 deprecated 字样描述的方法不宜使用；
+  - deprecate, vt. 反对，不赞成；
 
 
 
@@ -54,9 +57,9 @@
 
 # 3. Java的基本程序设计结构
 
+- `args`：arguments；
 - `console`：n. 控制台，仪表板；
-
-- `src`：源码目录；
+- `src`：source，源码目录；
 
 ## 3.1 简单的Java应用程序
 
@@ -259,7 +262,12 @@ int cp = str4.codePointAt(index);
 private final StringBuilder evaluations;
 ```
 
-​      
+- 代码块：
+  - 普通代码块：用`{}`；
+  - 构造代码块：每次实例化对象时，都会调用构造代码块中的语句，且先于构造方法被调用；
+  - 静态代码块：使用`static`定义的代码块，服务于静态变量初始化；
+    - 在非主类中定义的代码块：静态代码块的执行顺序优先于构造代码块和构造方法，且无论实例化多少个对象，静态代码块中的语句也只执行一次；
+    - 在主类中定义的代码块：静态代码块中的语句执行顺序优先于Main方法；
 
 
 
@@ -346,43 +354,145 @@ byte num2 = 200;	// 超出 byte表示范围，报错
 
 ## 3.6 字符串
 
-### 3.6.1 术语
+### 3.6.1 定义
 
 - 表示方式：
   - char：单引号；
-  - String：双引号；
-- `String`：该类未提供用于修改字符串的方法，是不可变类型；
+  - String：双引号，双引号中的内容表示一个`String`类的匿名对象；
+- `String`：为不可变类型，字符串的内容不可变，指向字符串的引用可变；
 
-### 3.6.2 子串
+
+
+### 3.6.2 实例化
+
+- `String`的实例化方式：
+
+  - 直接赋值：
+    - 实现同一个字符串数据的共享操作；
+    - 自动将数据保存到字符串对象池中，减少相同数据的产生；
+  - 通过`String`类的构造器进行实例化：`String str = new String("Andrew");`；
+    - 上述示例中会开辟两块堆内存空间，分别由匿名对象`"Andrew"`和关键字`new`开辟；
+    - 由`new`开辟的内存空间的引用，被赋值给`str`，而由匿名对象开辟的内存空间将成为垃圾；
+    - 该种实例化方法不会将字符串自动保存到字符串对象池中，而是新开辟一个堆内存空间；
+
+- ==面试题==：`String`类两种实例化方法的区别？
+
+  - 直接赋值：仅产生一个实例化对象，可自动保存到内存池中，以实现对象重用；
+  - 构造方法：产生两个实例化对象，且不会自动入池，无法实现对象重用，但是可借助`intern()`方法手动入池；
+  - 备注：intern，vt. 拘留，软禁；n.[C] 实习生；
+
+- String 对象（常量）池可分为两种：
+
+  - 静态常量池：`.class`文件加载时自动将其中的字符串、其它常量、类和方法进行分配；
+  
+  ```java
+  String strA = "Hello, world!";
+  String strB = "Hello, " + "world!";
+  // strA == strB, true;
+  ```
+  
+  - 运行时常量池：`.class`文件加载后，为其中的变量提供的常量池；
+    - 程序加载时并不确定以下示例中`temp`中的内容，该引用可被修改；
+    - 不宜频繁修改字符串的引用，避免产生大量垃圾空间；
+  
+  ```java
+  String temp = "world!";
+  String strA = "Hello, world!";
+  String strB = "Hello, " + temp;
+  // strA == strB, false;
+  ```
+
+- 频繁使用`+`连接字符串产生大量垃圾空间，使用`StringBuilder`类避免该问题；
+
+```Java
+StringBuilder builder = new StringBuilder();
+builder.append("ch");
+builder.append("str");
+String completedString = builder.toString();  
+// 返回一个与构建器或缓冲器内容相同的字符串；
+```
+
+  
+
+### 3.6.3 字符串与数组之间的转换
+
+- 字符串与**字符**数组：
+  - 构造器：
+    - `String(char[] value)`；
+    - `String(char[] value, int offset, int count)`；
+      - offset, n.[C] 偏离，偏移量；
+  - 将**字符**数组转换为字符串：`public char[] toCharArray()`；
+- 字符串与**字节**数组：
+  - 转换目的：传输二进制数据、编码转换；
+  - 构造器：
+    - `String(byte[] bytes)`；
+    - `String(byte[] bytes, int offset, int length)`；
+  - 将**字节**数组转换为字符串：`public byte[] getBytes()`；
+  - 编码转换：`byte[] getBytes(String charsetName)`；
+
+
+
+### 3.6.3 子串
 
 - `String`类的`substring(a,b)`方法：
   - 从字符串中提取第 a 至 b-1 个字符，组成新的字符串；
   - 提取出的子串长度为 b-a；
+- 查找子串：
+  - `boolean contains(CharSequence s)`：查找子串；
+  - `int indexOf(String str)`：查找子字符串并返回索引，若无匹配结果，则返回-1；
+  - `int indexOf(int ch, int fromIndex)`：从指定位置起，查找子字符串并返回索引，若无匹配结果，则返回-1；
+  - `int lastIndexOf(String str)`：**反向**查找子字符串并返回索引，若无匹配结果，则返回-1；
+  - `int lastIndexOf(String str, int fromIndex)`：从指定位置起，**反向**查找子字符串并返回索引，若无匹配结果，则返回-1；
+  - `boolean startsWith(String prefix)`：是否以指定的字符串开头；
+  - `boolean	startsWith(String prefix, int toffset)`：判断从指定位置起，是否以指定的字符串开头；
+  - `boolean endsWith(String suffix)`：是否以指定的字符串结尾；
 
 
 
-### 3.6.3 拼接
+### 3.6.4 替换、拼接、拆分和截取
 
-- 字符串拼接：使用`+`；
+- 替换：
 
+  - `String	replaceAll(String regex, String replacement)`：替换所有匹配的子串；
+  - `String	replaceFirst(String regex, String replacement)`：替换第一个匹配的子串；
+
+- 拼接：
+
+  - `+`：
   - 当一个非字符串值与一个字符串进行拼接时，前者被转换为字符串；
-  - 任何一个 Java 对象均可转换为字符串；
-
-- 静态`join`方法：将多个字符串拼接后，使用界定符分隔；
+    - 任何一个 Java 对象均可转换为字符串；
+- `String concat(String str)`：将该字符串连接到对象字符串的末尾；
+  - 静态`join`方法：将多个字符串拼接后，使用界定符分隔；
 
   ```java
   String all = String.join("/", "S", "M", "L", "XL");
   ```
 
+- 拆分：
+
+  - `String[] split(String regex)`；
+  - `String[] split(String regex, int limit)`：指定拆分个数；
+
+- 截取：
+
+  - `String substring(int beginIndex)`；
+  - `String substring(int beginIndex, int endIndex)`；
+- `trim()`：除去字符串首尾空格；
+  
+  
 
 
-### 3.6.4 检测字符串是否相等
+### 3.6.5 字符串比较
 
 - 检测字符串的内容是否相同：
 
+  - 备注：case，n. 大小写；
+
   ```java
-  str1.equals(str2);				// 检查字符串内容是否相等；
+  str1.equals(str2);				// 区分大小写；
   str1.equalsIgnoreCase(str2);	// 不区分大小写；
+  compareTo (String anotherString)
+  compareToIgnoreCase (String anotherString)
   ```
 
 - `str1 == str2`：用于判断字符串在内存中的地址是否相同；
@@ -399,45 +509,41 @@ byte num2 = 200;	// 超出 byte表示范围，报错
   
   // new 操作符返回的是引用；
   ```
+  
+- ==面试题==：`==`和`equals()`的区别？
+
+  - `==`应用于基本数据类型比较数值，应用于引用数据类型时比较内存地址；
+  - `equals()`比较两者的内容；
 
 
 
+### 3.6.6 空串与 Null
 
-### 3.6.5 空串与 NULL 串
+- 空串与 Null 的区别：
 
-- 空串：长度为0，```""```；
+  - `""`：有实例化对象；
+  - Null：无实例化对象；
 
-  - 判断字符串是否为空串：
+- 判断字符串是否为空串：
 
   ```java
-  if(str.length()==0)						// 判断空串；
-  if(str.euqals(""))						// 判断空串；	
+	if(str.length()==0)			
+  if(str.euqals(""))				
   ```
-
-- NULL 值上不能调用方法，会报错：
-
-  - 因此先判断是否为 NULL 串，后判断是否为空串；
+  
+- Null 值上不能调用方法，会报错，因此先判断是否为 Null，后判断是否为空串；
 
   ```java
-  // 判断该字符串不是 NULL 串，也不是空串；
-  if(str != null && str.length() != 0)
+if(str != null && str.length() != 0)
   ```
-
   
+### 3.6.7 大小写转换
 
- ### 3.6.6 构建字符串
+- `toUpperCase()`；
+- `toLowerCase()`；
 
-- 频繁使用字符串连接（`+`）效率低下，使用`StringBuilder`类避免该问题；
 
-```Java
-StringBuilder builder = new StringBuilder();
-builder.append("ch");
-builder.append("str");
-String completedString = builder.toString();  
-// 返回一个与构建器或缓冲器内容相同的字符串；
-```
 
-  
 
 ## 3.7 输入输出
 
@@ -464,11 +570,17 @@ int age = in.nextInt();
 
 ### 3.7.2 格式化输出
 
-- `printf()`支持格式化输出，用法类似于 C 语言；
-- 在`printf`中输出一个`%`：`printf("%%")`；
+- `printf()`支持格式化输出，类似于`String.format("...");`；
 
+  - `static String format(String format, Object... args)`；
   - `printf`中的转义字符为`%`；
-  - 类似于`String.format("...");`；
+
+- 占位符：
+
+  - `%c`：字符；
+  - `%s`：字符串；
+  - `%d`：整数；
+
 - `\t`：
   - 对字符串：补全当前长度到4的整数倍；
   - 对数字：补全当前长度到8的整数倍；
@@ -543,8 +655,8 @@ while(condition1)
 - 声明、创建数组：
   - 数组的长度可为变量；
   - 允许匿名数组和长度为0的数组；
-    - 长度为0的数组不同于 NULL；
   - `array.length`：获取数组长度；
+  - `for each`语句依次处理数组中的所有元素；
 
 ```java
 int[] a;					// 声明数组（推荐），将类型与变量名分开；
@@ -552,12 +664,7 @@ int a[];					// 声明数组；
 int[] a = new int[100];		// 创建数组；
 Arrays.toString(a)			// 返回结果，E.g.[1,2,3]；
 Arrays.deepToString(a)		// 返回二维数组；
-```
-
-- `for each`语句依次处理数组中的所有元素；
-```java
-for(int element: a)
-	statement;
+return new int[] {1, 2, 3};	// 数组作为返回值；
 ```
 
 
@@ -568,6 +675,13 @@ for(int element: a)
 
   - 如需将一个数组中的值拷贝到新的数组中，则应使用`Array.copyOf()`；
   - `Array.copyOf()`应用与数组本身，通过改变参数，修改数组大小；
+- java.lang.System.arraycopy：数组拷贝；
+
+```java
+arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
+// Copies an array from the specified source array, beginning at the specified position, to the specified position of the destination array.
+```
+
 - `String[] args`：字符串数组，即命令行参数；
 
 
@@ -709,7 +823,8 @@ LocalDate.of(2000,1,1)	// 提供年月日构造特定日期的对象；
 - 设计要求：
   - 类中应提供无参数构造器；
   - 为保证封装效果，类中不应有输出语句；
-  - 应提供一个获取对象详细信息的方法；
+  - 提供设置和返回各个实例域的方法，`set...`，`get...`；
+  - 应提供一个获取对象详细信息的方法，`getinfo`；
 
 
 
@@ -717,19 +832,10 @@ LocalDate.of(2000,1,1)	// 提供年月日构造特定日期的对象；
 
 - 构造器与类同名；
 
-- 每个类可有一个以上的构造器；
-
 - 构造器无返回值，不带任何返回参数类型，不能写作`void`；
-
   - 构造器：任何情况下均不允许有返回值；
 
   - `void`：表示该函数无返回值，但可将`void`修改后，返回其他类型的值；
-
-  ```java
-  public Employee(String n, double s);
-  ```
-
-  
 
 - 构造器总是与`new`操作符一起使用；
   - 构造器中不能重新声明与实例域重名的变量，否则会在构造器中屏蔽实例域；
@@ -742,17 +848,20 @@ LocalDate.of(2000,1,1)	// 提供年月日构造特定日期的对象；
 - 静态域：亦称类域；
 
 - `static`变量：
-
-  - 被所有对象共享，在内存中仅有一个副本；
+- 被所有对象共享，在内存中仅有一个副本，可用于存储多个实例的公共信息；
   - 不需要通过类的对象进行访问，可以通过类名直接使用；
-
-  - 非静态变量：每个对象都有各自的副本，副本之间互不影响；
-
+  
+- 非静态变量：每个对象都有各自的副本，副本之间互不影响；
+  
 - 静态方法：
 
-  - 没有`this`参数；
-  - 不需要使用对象调用静态方法；
+  - 可使用类名调用静态方法，无需借助对象调用静态方法，可在类未被实例化时使用；
   - `main`方法是一种静态方法，不对任何对象进行操作；
+  - 注意：
+    - 静态方法只能使用静态变量，调用静态方法；
+    - 非静态方法允许使用静态变量，调用静态方法；
+    - `this`不能用于静态方法中；
+      - 原因：静态变量和静态方法允许在没有实例化对象时通过类名访问，而`this`是实例化对象的引用；
 
 - factory method：工厂方法，不借助于`new`，通过使用静态方法对外提供自身实例；
 
@@ -762,9 +871,6 @@ LocalDate.of(2000,1,1)	// 提供年月日构造特定日期的对象；
 
 - 每个类中可有一个main方法，用于对类进行单元测试（unity test）；
 
-  ```java
-  java Employee;		// 运行Employee类；
-  ```
 
 
 
@@ -773,6 +879,13 @@ LocalDate.of(2000,1,1)	// 提供年月日构造特定日期的对象；
 - 参数传递方式;
   - call by value：按值调用；
   - call by reference：按引用调用；
+- 可变参数：
+  - 最后一个形参类型后加上三点 `…`，表示该形参可接受多个参数，多个参数值被当成数组传入；
+  - 可变参数只能作为函数的最后一个参数，因此一个函数至多只能有一个可变参数；
+  - 函数调用时优先匹配固定参数的方法，然后匹配可变参数的方法，避免重载具有可变参数的方法，以免引起误会；
+  - 可变参数会被编译器转型为一个数组，编译为字节码后，在方法签名中以数组形态出现的，使用可变参数和数组作为参数的方法，其签名是一致的，不能实现方法的重载；
+  - 可变参数作为形参时，可以接收数组，反之则不成立；
+  - 可变参数不支持泛型；
 - Java中总是使用按值调用；
   - Java 中的对象引用是按值传递的；
 
@@ -1321,7 +1434,7 @@ return super.hashCode() + 13*Double.hashCode(salary);
   - 子类中可选择抛出更特定的异常；
   - 子类中可选择不抛出异常；
 - 常见异常：
-  - `NullPointerException`：空指向异常，仅有引用数据类型能引发该异常，为开辟堆内存空间；
+  - `NullPointerException`：空指向异常，仅有引用数据类型能引发该异常，未开辟堆内存空间，E.g. 对 null 调用方法；
 
 
 
