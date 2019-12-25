@@ -1,123 +1,226 @@
-[TOC]
+[toc]
 
+# 版权声明
 
-
-# 0. 版权声明
-
-- SQL 系列读书笔记来源于 Ben Forta 所著《SQL 必知必会》[1]；
+- 《数据库系统概念》系列学习笔记来源于 Abraham Silberschatz，Henry F.Korth 和 S.Sudarshan 所著 *Database System Concepts 6th edition* [1]，以及  Ben Forta 所著《SQL必知必会》[2]；
 - 该系列笔记不以盈利为目的，仅用于个人学习、课后复习及科学研究；
-- 如有侵权，请与本人联系（hqpan0@gmail.com），经核实后即刻删除；
+- 如有侵权，请与本人联系（hqpan@foxmail.com），经核实后即刻删除；
+- 本文采用 [署名-非商业性使用-禁止演绎 4.0 国际 (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh) 协议发布；
 
 
 
-# 1. SQL 基础
+# 1. 数据库基本概念
 
-## 1.1 术语
+## 1.1 定义
 
-|    英文     | 中文 |                          释义                           |
-| :---------: | :--: | :-----------------------------------------------------: |
-|   column    |  列  |         表中的一个字段，每列都有相应的数据类型          |
-| primary key | 主键 |                            -                            |
-|     row     |  行  |          表中的一个记录（record，非正式用语）           |
-|   schema    | 模式 |                            -                            |
-|    table    |  表  | 类似于EXCEL中的一张表，存储某种特定类型数据的结构化清单 |
+- DBMS: database management system ;
+- DBS：Database System；
+- SQL:  Structured Query Language ，结构化查询语言；
+  - 发音：为字母 S-Q-L 或 sequel ['sikwəl] ；
+- UML：Unified Modeling Language，统一建模语言；
 
+## 1.2 数据视图
 
-
-## 1.2 概念释义
-
-- DBMS 与 SQL 的区别：
-  - DBMS：数据库管理系统，指数据库软件；
-  - SQL：Structured Query Language，结构化查询语言；
-- 模式：
-  - 可用于描述表的特性，包括表中包含何种数据、数据如何分解、如何存储、各部分信息如何命名；
-  - 也用于描述各个表之间的关系；
-- 定义主键的要求：
-  - 每行的主键值不能为`NULL`；
-  - 主键值不得修改、重用；
-  - 若将多列作为主键，则各列的组合值必须唯一（单个列的值允许相同）；
-- SQL 语句执行时，忽略语句中的空格；
-  - 可以使用缩进、换行提高程序可读性；
+- 数据抽象：
+  - 物理层；
+  - 逻辑层：数据间的关系，与物理层之间存在物理数据独立性；
+  - 视图层；
+- 实例：instance，某个时刻数据库中所有信息的集合；
+- 模式：schema，数据库的总体设计，描述表的特性，E.g. 表中包含何种数据、数据如何分解、如何存储、各部分信息如何命名、各个表之间的关系；；
+  - 物理模式：在物理层描述数据库的设计；
+  - 逻辑模式：在逻辑层描述数据库的设计，使用该模式构造应用程序；
+  - 子模式：subschema，即数据库在视图层的模式；
+- 数据模型：
+  - 关系模型：relational model，表示数据间的关联；
+  - 实体-联系模型：entity-relationship model，E-R；
+  - 基于对象的数据模型：object-based data model，即面向对象的数据模型；
+  - 半结构化数据模型：semistructured data model；
 
 
 
-# 2. 检索数据
+## 1.3 数据库语言
 
-## 2.1 术语
+- 数据库语言的不同部分;
+  - 数据操纵语言；
+  - 数据定义语言：输出存放在包含元数据的数据字典中，数据字典仅能由 DBS 自身访问和修改；
+- 一致性约束：
+  - 域约束：每个属性均有对应的取值范围约束；
+  - 参照完整性约束：某些属性集在不同关系中出现，其值必须相等；
+  - 断言；
+  - 授权；
 
-|  英文   |  中文  | 释义 |
-| :-----: | :----: | :--: |
-| keyword | 关键字 |  -   |
-|         |        |      |
-|         |        |      |
+
+
+## 1.4 事务管理
+
+- 事务正确执行的四个基本要素：简写为 ACID；
+  - 原子性：Atomicity；
+  - 一致性：Consistency；
+  - 隔离性：Isolation；
+  - 持久性：Durability；
+- 事务执行前后，数据库均满足一致性条件；
 
 
 
-## 2.2 检索
+## 1.5 数据库体系结构
 
-- 多条SQL语句以`；`分隔；
+- 数据库体系结构:
+  - 集中式数据库；
+  - 客户机/服务器系统；
+  - 并行数据库系统；
+  - 分布式数据库系统；
+- 度量数据库系统性能的指标：
+  - 吞吐量：给定时间内完成的事务数量；
+  - 响应时间：完成单个事务所需时间；
 
-- SQL语句不区分大小写；
 
-  - 将SQL关键字大写，列名和表名使用小写，提高代码可读性；
 
-- 处理SQL语句时，忽略其中所有空格；
+# 2. 关系模型介绍
+
+## 2.1 定义
+
+- attribute：属性，用于指代列；
+- domain：域，每个属性所有可能取值的集合；
+- relation/table：关系，用于指代表；
+- row / record: 行 / 记录；
+- tuple：元组，数学上指一组值的序列，数据库中用于指代行；
+- n-tuple：n 元组，有 n 个值的元组，对应于表中的一行；
+
+
+
+## 2.2 码
+
+- foreign key: 外码，即外键，父数据表的主键；
+- primary key: 主码，即主键；
+  - 主键值不能为空，不能修改、重用，若某行从表中删除，则它的主键不能赋给以后的新行；
+  - 可取多个 column 组合作为主键；
+- 参照关系和被参照关系：E.g. 一个关系模式$r_1$的属性中含有另一个关系模式$r_2$的主键；
+  - 参照关系：$r_1$为外键依赖的参照关系；
+  - 被参照关系：
+
+
+
+# 3. SQL
+
+## 3.1 定义和语言特点
+
+- DDL 和 DML;
+  - DDL：Data-Defination Language，数据定义语言；
+  - DML：Data-Manipulation Language，数据操纵语言；
+- 空值会给数据的访问和更新带来不便，应减少使用；
+- SQL语句不区分大小写，将关键字大写，列名和表名小写，提高代码可读性；
+- 单条 SQL 语句执行时，忽略其中所有空格，多条SQL语句以`;`分隔；
+
   - SQL语句可写在一行之中，也可写为多行；
   - 将SQL语句分成多行，易于阅读和调试；
-
-- SQL一般返回原始的、无格式的数据；
-
-- 按列检索：
-  - 检索多列：用逗号分隔列名；
-  ```mysql
-  SELECT Prod_id, prod_name, prod_price 
-  FROM Products;
-  ```
-
-  - 检索所有列：使用通配符；
-    - 使用通配符可检测出列名未知的列；
-
-  ```mysql
-  SELECT *
-  FROM Products;
-  ```
-
-- 检索不同的值：
-
-  - 仅返回某一列中的值，每个不同的值仅显示一次；
-
-  ```mysql
-  SELECT DISTINCT vend_id
-  FROM Products;
-  ```
-
-  - `DISTINCT`应置于列名之前，同时作用于多个列，会返回两列中的所有值，每个不同的值仅显示一次；
-
-- 返回前若干行：不同的DBMS有不同的语法，以下语法仅针对MySQL；
-
-  ```mysql
-  SELECT prod_name
-  FROM Products
-  LIMIT 5;
-  ```
-
-  - 仅显示符合要求的前5行；
-
-  ```mysql
-  LIMIT 5 OFFSET 5;	-- MySQL支持简化版的 LIMIT 语句；
-  LIMIT 3,4;			-- 第一个数字表示起始行，第二个数字表示需要返回的行数；
-  ```
-
-  - `OFFSET`后的数字表示起始行的编号，但检索时不包括该行，而是返回从下一行开始的检索结果；
-    - 换言之，将该关键字后的行视为第0行，检索时仅返回从第1行开始的检索结果；
-
 - 注释：
+  - `-- `：两个连字符，单行注释；
+  - `#`：单行注释；
+  - `/*...*/ `：多行注释；
+
+
+
+## 3.2 数据定义
+
+### 3.2.1 基本类型
+
+- 基本类型：
+  - `char(n)`；固定长度字符串；
+  - `varchar(n)`；可变长度字符串；
+  - `int`；
+  - `smallint`：小整数类型；
+  - `numeric(p,d)`：定点数；
+  - `float(n)`；
+  - `real, double precision`：浮点数与双精度浮点数；
+- 注意：
+  - 两个`char`比较时，将自动追加空格，使得两者便于比较；
+  - `char`和`varchar`比较时，无法自动追加空格补齐长度，建议将两者均设置为`varchar`便于比较；
+
+
+
+### 3.2.2 基本模式定义
+
+```mysql
+... not null;			-- 属性值不得为空；
+insert into r values (...);	-- 向关系r中插入一个记录；
+drop from r;			-- 删除关系r及其模式；
+delete from r;			-- 删除关系r中的所有记录；
+alter table r add A D;	-- 向关系r中添加属性A，该属性的域为D；
+alter table r drop A;	-- 删除关系r中的属性A；
+```
+
+
+
+## 3.3 SQL 查询的基本结构
+
+### 3.3.1 查询和自然连接
+
+- `all`与`distinct`：
+  - `all`：显式指定在结果中保留重复值，可省略；
+  - `distinct`：去重；
+- `select`子句中可使用运算符：$+、-、\times、\div$；
+  - 运算对象：常数、属性；
+- `where`子句中可使用逻辑连词：`and`，`or`，`not`；
+  - `where`缺省，则表示为`true`；
+- 若多个关系中的属性名相同，则使用关系名作为前缀加以区分；
+- 自然连接：natural join；
+  - 连接两个关系中**所有**共有属性值相等的元组，可连接多个关系；
+  - 亦可连接两个关系中**部分**共有属性值相等的元组；
+
+```mysql
+from r1 natural join r2 natural join r3;
+from r1 natural join r2 using A;	-- 连接属性A相等的元组；
+```
+
+- 返回前若干行：其中`OFFSET`后的数字表示起始行的编号，但检索时不包括该行，而是返回从下一行开始的检索结果；
+
+```mysql
+SELECT prod_name
+FROM Products
+LIMIT 5;			-- 返回前5行；
+-- 其它方案
+LIMIT 5 OFFSET 5;	-- MySQL支持简化版的 LIMIT 语句；
+LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回的行数；
+```
+
+
+
+### 3.3.2 附加基本运算
+
+- 重命名：`as`可用于`select`或`from`语句中;
+
+  - 相关名称/相关变量/元组变量：即重命名关系的标识符；
+
+- 字符串运算：
+
+  - SQL 中使用单引号表示字符串；
+  - 若字符串中含有单引号，则使用连续两个单引号表示一个单引号，E.g. `''`；
+  - 模式匹配：使用比较运算符`like`；
+    - 百分号：匹配任意子串；
+    - 下划线：匹配任意一个字符；
+  - 定义转义字符：关键字`escape`；
 
   ```mysql
-  -- 两个连字符，实现行内注释；（多种 DBMS 支持该种形式的注释）
-  #  一个井号，实现行内注释；（一小部分 DBMS 支持该种形式的注释）
-  /* ... 多行注释 ... */ 
+  like 'ab\%' escape '\';		-- 定义反斜杠为转义字符
   ```
+
+
+
+# ==Schedule==
+
+- 仅学习前12章，12月31日前完成 chapter 1-6；
+- 每天10-11页，30天完成334页；
+- 每天整理旧版本笔记1-2章；
+- Page 46，3.5 已完成；
+
+# References
+
+[1] 杨冬靑, 李红燕, 唐世渭. 数据库系统概念[M]. 机械工业出版社, 2013. 
+[2] Forta B, 钟鸣, 刘晓霞. SQL 必知必会[J]. 2013.
+
+
+
+# 旧版本笔记分割线
 
 # 3. 排序检索数据
 
@@ -126,19 +229,12 @@
 |  英文  | 中文 | 释义 |
 | :----: | :--: | :--: |
 | clause | 子句 |  -   |
-|        |      |      |
-|        |      |      |
 
 - 数据排序的具体规则取决于数据库管理员的设置方式；
   - A与a是否相同？
   - a位于B之前亦或是Z之后？
-  - ……
-
-
 
 ## 3.2 排序数据
-
-- 子句：SQL 语句由子句构成；
 
 - `ORDER BY`子句应作为`SELECT`语句中的最后一个子句，否则报错；
 
@@ -148,13 +244,14 @@
   ORDER BY prod_name;    -- 根据列名指定作为排序依据的列；
   ORDER BY 2;            -- 根据相对位置指定作为排序依据的列；
   ```
+
   - 按多个列排序：
-  
+
   ```mysql
   ORDER BY prod_price, prod_name;
   ORDER BY 2,3;          -- 根据相对位置指定作为排序依据的列；
   ```
-  
+
 - 根据相对位置指定作为排序依据的列：
 
   - 优点：无需指定列名；
@@ -168,8 +265,7 @@
 - 升降序排列的关键字：
 
   - 降序：`DESC` 或 `DESCENDING`；
-
-  - 升序：`ASC` 或 `ASCENDING`；
+  - 升序：`ASC` 或 `ASCENDING`，默认值，可省略；
     - 由于`ORDER`默认按升序排列，因此该关键字无太大用处；
 
 - 指定排序方向：
@@ -182,74 +278,62 @@
     ORDER BY prod_price DESC;
     ```
 
-  - 对多列进行降序排列：
+- 对多列进行降序排列：
 
-    ```mysql
+  ```mysql
     ORDER BY prod_price DESC, prod_name;
-    ```
+  ```
 
-    - `DESC`关键字仅作用于该关键字前的一列；
-    - 如需制定多列按降序排列，应为每列加上`DESC`；
-
+  - `DESC`仅作用于该关键字指定的列；
+  - 如需制定多列按降序排列，应为每列加上`DESC`；
 
 
 
 # 4. 过滤数据
 
-## 4.1 术语
+## 4.1  WHERE 子句及操作符
 
-|               英文               |       中文        | 释义 |
-| :------------------------------: | :---------------: | :--: |
-| search criteria/filter condition | 搜索条件/过滤条件 |  -   |
-|                                  |                   |      |
-|                                  |                   |      |
-
-
-
-## 4.2  WHERE 子句及操作符
-
-- NULL不同于空字符串`""`、0、空格；
-  
 - `WHERE`子句的位置：
-  
+
   - 应置于表名（`FROM`子句）之后；
-  
   - 应置于`ORDER`子句之前；
   - `WHERE`子句后接条件操作符；
-  
+
 - 不同DBMS支持不同种类的操作符：
 
   - 具体差异参见相应 DBMS 文档；
-
   - 操作符存在冗余现象；
 
-|   操作符    |             含义             |
-| :---------: | :--------------------------: |
-|     <>      |      不等于（等同于!=）      |
-|     !>      | 不大于（等同于“小于等于”<=） |
-|     !<      | 不小于（等同于“大于等于”>=） |
-|   BETWEEN   |      在指定的两个值之间      |
-|   IS NULL   |           为NULL值           |
-| IS NOT NULL |          不为NULL值          |
+|   操作符    |         含义         |
+| :---------: | :------------------: |
+|     <>      |  不等于（等同于!=）  |
+|     !>      |  不大于（等同于<=）  |
+|     !<      |  不小于（等同于>=）  |
+|   between   |  在指定的两个值之间  |
+| not between | 不在指定的两个值之间 |
+|   IS NULL   |       为null值       |
 
 
 
 ## 4.3 使用操作符
 
-- 若`WHERE`子句中涉及到字符串，则应使用单引号，用于限定字符串；
-
 - `BETWEEN`操作符的使用方法：
 
-    ```mysql
-    WHERE prod_price BETWEEN 5 AND 10;
-    ```
+  ```mysql
+  WHERE prod_price BETWEEN 5 AND 10;
+  
+  ```
 
 - 空值检查：
-    - 注意：不能简单的检查某项是否等于NULL；
-      - 原因：NULL不是一个数，各个NULL被认为不相同；
-    ```mysql
-    WHERE cust_email IS NULL;
-    ```
+
+  - 注意：不能简单的检查某项是否等于NULL；
+    - 原因：NULL不是一个数，各个NULL被认为不相同；
+
+  ```mysql
+  WHERE cust_email IS NULL;
+  
+  
+  ```
 
 # 5. 高级数据过滤
 
@@ -263,6 +347,7 @@
 ## 5.2 多个 WHERE 子句组合使用
 
 - 常见的操作符：
+
   - `AND`、`OR`；
   - `IN`、`NOT`；
 
@@ -270,6 +355,8 @@
 
   ```mysql
   WHERE vend_id = 'DLL01' AND prod_price <= 4;
+  
+  
   ```
 
 - `OR`操作符：很多DBMS若判断`OR`操作符中第一个条件被满足，则不再判断第二个条件；
@@ -282,6 +369,8 @@
 
   ```mysql
   WHERE vend_id IN ('DLL01', 'BRS01');
+  
+  
   ```
 
   - 使用`IN`操作符的理由：
@@ -294,6 +383,8 @@
 
   ```mysql
   WHERE NOT vend_id = 'DLL01';
+  
+  
   ```
 
   - 大多数DBMS允许`NOT`操作符否定任何条件；
@@ -323,6 +414,7 @@
 ## 6.2 通配符的使用方法
 
 - 通配符的使用要求：
+
   - `LIKE`操作符指示 DBMS，后接的搜索模式借助于通配符匹配；
     - 作为谓词使用时，操作符不再被视为操作符；
     - 从技术上分析，`LIKE`是谓词，而非操作符；
@@ -343,6 +435,8 @@
 
       ```mysql
       WHERE prod_name LIKE 'f%y%'
+      
+      
       ```
 
     - Better Solution：使用函数去除空格；
@@ -353,8 +447,9 @@
 
   ```mysql
   WHERE cust_contact LIKE '^[JM]%';   
+  
+  
   ```
-
 
 
 
@@ -368,8 +463,9 @@
 
     ```mysql
     WHERE prod_name LIKE '% inch teddy bear';
+    
+    
     ```
-
 
 
 
@@ -384,7 +480,6 @@
 | derived column | 导出列/别名 |       -        |
 
 - 字段：与“列”的意思基本相同，常互换使用；
-
   - 数据库中的列一般称为“列”；
   - “字段”通常与“计算”一起使用，“计算字段”；
 
@@ -413,6 +508,8 @@
 
   ```mysql
   SELECT CONCAT(vend_name, ' (', vend_country, ')')
+  
+  
   ```
 
 
@@ -425,6 +522,8 @@
 
   ```mysql
   SELECT quantiyt*item_price AS expended_price
+  
+  
   ```
 
   - SQL 支持的基本算术运算包括：`+`、`-`、`*`、`/`；
@@ -432,7 +531,6 @@
 - 别名的用途：
 
   - 为计算字段命名，便于客户端引用；
-
   - 当现有的表列名包含不合法字符（E.g. 空格）或易混淆时，可予以修正；
 
 - 别名的命名原则：
@@ -446,6 +544,8 @@
   ```mysql
   SELECT 2*3			-- 计算表达式 2*3；
   SELECT NOW()		-- 返回当前时间和日期；
+  
+  
   ```
 
   
@@ -474,11 +574,7 @@
   SUBSTRING();		-- 提取字符串的组成部分；
   CONVERT();			-- 数据类型转换；
   
-  NOW();				-- 返回语句开始执行的时间和日期；
-  SYSDATE();			-- 返回执行该语句时的时间和日期；
   CURDATE();			-- 取当前日期；
-  CURDATE();			-- 取当前日期；
-  CURTIME();			-- 取当前时间；
   YEAR();				-- 从日期中提取年份；
   
   LENGTH();			-- 返回字符串的长度；
@@ -489,6 +585,8 @@
   
   LOWER();			-- 将字符串转换为小写；
   UPPER();			-- 将字符串转换为大写；
+  
+  
   ```
 
   - 关于 `SOUNDEX()` 函数：将文本串转换为其语音表示的字母数字模式；
@@ -497,6 +595,8 @@
 
     ```mysql
     WHERE SOUNDEX(cust_contact) = SOUNDEX('Michael Green');
+    
+    
     ```
 
 - 数值处理函数：
@@ -511,8 +611,9 @@
   SIN();				-- 返回一个角度的正弦值；
   COS();				-- 返回一个角度的余弦值；
   TAN();				-- 返回一个角度的正切；
+  
+  
   ```
-
 
 
 
@@ -529,7 +630,9 @@
 ## 9.2 5个聚集函数
 
 - 各 DBMS 对聚集函数的支持基本一致；
+
 - SQL 聚集函数：
+
   - `MAX()`；
   - `MIN()`；
   - `SUM()`；
@@ -555,7 +658,6 @@
 
   - 忽略值为 NULL 的行；
   - 必须指定列名作为参数；
-
   - 只能用于单个列，若要获得多个列的均值，则需使用多个`AVG()`；
 
 - `COUNT()`：
@@ -565,6 +667,8 @@
   -- 以星号为参数，返回该列所有行的数量；
   SELECT COUNT(cust_email) AS num_cust  
   -- 以列名为参数，返回该列所有非空值的行的数量；
+  
+  
   ```
 
 - `DISTINCT`参数对不同的值进行计算，`ALL`为默认参数，无需指定；
@@ -579,6 +683,8 @@
     SUM(DISTINCT column_name)   -- 返回该列中所有不同值之和
     AVG(DISTINCT column_name)   -- 返回该列中所有不同值的均值
     COUNT(DISTINCT column_name) -- 返回该列中所有不同值的行数
+    
+    
     ```
 
     
@@ -593,6 +699,8 @@
   SELECT vend_id, COUNT(*) AS num_prods
   FROM Products
   GROUP BY vend_id;
+  
+  
   ```
 
   - `GROUP BY`子句按某列分组数据，故`COUNT(*)`表示对各个分组分别计数；
@@ -613,14 +721,11 @@
 
     
 
-
 ## 10.2 过滤分组
 
 - `HAVING`与`WHERE`的区别：
-
   - `WHERE`过滤行；
     - 另一种理解：`WHERE`在数据分组前过滤；
-
   - `HAVING`过滤分组；
     - 另一种理解：`HAVING`在数据分组后过滤；
   - 两者可在同一语句中使用；
@@ -705,6 +810,8 @@
     
     -- 联结多个表，联结条件用AND连接；
     WHERE ... AND ...;							
+    
+    
     ```
 
   - 标准语法：
@@ -716,8 +823,9 @@
     SELECT vend_name, prod_name, prod_price
     FROM Vendors INNER JOIN Products
     ON Vendors.vend_id = Products_vend_id;
+    
+    
     ```
-
 
 # 13. 创建高级联结
 
@@ -751,13 +859,13 @@
 - 自联结：将一个表与其自身进行联结；
 
   - 自联结通常作为外部语句，相较于子查询语句，处理速度更快；
-
   - 因此自联结常用语替代从相同表中检索数据的子查询语句；
-
   - 实现方法：为同一个表取两个不同的别名；
 
   ```mysql
   WHERE Customers AS c1, Customers AS c2
+  
+  
   ```
 
     
@@ -768,6 +876,8 @@
 
   ```mysql
   SELECT C.*, O.order_num, OI.prod_id
+  
+  
   ```
 
 - 外联结：返回所有关联的行，以及部分没有关联的行；
@@ -781,6 +891,8 @@
   
   FROM ... RIGHT OUTER JOIN ... ON ...
   -- 返回所有关联的行，以及右侧表中未被关联的行；
+  
+  
   ```
 
 - 使用联结的原则;
@@ -789,31 +901,30 @@
 
 
 
-# 14. 组合查询
+# 14. 集合运算
 
-## 14.1 术语
+## 14.1 定义
 
-|         英文         |    中文     | 释义 |
-| :------------------: | :---------: | :--: |
-| union/compound query | 并/复合查询 |  -   |
+- 集合运算：将多个`SELECT`语句的返回结果执行集合运算后输出；
+  - 并运算：`union`；
+  - 交运算：`intersect`；
+  - 并运算：`except`；
 
+## 14.2 集合运算
 
-
-## 14.2 使用组合查询
-
-- 创建组合查询：
-
-  - 使用关键词`UNION`将多个`SELECT`语句的返回结果作为并集输出；
-  - `UNION`默认将重复的行只返回一次，`UNION ALL`将返回所有的重复行；
-
+- 并运算：
+  - `union`：对重复行，只返回一次；
+  - `union all`：返回所有重复行；
+- 交运算：
+  - `intersect`；
+  - `intersect all`；
+- 并运算：
+  - `except`；
+  - `except all`：当前者的重复元素数量大于后者时，才会出现在结果中；
 - 组合查询的使用原则：
-
   - 仅在最后一个`SELECT`语句后加分号；
-
   - 各查询必须包含相同的列、表达式、聚集函数（不必以相同的次序列出）；
-
   - 各列的数据类型必须兼容，即是 DBMS 可以隐含转换的类型；
-
   - `ORDER BY`子句仅在最后一条`SELECT`语句中出现一次；
 
 
@@ -843,6 +954,8 @@
   
   INSERT INTO Customers				-- 不指定列名的填充；
   VALUES('1000000006', 'Toy Land');
+  
+  
   ```
 
 
@@ -877,164 +990,3 @@ CREATE TABLE Customers AS
 SELECT *
 FROM Customers;
 ```
-
-  
-
-# 16. 更新和删除数据
-
-## 16.1 更新数据
-
-```sql
-UPDATE Customers					-- 指定待更新的表名；
-SET cust_contact = 'Sam Roberts'	-- 待更新的项用逗号分隔；
-	cust_email = 'Sam@toyland.com'
-WHERE cust_id = '1000000006';		-- 筛选待更新的行；
-```
-
-
-
-## 16.2 删除数据
-
-- 使用外键的优点：确保引用完整性；
-
-  - 避免删除某个与其他表相关联的行；
-
-- 删除数据：
-
-  - 删除某项：使用`UPDATE`将该项的值更新为`NULL`；
-
-  - 删除整行：使用`DELETE`；
-
-  ```SQL
-  DELETE FROM Customers
-  WHERE cust_id = '1000000006';
-  ```
-
-  - 删除所有行，但不删除表：
-
-    - `DELETE`；
-
-    - 更好的方法：`TRUNCATE TABLE`；
-
-      - truncate，vt. 截断，舍位；
-
-      - 因为不记录数据的表动，因此速度更快；
-
-
-
-# 17. 创建、操纵表
-
-## 17.1 创建表
-
-```sql
-CREATE TABLE Products
-(
-    prod_id 	CHAR(10) 		NOT NULL,
-    quantity	INTEGER			NOT NULL		DEFAULT 1,
-    prod_desc	TEXT(1000)		NULL
-);
-```
-
-- 创建表的注意事项：
-  - 创建表时，`NULL`为默认设置，无需额外声明；
-  - 允许`NULL`的列不能作为主键；
-  - 使用`DEFAULT`指定默认值；
-
-
-
-## 17.2 更新、删除表
-
-```sql
-ALTER TABLE Vendors			-- 增加一列；
-ADD vend_hone CHAR(20);
-
-ALTER TABLE Vendors			-- 删除一列；
-DROP COLUMN vend_phone;
-
-DROP TABLE CustCopy;		-- 删除表；
-```
-
-
-
-# 18. 使用视图
-
-## 18.1 视图的概念
-
-- 视图自身不包含数据，仅包含查询语句；
-- 视图命名不得与表名或其它视图相同；
-
-- 覆盖或更新视图：先删除，后创建；
-
-```sql
-CREATE VIEW
-DROP VIEW viewname;
-
-CREATE VIEW ProductCustomers AS
-SELECT ...
-FROM ...
-WHERE ... AND ...;
-```
-
-## 18.2 简化复杂 SQL 语句
-
-- 使用视图，隐藏复杂的联结语句：
-
-```sql
-SELECT cust_name, cust_contact
-FROM ProductCustomers			-- 此为视图名；
-WHERE prod_id = 'RGAN01';
-```
-
-
-
-# 19. 使用存储过程(==本章内容不可靠，未完善==)
-
-- 什么是存储过程：
-
-
-
-## 19.2 执行存储过程
-
-```sql
-CALL productpricing(@pricelow, @pricehigh, @priceaverage);
-```
-
-- 存储过程可显示结果，也可不显示结果；
-
-
-
-## 19.3 创建存储过程
-
-```sql
-CREATE PROCEDURE productpricing()
-BEGIN
-	-- SQL 语句；
-END;
-```
-
-## 19.4 删除存储过程
-
-```sql
-DROP PROCEDURE productpricing;
-
-```
-
-
-
-
-
-
-# ==Schedule==
-
-- 每周一课，应于07月26日完成；
-- 后续课程：数据库理论知识；
-  - 购置配套教材一册；
-    - 数据库系统概念(原书第6版.本科教学版)；
-  - 配套实验教材或进阶SQL教材一册；
-  - 每日一小时，补充数据库基础知识；
-
-
-
-# References
-
-[1] Ben Forta. SQL 必知必会[M]. 钟鸣, 刘晓霞 等译. 北京: 人民邮电出版社, 2013. ︎
