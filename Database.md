@@ -104,6 +104,8 @@
 
 ## 3.1 定义和语言特点
 
+### 3.1.1 定义和语言特点
+
 - DDL 和 DML;
   - DDL：Data-Defination Language，数据定义语言；
   - DML：Data-Manipulation Language，数据操纵语言；
@@ -120,18 +122,43 @@
 
 
 
+### 3.1.2 DDL
+
+- `SHOW DATABASES`：查看所有数据库；
+- `USE databasename`：选择待操作的数据库；
+- `CREATE DATABASE test`：创建数据库；
+  - `CREATE DATABASE IF NOT EXISTS test`；
+- `DROP DATABASE TEST`：删除数据库；
+  - `DROP DATABASE IF EXISTS TEST`；
+
+
+
 ## 3.2 数据定义
 
 ### 3.2.1 基本类型
 
 - 基本类型：
-  - `char(n)`；固定长度字符串；
-  - `varchar(n)`；可变长度字符串；
+  - `char(n)`；固定长度字符串，2字节，$n<255$；
+  - `decimal`：无精度缺失问题，适用于对数值敏感的金融数据；
+  - `float(n)`；
+  - `double(p,d)`：双精度浮点数；
+  - `numeric(p,d)`：定点数；
   - `int`；
   - `smallint`：小整数类型；
-  - `numeric(p,d)`：定点数；
-  - `float(n)`；
-  - `real, double precision`：浮点数与双精度浮点数；
+  - `varchar(n)`；可变长度字符串，4字节，需要额外的空间记录长度,$n<65535$；
+  - `text(clob)`：字符串类型；
+    - tinytext；
+    - text；
+    - mediumtext；
+    - longtext；
+  - `blob`：字节类型；
+    - tinyblob；
+    - blob；
+    - mediumblob；
+    - longblob；
+  - `date`：日期，yyyy-mm-dd；
+  - `time`：时间，hh:mm:ss；
+  - `timestamp`：时间戳类型；
 - 注意：
   - 两个`char`比较时，将自动追加空格，使得两者便于比较；
   - `char`和`varchar`比较时，无法自动追加空格补齐长度，建议将两者均设置为`varchar`便于比较；
@@ -174,6 +201,7 @@ from r1 natural join r2 using A;	-- 连接属性A相等的元组；
 
 - 返回前若干行：其中`OFFSET`后的数字表示起始行的编号，但检索时不包括该行，而是返回从下一行开始的检索结果；
 
+
 ```mysql
 SELECT prod_name
 FROM Products
@@ -203,6 +231,75 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   ```mysql
   like 'ab\%' escape '\';		-- 定义反斜杠为转义字符
   ```
+
+
+
+### 3.3.3 空值
+
+- 涉及空值的运算：
+  - 算术运算：结果为空；
+  - 比较运算：结果为`unknown`；
+  - 布尔运算：`and`、`or`、`not`，对于短路逻辑无法求出结果的值，作为`unknown`；
+  - `where`子句不会将`unknown`对应的子句加入到返回结果中；
+  - `select`子句、谓词处理空值的差异：
+    - `select distinct`：若两个元组各个属性值均相等，即被视为相同元组，即使其中部分值为空；
+    - 谓词中`null=null`将返回`unknown`，`null`不是一个数，各个`null`被认为不相同；
+- 检测`null`和`unknown`：
+  - `is null`；
+  - `is not null`；
+  - `is unknown`；
+  - `is not unknown`；
+
+
+
+### 3.3.4 聚集函数和分组聚集
+
+- 聚集函数：聚集函数忽略输入中的空值，若所有输入值均为空，则返回`null`；
+  - `min`：适用于数值和非数值类型数据，E.g. 字符串 ；
+  - `max`：适用于数值和非数值类型数据；
+  - `count`：适用于数值和非数值类型数据；
+    - 不允许在`count(*)`中使用`distinct`，即使用`*`统计元组数量时不得去重；
+  - `sum`：仅适用于数值；
+  - `avg`：仅适用于数值；
+- `group by`的使用要求：
+  - 可包含任意数目的列，实现嵌套分组；
+  - 后接的每一列必须是检索列或有效的表达式，而不能是聚集函数；
+
+    - 若在`SELECT`中使用表达式，则必须在`group by`子句中指定相同的表达式，不能使用别名；
+  - 大多数 DBMS 不允许该子句后接长度可变的数据类型，E.g. 文本、备注型字段；
+  - 除聚集函数中的属性之外，`SELECT`语句中的其它属性必须均在`GROUP BY`中给出；
+  - 该子句将待分组列中值为`null`的所有行视为一组；
+- 任意出现在`having`子句中，且未被聚集的属性，必须出现在`group by`中；
+- `where`与`having`的区别：
+  - where过滤行：在数据分组前过滤；
+  - `having`：在数据分组后过滤；
+
+
+
+### 3.3.5 嵌套子查询
+
+- 嵌套子查询可用于`from`或`where`子句中；
+- 集合成员资格查询：使用`in`、`not in`连接词；
+  - 连接两个`select-from-where`子句；
+  - 用于枚举集合；
+- 集合的比较：
+  - `all`：表示集合中所有元素；
+  - `some`：表示某一个元素；
+  - 特例：
+    - `=all`：等于集合中的任意值，不同于`in`；
+    - `<>all`：不等于集合中的任意值，等价于`not in`；
+    - `<> some`：部分不相等，不同于`not in`；
+    - `=some`：等于集合中的某一个值，等价于`in`；
+- 空关系测试：
+  - `exists`：不为空时返回`true`；
+  - 相关子查询：内层`select-from-where`语句中使用了外层查询的相关名称；
+  - 相关子查询的作用域：
+    - 类似于编程语言中变量的作用于规则；
+    - 子查询的属性可被外查询使用；
+- 重复元组存在性测试：
+  - `unique`：无重复元组时返回`true`；
+  - `not unique`；
+  - 注意：若两个元组中某个属性为空，`unique`视为不相等；
 
 
 
@@ -324,16 +421,8 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   
   ```
 
-- 空值检查：
-
-  - 注意：不能简单的检查某项是否等于NULL；
-    - 原因：NULL不是一个数，各个NULL被认为不相同；
-
-  ```mysql
-  WHERE cust_email IS NULL;
   
-  
-  ```
+
 
 # 5. 高级数据过滤
 
@@ -350,14 +439,6 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 
   - `AND`、`OR`；
   - `IN`、`NOT`；
-
-- `AND`操作符的用法：
-
-  ```mysql
-  WHERE vend_id = 'DLL01' AND prod_price <= 4;
-  
-  
-  ```
 
 - `OR`操作符：很多DBMS若判断`OR`操作符中第一个条件被满足，则不再判断第二个条件；
 
@@ -691,45 +772,6 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 
 # 10. 分组数据
 
-## 10.1 创建分组
-
-- 创建分组：将数据分为多个逻辑组，分别进行聚集计算；
-
-  ```mysql
-  SELECT vend_id, COUNT(*) AS num_prods
-  FROM Products
-  GROUP BY vend_id;
-  
-  
-  ```
-
-  - `GROUP BY`子句按某列分组数据，故`COUNT(*)`表示对各个分组分别计数；
-
-- `GROUP BY`的使用要求：
-
-  - 该子句可包含任意数目的列，实现嵌套分组；
-
-  - 该子句后接的每一列必须是检索列或有效的表达式，而不能是聚集函数；
-
-    - 若在`SELECT`中使用表达式，则必须在`GROUP BY`子句中指定相同的表达式，不能使用别名；
-
-  - 大多数 DBMS 不允许该子句后接长度可变的数据类型，E.g. 文本、备注型字段；
-
-  - 除聚集计算语句之外，`SELECT`语句中的每列必须均在`GROUP BY`中给出；
-
-  - 该子句将待分组列中值为 NULL 的所有行视为一组；
-
-    
-
-## 10.2 过滤分组
-
-- `HAVING`与`WHERE`的区别：
-  - `WHERE`过滤行；
-    - 另一种理解：`WHERE`在数据分组前过滤；
-  - `HAVING`过滤分组；
-    - 另一种理解：`HAVING`在数据分组后过滤；
-  - 两者可在同一语句中使用；
-
 ## 10.3 SELECT 子句顺序
 
  
@@ -990,3 +1032,5 @@ CREATE TABLE Customers AS
 SELECT *
 FROM Customers;
 ```
+
+  
