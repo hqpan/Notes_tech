@@ -85,11 +85,6 @@
 - row / record: 行 / 记录；
 - tuple：元组，数学上指一组值的序列，数据库中用于指代行；
 - n-tuple：n 元组，有 n 个值的元组，对应于表中的一行；
-
-
-
-## 2.2 码
-
 - foreign key: 外码，即外键，父数据表的主键；
 - primary key: 主码，即主键；
   - 主键值不能为空，不能修改、重用，若某行从表中删除，则它的主键不能赋给以后的新行；
@@ -100,10 +95,36 @@
 
 
 
-# 3. SQL
+## 2.2 MySQL 编码问题
 
+- 数据库编码参数的含义：
+  - `character_set_client`：数据库将客户端传来的数据以该种编码加以解读；
+  - `character_set_results`：数据库将数据以该种编码发送给客户端；
+- 使用`SET`语句修改数据库编码参数，仅在当前窗口内有效，重新打开该窗口将失效；
+- 在总配置文件`my.ini`中可修改数据库默认编码参数；
+
+```mysql
+SHOW VARIABLES LIKE 'char%';	-- 查看数据库编码
+SET character_set_client = 'utf8'；
+```
+
+
+
+## 2.3 备份与恢复
+
+- 备份：`mysqldump -u用户名 -p密码 数据库名>生成的脚本文件路径`；
+  - 在命令行窗口中运行，不必进入数据库；
+  - 脚本文件中不含`CREATE database`；
+- 恢复：
+  - `mysql -u用户名 -p密码 数据库名<脚本文件路径`；
+    - 在命令行窗口中运行，不必进入数据库；
+    - 在执行该语句前，应先创建数据库`CREATE database`；
+  - `source 脚本文件路径`：进入数据库后，创建数据库`CREATE database`，然后执行该语句；
+
+
+
+# 3. 初级 SQL
 ## 3.1 定义和语言特点
-
 ### 3.1.1 定义和语言特点
 
 - DDL 和 DML;
@@ -124,12 +145,163 @@
 
 ### 3.1.2 DDL
 
-- `SHOW DATABASES`：查看所有数据库；
-- `USE databasename`：选择待操作的数据库；
-- `CREATE DATABASE test`：创建数据库；
-  - `CREATE DATABASE IF NOT EXISTS test`；
-- `DROP DATABASE TEST`：删除数据库；
-  - `DROP DATABASE IF EXISTS TEST`；
+#### 3.1.2.1 数据库和表的创建修改
+
+- 查看：
+  - `SHOW DATABASES`：查看所有数据库名单；
+  - `SHOW TABLES`：查看所有表名；
+  - `DESC tableName`：查看表的详细信息，description；
+- `USE databaseName`：选择待操作的数据库；
+- 创建：
+  - 创建数据库：
+    - `CREATE DATABASE test`；
+    - `CREATE DATABASE IF NOT EXISTS test`；
+  - 创建表：
+```mysql
+-- CREATE TABLE tableName
+CREATE TABLE IF NOT EXISTS tableName (
+columnName type,
+...
+);
+```
+
+- 删除：
+  - 删除数据库：
+    - `DROP DATABASE databaseName`；
+    - `DROP DATABASE IF EXISTS databaseName`；
+  - 删除表：`DROP TABLE tableName`；
+- 修改：
+
+```mysql
+-- 添加列
+ALTER TABLE tableName ADD (
+columnName type,
+...
+);
+-- 修改列类型
+ALTER TABLE tableName MODIFY columnName newType;
+-- 修改列名和列类型
+ALTER TABLE tableName CHANGE columnName NewColumnName newType;
+-- 删除列
+ALTER TABLE tableName DROP columnName;
+-- 修改表名
+ALTER TABLE tableName RENAME TO newTableName; 
+```
+
+- 设置主键：
+  - 创建表时，在变量类型后加关键字`PRIMARY KEY`；
+  - 添加主键，`ALTER TABLE tableName ADD PRIMARY KEY(columnName)`；
+  - 删除主键：`ALTER TABLE tableName DROP PRIMARY KEY`；
+- 设置主键自增长：应对整数类型使用自增长；
+  - 创建表时，在`PRIMARY KEY`关键字后加`AUTO_INCREMENT`；	
+- 非空约束：创建表时，在变量类型后加关键字`NOT NULL`；
+- 唯一约束：创建表时，在变量类型后加关键字`UNIQUE`；
+
+
+
+#### 3.1.2.2 插入
+
+```mysql
+INSERT INTO tableName (
+	columnName1, columnNaem2, ...
+) VALUES (
+	...
+);
+-- 不指出列名
+INSERT INTO tableName VALUES (
+	...
+);
+```
+
+
+
+#### 3.1.2.3 更新和删除
+
+```mysql
+UPDATE tableName SET
+	columnName1 = value1,
+    columnName2 = value2,
+    ...
+WHERE ...;
+
+DELETE FROM tableName
+WHERE ...;
+```
+
+
+
+#### 3.1.2.4 添加外键
+
+```mysql
+-- 创建表时添加外键
+CONSTRAINT foreignKeyName
+FOREIGN KEY (columnName) REFERENCES tableName(primaryKeyName);
+-- 修改表时添加外键约束
+ALTER TABLE tableName ADD CONSTRAINT foreignKeyName
+FOREIGN KEY (columnName) REFERENCES tableName(primaryKeyName);
+-- 删除外键
+ALTER TABLE tableName DROP FOREIGN KEY foreignKeyName;
+```
+
+- 一对一关系：一个表的主键同时也是外键；
+- 多对多关系：创建中间表（关联表），即需要三张表，关联表使用两个外键分别引用另两张表的主键；
+
+
+
+### 3.1.3 DCL
+
+- DCL：数据控制语言；
+- 一个项目创建一个数据库用户权限，一个项目只对应一个数据库；
+
+```mysql
+-- 创建用户，使用百分号表示任意IP均可访问数据库
+CREATE USER userName@'IPAddress' IDENTIFIED BY 'Password';
+CREATE USER userName@'%' IDENTIFIED BY 'Password';
+-- 给用户授权，E.g. ALTER, CREATE, DROP, ...
+-- databaseName.tableName
+GRANT authority1, authority2, ... ON databaseName.* TO userName@IPAddress;
+GRANT ALL ON databaseName.* TO userName@IPAddress;
+-- 撤销授权
+REVOKE authority1, authority2, ... ON databaseName.* FROM userName@IPAddress;
+-- 查看权限
+SHOW GRANTS FOR userName@IPAddress;
+-- 删除用户
+DROP USER userName@IPAddress;
+```
+
+
+
+### 3.1.4 操作符
+
+- 操作符存在功能冗余；
+
+|   操作符    |         含义         |
+| :---------: | :------------------: |
+|     <>      |  不等于（等同于!=）  |
+|     !>      |  不大于（等同于<=）  |
+|     !<      |  不小于（等同于>=）  |
+|   BETWEEN   |  在指定的两个值之间  |
+|     MOD     |         取余         |
+| NOT BETWEEN | 不在指定的两个值之间 |
+|   IS NULL   |       为NULL值       |
+
+- 示例：
+
+```mysql
+WHERE prod_price BETWEEN 5 AND 10;
+WHERE ID MOD 2 = 1;
+WHERE MOD(ID, 2) = 1;
+```
+
+
+
+### 3.1.5 函数
+
+- `CONCAT(str1, str2, ...)`：连接多个字符串；
+- `ifnull(expression1, expression2)`:
+  - 若表达式1不为空，则返回该表达式；
+  - 否则返回表达式2；
+- `DATEDIFF(date1, date2)`：返回两个日期相差的天数；
 
 
 
@@ -162,6 +334,7 @@
 - 注意：
   - 两个`char`比较时，将自动追加空格，使得两者便于比较；
   - `char`和`varchar`比较时，无法自动追加空格补齐长度，建议将两者均设置为`varchar`便于比较；
+  - 字符串使用单引号括起；
 
 
 
@@ -169,9 +342,6 @@
 
 ```mysql
 ... not null;			-- 属性值不得为空；
-insert into r values (...);	-- 向关系r中插入一个记录；
-drop from r;			-- 删除关系r及其模式；
-delete from r;			-- 删除关系r中的所有记录；
 alter table r add A D;	-- 向关系r中添加属性A，该属性的域为D；
 alter table r drop A;	-- 删除关系r中的属性A；
 ```
@@ -187,43 +357,36 @@ alter table r drop A;	-- 删除关系r中的属性A；
   - `distinct`：去重；
 - `select`子句中可使用运算符：$+、-、\times、\div$；
   - 运算对象：常数、属性；
+  - 与空值相加结果为空；
+  - 若运算对象不为数值，则视为0参与计算；
 - `where`子句中可使用逻辑连词：`and`，`or`，`not`；
   - `where`缺省，则表示为`true`；
 - 若多个关系中的属性名相同，则使用关系名作为前缀加以区分；
-- 自然连接：natural join；
-  - 连接两个关系中**所有**共有属性值相等的元组，可连接多个关系；
-  - 亦可连接两个关系中**部分**共有属性值相等的元组；
-
-```mysql
-from r1 natural join r2 natural join r3;
-from r1 natural join r2 using A;	-- 连接属性A相等的元组；
-```
-
 - 返回前若干行：其中`OFFSET`后的数字表示起始行的编号，但检索时不包括该行，而是返回从下一行开始的检索结果；
-
 
 ```mysql
 SELECT prod_name
 FROM Products
 LIMIT 5;			-- 返回前5行；
 -- 其它方案
-LIMIT 5 OFFSET 5;	-- MySQL支持简化版的 LIMIT 语句；
-LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回的行数；
+LIMIT 4 OFFSET 3;	-- MySQL支持简化版的 LIMIT 语句；
+LIMIT 3,4;			-- 从第3行开始，但不包括该行，共计返回4行；
 ```
 
 
 
 ### 3.3.2 附加基本运算
 
-- 重命名：`as`可用于`select`或`from`语句中;
+- 重命名：`as`用于`select`或`from`语句中，可省略;
 
-  - 相关名称/相关变量/元组变量：即重命名关系的标识符；
+  - 相关名称/相关变量/元组变量：将关系重命名的标识符；
+  - 临时表必须命名；
 
 - 字符串运算：
 
   - SQL 中使用单引号表示字符串；
   - 若字符串中含有单引号，则使用连续两个单引号表示一个单引号，E.g. `''`；
-  - 模式匹配：使用比较运算符`like`；
+  - 模糊查询：不使用等号，使用比较运算符`like`；
     - 百分号：匹配任意子串；
     - 下划线：匹配任意一个字符；
   - 定义转义字符：关键字`escape`；
@@ -269,10 +432,12 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   - 大多数 DBMS 不允许该子句后接长度可变的数据类型，E.g. 文本、备注型字段；
   - 除聚集函数中的属性之外，`SELECT`语句中的其它属性必须均在`GROUP BY`中给出；
   - 该子句将待分组列中值为`null`的所有行视为一组；
-- 任意出现在`having`子句中，且未被聚集的属性，必须出现在`group by`中；
+- `having`子句：
+  - 用于筛选`group by`产生的分组；
+  - 任意出现在`having`子句中，且未被聚集的属性，必须出现在`group by`中；
 - `where`与`having`的区别：
-  - where过滤行：在数据分组前过滤；
-  - `having`：在数据分组后过滤；
+  - where过滤行：在数据分组前过滤，无法和聚集函数一起使用；
+  - `having`：在数据分组后过滤，可以和聚集函数一起使用；
 
 
 
@@ -280,11 +445,9 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 
 - 嵌套子查询可用于`from`或`where`子句中；
 - 集合成员资格查询：使用`in`、`not in`连接词；
-  - 连接两个`select-from-where`子句；
-  - 用于枚举集合；
 - 集合的比较：
   - `all`：表示集合中所有元素；
-  - `some`：表示某一个元素；
+  - `some`：等价于`any`，表示某一个元素；
   - 特例：
     - `=all`：等于集合中的任意值，不同于`in`；
     - `<>all`：不等于集合中的任意值，等价于`not in`；
@@ -300,6 +463,83 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   - `unique`：无重复元组时返回`true`；
   - `not unique`；
   - 注意：若两个元组中某个属性为空，`unique`视为不相等；
+- `with`子句：定义临时关系，该关系仅在包含该子句的查询中有效；
+- 标量子查询：返回包含单个属性的单个元组；
+
+
+
+## 3.4 修改数据库
+
+- 删除：
+
+```mysql
+DROP FROM r;			-- 删除关系r及其模式
+DELETE FROM r;			-- 仅删除关系r中的所有记录
+```
+
+- 插入：
+
+```mysql
+INSERT INTO r VALUES (...);	-- 向关系r中插入一个记录
+INSERT INTO r (a1, a2, ...) VALUES (...);	-- 插入时指定属性名
+```
+
+- 更新：
+
+```mysql
+UPDATE r SET a1 = ...;	-- 更改关系r中的属性值
+```
+
+- `CASE`语句：
+
+```mysql
+CASE
+	WHEN pred1 THEN result1
+	WHEN pred2 THEN result2
+	ELSE result0
+END
+```
+
+
+
+# 4. 中级 SQL
+
+## 4.1 连接表达式
+
+- 连接类型：
+  - 内连接：
+    - 使用`WHERE`子句；
+    - `INNER JOIN ... ON ...`，可简写为`INNER`，不保留未匹配的元组；
+    - 自然连接；
+  - 外连接：保留未匹配的元组；
+    - 左外连接：`NATURAL LEFT OUTER JOIN`；
+    - 右外连接：`NATURAL RIGHT OUTER JOIN`；
+    - 全外连接：`NATURAL FULL OUTER JOIN`，MySQL 不支持，可使用左外连接和右外连接求并集替代；
+- 连接条件：
+  - `NATURAL`：连接共有属性**全部**相同的元组，共有属性在结果中仅出现一次；
+  - `USING`：指定需要匹配的元组；
+  - `ON`：与外连接一起使用时，将保留多个共有属性的结果；
+
+```mysql
+FROM r1 JOIN r2 USING A;	-- 连接属性A相等的元组；
+FROM student LEFT OUTER JOIN takes ON student.ID = takes.ID; 
+```
+
+
+
+## 4.2 视图
+
+- 视图：view，数据库系统存储查询表达式，但不存储结果；
+
+```mysql
+CREATE VIEW viewname AS
+...;						-- 此处为查询表达式
+CREATE VIEW viewname(a1, a2, ...) AS
+...;						-- 显示指定视图名和属性名
+```
+
+- 物化视图：materialized view，数据库系统存储结果；
+- 视图维护/物化视图维护：更新物化视图；
 
 
 
@@ -308,7 +548,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 - 仅学习前12章，12月31日前完成 chapter 1-6；
 - 每天10-11页，30天完成334页；
 - 每天整理旧版本笔记1-2章；
-- Page 46，3.5 已完成；
+- Page 72，4.2 已完成；
 
 # References
 
@@ -319,109 +559,30 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 
 # 旧版本笔记分割线
 
-# 3. 排序检索数据
+# 3. 排序==已整理==
 
-## 3.1 术语
+- `ORDER BY`：指定列名排序、使用相对列位置排序，两种方法可混用；
 
-|  英文  | 中文 | 释义 |
-| :----: | :--: | :--: |
-| clause | 子句 |  -   |
-
-- 数据排序的具体规则取决于数据库管理员的设置方式；
-  - A与a是否相同？
-  - a位于B之前亦或是Z之后？
-
-## 3.2 排序数据
-
-- `ORDER BY`子句应作为`SELECT`语句中的最后一个子句，否则报错；
-
-  - 按单列排序：
-
-  ```mysql
-  ORDER BY prod_name;    -- 根据列名指定作为排序依据的列；
-  ORDER BY 2;            -- 根据相对位置指定作为排序依据的列；
-  ```
-
-  - 按多个列排序：
-
-  ```mysql
-  ORDER BY prod_price, prod_name;
-  ORDER BY 2,3;          -- 根据相对位置指定作为排序依据的列；
-  ```
-
-- 根据相对位置指定作为排序依据的列：
-
-  - 优点：无需指定列名；
-  - 缺点：不明确指定列名，容易引发排序错误；
-  - 指定列名、使用相对列位置，两种方法可混用；
-
-
-
-## 3.3 指定排序方向
-
-- 升降序排列的关键字：
-
-  - 降序：`DESC` 或 `DESCENDING`；
-  - 升序：`ASC` 或 `ASCENDING`，默认值，可省略；
-    - 由于`ORDER`默认按升序排列，因此该关键字无太大用处；
+```mysql
+-- 按单列排序
+ORDER BY prod_name;    -- 根据列名排序
+ORDER BY 2;            -- 根据相对位置排序
+-- 按多列排序
+ORDER BY prod_price, prod_name;
+ORDER BY 2,3;          -- 按多个列排序
+```
 
 - 指定排序方向：
 
-  - 升序排列：`ORDER`子句默认按升序排序；
+  - 升序：`ASC`，默认值，可缺省；
+  - 降序：`DESC`，在指定列后使用关键词`DESC`；
 
-  - 降序排列：在指定列后使用关键词`DESC`；
-
-    ```mysql
-    ORDER BY prod_price DESC;
-    ```
-
-- 对多列进行降序排列：
-
-  ```mysql
-    ORDER BY prod_price DESC, prod_name;
-  ```
-
-  - `DESC`仅作用于该关键字指定的列；
-  - 如需制定多列按降序排列，应为每列加上`DESC`；
+```mysql
+ORDER BY prod_price DESC;
+ORDER BY prod_price DESC, prod_name DESC; -- 对多列降序排列
+```
 
 
-
-# 4. 过滤数据
-
-## 4.1  WHERE 子句及操作符
-
-- `WHERE`子句的位置：
-
-  - 应置于表名（`FROM`子句）之后；
-  - 应置于`ORDER`子句之前；
-  - `WHERE`子句后接条件操作符；
-
-- 不同DBMS支持不同种类的操作符：
-
-  - 具体差异参见相应 DBMS 文档；
-  - 操作符存在冗余现象；
-
-|   操作符    |         含义         |
-| :---------: | :------------------: |
-|     <>      |  不等于（等同于!=）  |
-|     !>      |  不大于（等同于<=）  |
-|     !<      |  不小于（等同于>=）  |
-|   between   |  在指定的两个值之间  |
-| not between | 不在指定的两个值之间 |
-|   IS NULL   |       为null值       |
-
-
-
-## 4.3 使用操作符
-
-- `BETWEEN`操作符的使用方法：
-
-  ```mysql
-  WHERE prod_price BETWEEN 5 AND 10;
-  
-  ```
-
-  
 
 
 # 5. 高级数据过滤
@@ -452,6 +613,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   WHERE vend_id IN ('DLL01', 'BRS01');
   
   
+  
   ```
 
   - 使用`IN`操作符的理由：
@@ -464,6 +626,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 
   ```mysql
   WHERE NOT vend_id = 'DLL01';
+  
   
   
   ```
@@ -518,6 +681,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
       WHERE prod_name LIKE 'f%y%'
       
       
+      
       ```
 
     - Better Solution：使用函数去除空格；
@@ -528,6 +692,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 
   ```mysql
   WHERE cust_contact LIKE '^[JM]%';   
+  
   
   
   ```
@@ -544,6 +709,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 
     ```mysql
     WHERE prod_name LIKE '% inch teddy bear';
+    
     
     
     ```
@@ -591,6 +757,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   SELECT CONCAT(vend_name, ' (', vend_country, ')')
   
   
+  
   ```
 
 
@@ -603,6 +770,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 
   ```mysql
   SELECT quantiyt*item_price AS expended_price
+  
   
   
   ```
@@ -625,6 +793,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   ```mysql
   SELECT 2*3			-- 计算表达式 2*3；
   SELECT NOW()		-- 返回当前时间和日期；
+  
   
   
   ```
@@ -668,6 +837,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   UPPER();			-- 将字符串转换为大写；
   
   
+  
   ```
 
   - 关于 `SOUNDEX()` 函数：将文本串转换为其语音表示的字母数字模式；
@@ -676,6 +846,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 
     ```mysql
     WHERE SOUNDEX(cust_contact) = SOUNDEX('Michael Green');
+    
     
     
     ```
@@ -692,6 +863,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   SIN();				-- 返回一个角度的正弦值；
   COS();				-- 返回一个角度的余弦值；
   TAN();				-- 返回一个角度的正切；
+  
   
   
   ```
@@ -750,6 +922,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   -- 以列名为参数，返回该列所有非空值的行的数量；
   
   
+  
   ```
 
 - `DISTINCT`参数对不同的值进行计算，`ALL`为默认参数，无需指定；
@@ -764,6 +937,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
     SUM(DISTINCT column_name)   -- 返回该列中所有不同值之和
     AVG(DISTINCT column_name)   -- 返回该列中所有不同值的均值
     COUNT(DISTINCT column_name) -- 返回该列中所有不同值的行数
+    
     
     
     ```
@@ -784,8 +958,9 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 | GROUP BY |        分组        | 仅当分组实现聚集计算时使用 |
 |  HAVING  |      过滤分组      |             否             |
 | ORDER BY |        排序        |             否             |
+|  LIMIT   |  限制返回结果数量  |             否             |
 
-   
+- `HAVING`：分组后的筛选条件，应用于分组中聚集计算的结果；
 
 # 11. 使用子查询
 
@@ -817,15 +992,6 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 
 ## 12.1 术语
 
-|        英文         |      中文       | 释义 |
-| :-----------------: | :-------------: | :--: |
-|        join         |      连接       |  -   |
-|        scale        |     可伸缩      |  -   |
-|  cartesian product  |    笛卡尔积     |  -   |
-|     cross join      |     叉联结      |  -   |
-| equijoin/inner join | 等值联结/内联结 |      |
-
-- 可伸缩：能够满足不断增加的工作量需求；
 - 笛卡尔积：检索出的行数是第一张表的行数乘以第二张表的行数；
   - 叉联结：返回笛卡尔积的联结；
 
@@ -854,6 +1020,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
     WHERE ... AND ...;							
     
     
+    
     ```
 
   - 标准语法：
@@ -865,6 +1032,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
     SELECT vend_name, prod_name, prod_price
     FROM Vendors INNER JOIN Products
     ON Vendors.vend_id = Products_vend_id;
+    
     
     
     ```
@@ -908,6 +1076,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   WHERE Customers AS c1, Customers AS c2
   
   
+  
   ```
 
     
@@ -918,6 +1087,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
 
   ```mysql
   SELECT C.*, O.order_num, OI.prod_id
+  
   
   
   ```
@@ -933,6 +1103,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   
   FROM ... RIGHT OUTER JOIN ... ON ...
   -- 返回所有关联的行，以及右侧表中未被关联的行；
+  
   
   
   ```
@@ -996,6 +1167,7 @@ LIMIT 3,4;	-- 第一个数字表示起始行，第二个数字表示需要返回
   
   INSERT INTO Customers				-- 不指定列名的填充；
   VALUES('1000000006', 'Toy Land');
+  
   
   
   ```
