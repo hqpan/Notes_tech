@@ -508,17 +508,18 @@ INSERT INTO r (a1, a2, ...) VALUES (...);	-- 插入时指定属性名
 - 更新：
 
 ```mysql
-UPDATE r SET a1 = ...;	-- 更改关系r中的属性值
+UPDATE r
+SET a1 = ...;	-- 更改关系r中的属性值
 ```
 
-- `CASE`语句：
+- `CASE`语句：选择；
 
 ```mysql
 CASE
 	WHEN pred1 THEN result1
 	WHEN pred2 THEN result2
 	ELSE result0
-END
+END;
 ```
 
 
@@ -637,13 +638,24 @@ FOREIGN KEY (dept_name) REFERENCES department
 
 
 
+# 7. 形式化关系查询语言
+
+- 关系代数基本运算：
+  - 选择；
+  - 投影：筛选出部分列，以集合形式（去重）返回；
+  - 并运算；
+  - 差运算；
+  - 笛卡尔积；
+
+
+
 # ==Schedule==
 
 - 仅学习前12章，12月31日前完成 chapter 1-12；
 - 每天10-11页，30天完成334页；
 - 整理新笔记：chapter 1；
 - 整理旧笔记：每天整理旧版本笔记1-2章；
-- Page 100，chapter 5.2.1已完成；
+- Page 130，chapter 6.1.2已完成；
 
 # References
 
