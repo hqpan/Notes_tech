@@ -1168,15 +1168,58 @@ if(boss instanceof staff[1])
 
 
 
-## 5.2 Object：所有类的超类
+## 5.2 Object 类
 
 ### 5.2.1 Object
 
-- 可使用`Object`类型的变量引用任何类型的对象；
-  - 如需操作其中的具体内容，应进行相应的类型转换；
+- `Object`类：
+  - 是其它类的父类；
+  - 该类型的变量可引用任何类型的对象，包括数组；
+- 在自定义的类中需要覆写的方法：
+
+  - `equals`；
+
+  - 若重新定义`equals`方法，则需重新`hashCode`方法，以便用户将对象插入到散列表中；
+  - `toString`，以便用户获取有关对象状态的必要信息；
+
+
+
+### 5.2.2 hashCode 方法
+
+- `hashCode`：
+
+  - 该方法定义在`Object`类中，因此每个对象均有默认的散列码；
+  - 若参数为`null`，则该方法返回0；
+
+  - 如需组合多个参数的散列值时，可调用`Objects.hash`，并提供多个参数；
+  - 该方法将对各个参数调用`Objects.hashCode`，并组合这些散列值；
+
+- 对`double`类型的数据使用`hashCode`方法：
+
+```java
+return super.hashCode() + 13*new Double(salary).hashCode();	
+// 创建Double对象；
+return super.hashCode() + 13*Double.hashCode(salary);	
+// 使用静态方法避免创建Double对象；
+```
+
+
+
+### 5.2.3 toString 方法
+
+- 直接输出某个对象的引用，实质上是调用`Object`对象的`toString()`方法；
+
+
+
+
+
+### 5.2.4 equals 方法
+
+- `public boolean equals(Object obj)`：
+  - 可接收任意类型的参数，与当前对象`this`比较；
+  - `Object`类中的`equals()`方法默认比较两个对象的地址；
 - 编写`equals`方法的建议：
-  - 将显式参数设为`Object`类型，用于覆盖超类中的`equals`方法；
-  - 检测`this`与显式参数是否引用同一个变量；
+  - 判断`this`与显式参数是否引用同一个变量；
   - 检测显式参数是否为`null`；
   - 检测隐式参数与显式参数是否为同一个类；
     - 若`equals`的语义在每个子类中有所改变，则使用`getClass`检测；
@@ -1205,31 +1248,6 @@ Public class Employee
             && hireDay.equals(other.hireDay);
     }
 }
-```
-
-
-
-### 5.2.2 hashCode 方法
-
-- 在自定义的类中需要覆盖的方法：
-
-  - `equals`；
-
-  - 若重新定义`equals`方法，则需重新`hashCode`方法，以便用户将对象插入到散列表中；
-  - `toString`，以便用户获取有关对象状态的必要信息；
-
-- `hashCode`：该方法定义在`Object`类中，因此每个对象均有默认的散列码；
-  - 若参数为`null`，则该方法返回0；
-- 如需组合多个参数的散列值时，可调用`Objects.hash`，并提供多个参数；
-  - 该方法将对各个参数调用`Objects.hashCode`，并组合这些散列值；
-
-- 对`double`类型的数据使用`hashCode`方法：
-
-```java
-return super.hashCode() + 13*new Double(salary).hashCode();	
-// 创建Double对象；
-return super.hashCode() + 13*Double.hashCode(salary);	
-// 使用静态方法避免创建Double对象；
 ```
 
 
