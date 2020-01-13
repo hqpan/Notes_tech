@@ -1538,29 +1538,44 @@ catch (FileNotFoundException | UnknownHostException e)
 
 # 8. 泛型
 
-- 泛型提供类型参数；
-- 实例化泛型类型：用具体的类型替换变量类型；
-
-
-
 ## 8.1 泛型方法
 
-- 泛型方法可以定义在泛型类或普通类中；
-  - 类型变量`<T>`；
+- 泛型方法可以定义在泛型类或普通类中，设置类型变量为`<T>`；
 
 ```java
+class Person <T> {}
 public static <T> T getMiddle(T... a)
 ```
 
-- 类型变量的限定：
-  - 限制类型变量是某个类的子类，或实现某种特定的接口，故使用`extends`关键字；
-  - 多个限定类型使用`&`分隔；
-  - Java 不允许多类继承，因此限定类型中至多只能有一个类，可以有多个接口；
-    - 若限定类型中有类，则应作为限定列表中的第一个参数；
+- 泛型通配符：可接收所有类型的参数，只能获取数据，不可修改数据；
+
+```java
+public static void fun(Message<?> temp)
+```
+
+- 设置泛型的上限和下限：多个限制使用`&`分隔；
+  - Java 不允许多类继承，因此限制中至多只能有一个类，可以有多个接口；
+  - 若限定类型中有类，则应作为限定列表中的第一个参数；
 
 ```java
 public static <T extends Comparable> T min(T[] a)
+<T extends className>	// 该泛型只允许为指定类或其子类；
+<T super className>		// 该泛型只允许为指定类或其父类；
+<? extends className>	// 该泛型只允许为指定类或其子类；
+<? super className>		// 该泛型只允许为指定类或其父类；
 ```
+
+- 实现泛型接口的两种方式：
+  - Approach 1：子类中继续设置泛型；
+  - Approach 2：子类定义父接口时，直接给出具体类型；
+
+```java
+interface IMessage<T> {}
+class MessageImpl<T> implements IMessage<T> {}
+class MessageImpl implements IMessage<String> {}
+```
+
+
 
 
 
@@ -1584,9 +1599,7 @@ public static <T extends Comparable> T min(T[] a)
 
 # 9. 集合
 
-- 链表不支持快速随机访问；
-  - 如需访问链表中的第 n 个元素，则应从从开始，越过前 n-1 个元素；
-  - 每次查找元素，均需从链表的头部开始搜索；
+- 链表不支持快速随机访问，查找元素时均需从链表的头部开始搜索；
 - 使用动态数组时，在`ArrayList`与`Vector`之间的取舍：
   - `Vector`类的所有方法都是同步的，允许两个线程安全地访问同一个对象；
     - 若仅有一个线程访问时，不宜使用`Vector`类，以减小同步操作的时间开销；
