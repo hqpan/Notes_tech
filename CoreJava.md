@@ -1579,9 +1579,7 @@ class MessageImpl implements IMessage<String> {}
 
 
 
-# 8.2 泛型代码与虚拟机
-
-### 8.2.1 类型擦擦
+## 8.2 泛型代码与虚拟机
 
 - 虚拟机中没有泛型，只有普通的类和方法；
 - 定义一个泛型类型后，将自动提供一个相应的原始类型；
@@ -1591,7 +1589,7 @@ class MessageImpl implements IMessage<String> {}
 
 
 
-## 8.7 泛型类型的继承规则
+## 8.3 泛型类型的继承规则
 
 - `pair`类之间无继承关系；
 
@@ -1620,6 +1618,61 @@ class MessageImpl implements IMessage<String> {}
     - 可检查`extends`关键词的缺失和覆写方法的名称拼写错误；
   - `@Deprecated`：表明该方法将逐渐弃用，编译时将给出提醒，但仍可运行；
   - `@SuppressWarnings()`：压制警告，可选择某种特定的警告类型作为参数；
+
+
+
+# 11. 包
+
+## 11.1 包的定义和导入
+
+- 包：即目录，用`.`分隔子目录（子包），使用小写字母命名；
+- 导入多个包时出现同名类：使用类的完整名称加以区分；
+- 打包编译：在源文件所在的子目录下执行该命令；
+  - `javac -d . sourceFileName.java`；
+  - `javac -d . *.java`；
+- 执行程序：`java packageName.className`；
+- 静态导入：
+  - 若类中的所有方法均为静态方法则可使用静态导入；
+  - 被静态导入的类中的方法，可直接使用，无需通过类名调用；
+
+```java
+import static packageName.className;
+```
+
+
+
+## 11.2 jar 文件
+
+- 生成 jar 文件：`jar -cvf packageName.className`；
+  - `-c`：创建一个 jar 文件；
+  - `-v`：打印输出明细；
+  - `-f`：设置 jar 文件名称；
+- jar 文件中的类无法直接使用，每个 jar 文件均为一个独立的程序路径，应设置相应的`classpath`后方可使用；
+
+
+
+
+
+## 11.3 常用的包
+
+- `java.lang`：无需加载；
+- `java.lang.reflect`：反射机制处理包；
+- `java.util`：工具类、数据结构定义；
+
+
+
+## 11.4 访问修饰符
+
+- 一个源文件中只能有一个`public`类，文件名应与`public`类名一致，可有多个`default`类，仅能被本包中的类访问；
+
+|     访问范围     | private | default | protected | public |
+| :--------------: | :-----: | :-----: | :-------: | :----: |
+| 同一包中的同一类 |    T    |    T    |     T     |   T    |
+| 同一包中的不同类 |         |    T    |     T     |   T    |
+|   不同包的子类   |         |         |     T     |   T    |
+|  不同包的所有类  |         |         |           |   T    |
+
+
 
 # ==Schedule==
 
