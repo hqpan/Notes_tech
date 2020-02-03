@@ -1300,7 +1300,23 @@ public abstract double doubleValue()
 
 ## 5.5 枚举类
 
-- 所有的枚举类型都是`enum`类的子类；
+- 定义：
+  - enum，n. 枚举；
+  - 枚举可视为一种多例设计模式，构造方法不能采用非私有化定义（不能使用 public）；
+  - 枚举对象必须写在枚举类中的首行；
+- `Enum`类:
+  - `Enum`类是一个抽象类；
+  - 所有的枚举类型都是`Enum`类的子类；
+  - 根据对象定义的顺序，确定枚举中每个对象的序号；
+  - `public final int ordinal()`，返回枚举常量的序号；
+  - `public final String name()`，返回枚举常量的名称；
+  - `public String toString()`；
+- ==面试题== `enum`和`Enum`的区别：
+  - `enum`：一个关键字，用于定义枚举类；
+  - `Enum`：一个抽象类，所有使用`enum`关键字定义的类均继承`Enum`；
+- 多例设计和枚举的异同：
+  - 可实现相同的功能；
+  - 枚举可在编译时判断所使用的实例化对象是否存在；
 
 
 
@@ -1328,14 +1344,6 @@ public abstract double doubleValue()
 
 - `newInstance(Object[] args)`：创建某个类型的实例，默认调用无参数构造器；
 
-  
-### 5.7.2 异常
-
-- 异常：
-  - 未检查异常：编译器将不检查是否提供了处理器（handler），这些问题可通过精心编写代码解决；
-  - 已检查异常；
-- `Throwable`是`Exception`的超类；
-
 
 
 # 6. 接口、lambda 表达式与内部类
@@ -1360,8 +1368,6 @@ public abstract double doubleValue()
 - 设计原则：若一个接口已被多个子类实现，现需要为所有子类增加一个公共的方法，如何设计？
   - Approach 1（设计首选）：在设计之初使用一个过渡抽象类实现该接口，其它子类均继承该抽象类，如需增加新方法，仅需修改该抽象类；
   - Approach 2（补救措施）：在接口中定义普通方法或静态方法，普通方法需要额外用`default`修饰，置于访问修饰符和返回变量类型之间；
-- 工厂设计模式：良好的设计应避免耦合；
-- 代理设计模式：一个接口有两个子类，一个是真实业务操作类，另一个是代理业务操作类，若没有代理业务操作，则真实业务操作无法进行；
 
 
 
@@ -1407,16 +1413,27 @@ public abstract double doubleValue()
 - 无需指定 lambda 表达式的返回类型；
   - 编译器经由上下文可推得；
 - lambda 表达式仅在部分语句分支中才有返回值的做法不合法；
+- lambda 表达式结构：
+  - 方法无参数：`()->{}`；
+  - 方法有参数：`(parameter1, parameter2 ...)->{}`；
+  - 仅有一行语句返回：`(parameter1, parameter2 ...)->{}`；
 
 
 
 ### 6.3.2 函数式接口与方法引用
 
-- 函数式接口：对于仅有一个抽象方法的接口，如需使用该接口的对象，则可提供一个 lambda 表达式；
+- 函数式接口：
+  - 仅有一个抽象方法的接口；
+  - lambda 表达式仅能用于函数式接口；
 - 方法引用：不能独立存在，总是会转换为函数式接口的实例；
   - `object::insteanceMethod`；
   - `Class::staticMethod`；
   - `Class::instanceMethod`；
+- 方法引用：
+  - 引用静态方法：类名称::静态方法名称；
+  - 引用某个实例对象的方法：实例化对象名::普通方法；
+  - 引用特定类型的方法：特定类::普通方法；
+  - 引用构造方法：类名称::new；
 
 
 
@@ -1440,15 +1457,20 @@ public abstract double doubleValue()
 ## 6.4 内部类
 
 - 内部类：
-
-  - 内部类可访问外围类对象的数据域；
-
+  - 可定义在类中、方法中、代码块中；
+  - 内部类和外部类可相互访问各自的私有属性、私有方法；
   - 内部类中声明的所有静态域必须为`final`；
-  - 内部类不能有`static`方法；
-
-- 编译器将内部类编译为“用`$`分隔外部类名与内部类名的常规类文件”；
-
+  - 内部类可以是静态类，但不能有`static`方法；
+- 内部类被实例化的格式：`Outer.Inner in = new Outer.new Inner();`；
+  - 内部类的全称为`Outer.Inner`；
+  - 由于内部类可以访问外部类中的私有属性和方法，因此需要先初始化
+  - 若将内部类私有化，则仅有外部类可使用内部类，其它类无法将内部类实例化；
+  - 若内部类为静态类，则将内部类实例化的格式为`Outer.Inner in = new Outer.Inner();`；
+  - 编译器将内部类编译为“用`$`分隔外部类名与内部类名的常规类文件”；
+- 匿名内部类：简化的内部类形式，主要用于抽象类、接口的子类；
 - 局部内部类：不能使用访问修饰符，作用域为声明该局部类的块中；
+- 使用内部类的注意事项：
+  - E.g. 若外部类 Outer 中有属性 age，内部类 Inner 如需使用该属性，应使用`Outer.this.age`；直接使用`this`指代当前所在类 Inner；
 
 
 
@@ -1479,15 +1501,21 @@ public abstract double doubleValue()
   - `Exception`：
     - `RuntimeException`：程序错误导致的异常；（竭力避免）
     - `IOException`：程序自身无错误，I/O 错误导致的异常；
+- ==面试题== `Exception`和`RuntimeException`的区别？列举几个常见的`RuntimeException`异常？
+  - 前者是后者的父类；
+  - `Exception`强制要求在程序中使用语句处理，`RuntimeException`不强制要求；
+  - 常见的`RuntimeException`异常：`NullPointerException`，`IndexOutOfBoundsException`、`NumberFormatException`、`ClassCastException`；
 - 异常分类：
-  - unchecked exception：非受查异常，派生于`Error`、`RuntimeException`的异常；
-  - checked exception：受查异常；
-    - 编译器将核查是否为所有的受查异常提供了异常处理器；
+  - unchecked exception：非受查异常，派生于`Error`、`RuntimeException`的异常，编译器将不检查是否提供了处理器（handler），这些问题可通过精心编写代码解决；
+  - checked exception：受查异常，编译器将核查是否为所有的受查异常提供了异常处理器；
 - 若子类覆盖超类中的一个方法，则子类中的受查异常不能比超类中声明的异常更通用；
   - 子类中可选择抛出更特定的异常；
   - 子类中可选择不抛出异常；
 - 常见异常：
   - `NullPointerException`：空指向异常，仅有引用数据类型能引发该异常，未开辟堆内存空间，E.g. 对 null 调用方法；
+- 异常语句：
+  - `try...catch`，`try...finally`，`try...catch...finally`；
+  - `printStackTrace()`：异常类中提供的方法，打印异常信息及所在行号；
 
 
 
@@ -1500,10 +1528,18 @@ public abstract double doubleValue()
 
 
 
-## 7.2 捕获异常
+## 7.2 抛出、捕获异常
 
 - 在方法的首部添加`throws`说明符，告知调用者该方法可能会抛出异常；
-  - 此时无`catch`语句，仅传递该异常；
+
+```java
+public void example(int x) throws Exception {...}
+```
+
+- 若主方法向上抛出异常，则交由 JVM 处理；
+- ==面试题== `throw`和`throws`的区别？
+  - `throw`：抛出异常；
+  - `throws`：在方法定义时使用，表明该方法可能抛出异常；
 - `catch`子句可合并：
   - 当捕获多个异常时，异常变量隐含为`fianl`变量，不能在以下子句体中为`e`赋不同的值； 
 
@@ -1513,10 +1549,12 @@ catch (FileNotFoundException | UnknownHostException e)
 
 
 
-## 7.3 使用异常机制的技巧
+## 7.3 自定义异常类
 
+- 自定义异常类的方法：
+  - 继承`Exception`或`RuntimeException`；
+  - 使用父类的构造器，将描述性字符串作为参数；
 - 使用异常机制的技巧：
-
   - 不使用异常处理替代简单的测试；
     - 原因：前者的时间开销大；
 
@@ -1526,6 +1564,9 @@ catch (FileNotFoundException | UnknownHostException e)
 
 - 断言中表达式的值将被传入`AssertError`的构造器，并转换为一个消息字符串；
   - `AssertError`不存储表达式的值；
+- 执行断言：
+  - 默认情况下程序不执行断言语句；
+  - 执行断言：E.g. 在命令行中使用`java -ea Hello`，e 表示 enable；
 
 
 
@@ -1618,6 +1659,7 @@ class MessageImpl implements IMessage<String> {}
     - 可检查`extends`关键词的缺失和覆写方法的名称拼写错误；
   - `@Deprecated`：表明该方法将逐渐弃用，编译时将给出提醒，但仍可运行；
   - `@SuppressWarnings()`：压制警告，可选择某种特定的警告类型作为参数；
+  - `@FunctionalInterface`：表明该接口为函数式接口，即仅有一个抽象方法；
 
 
 
@@ -1671,6 +1713,26 @@ import static packageName.className;
 | 同一包中的不同类 |         |    T    |     T     |   T    |
 |   不同包的子类   |         |         |     T     |   T    |
 |  不同包的所有类  |         |         |           |   T    |
+
+
+
+# 12. 设计模式
+
+## 12.1 工厂设计模式和代理设计模式
+
+- 工厂设计模式：良好的设计应避免耦合；
+- 代理设计模式：一个接口有两个子类，一个是真实业务操作类，另一个是代理业务操作类，若没有代理业务操作，则真实业务操作无法进行；
+
+
+
+## 12.2 单例设计模式
+
+- 单例设计模式：与多例设计本质相同；
+  - singleton，n. 单例设计模式；
+  - 控制实例化对象产生个数；
+- ==面试题== 编写一个 singleton 程序，说明其主要特点？
+  - 书写饿汉式和懒汉式（需考虑线程同步）程序；
+  - 特点：构造方法私有化，类的内部提供 static 方法获取实例化对象，无论外部如何操作，均只对外提供一个实例化对象；
 
 
 
