@@ -1736,6 +1736,33 @@ import static packageName.className;
 
 
 
+# 13 多线程编程
+
+## 13.1 Overview
+
+- 实现多线程的方式：定义线程的主体类；
+  - 继承`java.lang.Thread`类；
+  - 实现`java.lang.Runnable`接口（优先考虑该方法）；
+    - 因为 Java 不支持多继承，故使用该方法可继承其它类，避免单继承的局限；
+
+
+
+## 13.2 Thread 类
+
+- `public class Thread extends Object implements Runnable`：`Thread`类实现了`Runnable`接口，因此需要覆写`run()`方法；
+- `run()`：多线程需要实现的功能均应定义在该方法中；
+  - 若直接调用`run()`方法，则程序按顺序执行；
+  - 多线程启动不直接使用`run()`方法，而是使用`Thread`类中的`start()`方法；
+
+
+
+## 13.3 Runnable 接口
+
+- 实现`Runnable`接口，用于实现多线程的方法，由于缺少`start()`方法，无法启动多线程；
+  - `public Thread(Runnable target)`，通过该构造方法得到`Thread`实例化对象，调用`start()`方法；
+
+
+
 # ==Schedule==
 
 - Java 编程入门课时3；
