@@ -1744,6 +1744,7 @@ import static packageName.className;
   - 继承`java.lang.Thread`类；
   - 实现`java.lang.Runnable`接口（优先考虑该方法）；
     - 因为 Java 不支持多继承，故使用该方法可继承其它类，避免单继承的局限；
+  - 实现`java.util.concurrent.Callable`接口；
 
 
 
@@ -1760,6 +1761,87 @@ import static packageName.className;
 
 - 实现`Runnable`接口，用于实现多线程的方法，由于缺少`start()`方法，无法启动多线程；
   - `public Thread(Runnable target)`，通过该构造方法得到`Thread`实例化对象，调用`start()`方法；
+  - 无返回值；
+
+
+
+## 13.4 Callable 接口
+
+- `public interface Callable<V>`：允许设置泛型，作为返回值类型；
+- `java.util.concurrent.Callable<V>`；
+- `java.util.concurrent.FutureTask<V>`；
+- 使用`callable`接口，启动多线程的方法：
+  - 线程实现类实现`callable`接口；
+  - `callable`接口类型可作为`FutureTask`类的构造器参数；
+  - `FutureTask`类实现了`runnable`接口，故可作为`Thread`类的构造器参数；
+  - 借助`Thread`类调用`start()`方法，启动多线程；
+- ==面试题== `Runnable`和`Callable`的区别？
+  - `Runnable`接口提供一个`run()`方法，无返回值；
+  - `Callable`接口提供一个`callable()`方法，有返回值；
+
+
+
+## 13.5 多线程运行状态
+
+- 调用`start()`方法，启动线程，进入就绪状态但并不执行，等待资源调度；
+- 当某个线程调度成功后，调用`run()`方法，直至运行结束；
+- 若运行过程中发生引起阻塞的事件，则进入阻塞状态，直至阻塞解除后进入就绪状态；
+
+```mermaid
+graph LR
+   A((start方法)) --> B[就绪状态]
+   B[就绪状态] --run方法--> C[运行状态]
+   C[运行状态] --> D((结束))
+   C[运行状态] --导致阻塞的事件--> E[阻塞状态]
+   E[阻塞状态] --阻塞解除--> B[就绪状态]
+```
+
+
+
+# 14. 线程常用操作方法
+
+## 14.1 线程命名
+
+- `Thread`类：
+  - 构造方法：`public Thread(Runnable target, String name)`；
+- 主方法是主线程，负责处理整体流程，子线程处理耗时操作；
+
+
+
+## 14.2 线程休眠
+
+- 休眠：参数可设置为若干毫秒或纳秒，休眠时间结束后，程序自动恢复执行；
+  - `public static void sleep(long millis) throws InterruptedException`；
+  - `public static void sleep(long millis, int nanos) throws InterruptedException`；
+
+
+
+## 14.3 线程中断
+
+- 判断线程是否被中断：`public boolean isInterrupted()`；
+- 中断线程：`public void interrupt()`；
+- `InterruptedException`：中断异常是`Exception`的子类，该异常必须被处理；
+
+
+
+## 14.4 线程强制执行和线程礼让
+
+- 线程强制执行：使某个线程独占资源直至运行结束；
+  - `public final void join() throws InterruptedException`；
+- 线程礼让：`public static void yield()`；
+  - 每次调用`yield()`方法，仅礼让一次当前资源；
+
+
+
+## 14.5 线程优先级
+
+- 设置优先级：`public final void setPriority(int newPriority)`；
+- 获取优先级：`public final int getPriority()`；
+- 优先级常量：
+  - 最高优先级：`public static final int MAX_PRIORITY`，10；
+  - 中等优先级 ：`public static final int NORM_PRIORITY`，5；
+  - 最低优先级：`public static final int MIN_PRIORITY`，1；
+- 所有线程（包括主线程）的默认优先级为中等优先级；
 
 
 
