@@ -2,7 +2,9 @@
 
 # 版权声明
 
-- 计算机网络系列学习笔记来源于李全龙副教授和聂兰顺副教授在中国大学MOOC网站上所授课程计算机网络 [1]；
+- 计算机网络系列学习笔记来源于以下资料：
+  - James F. Kurose 和 Keith W. Ross 的著作《计算机网络——自顶向下方法》第6版 [1]；
+  - 李全龙副教授和聂兰顺副教授在中国大学MOOC网站上所授课程计算机网络 [2]；
 - 该系列笔记不以盈利为目的，仅用于个人学习、课后复习及科学研究；
 - 如有侵权，请与本人联系（hqpan@foxmail.com），经核实后即刻删除；
 - 本文采用 [署名-非商业性使用-禁止演绎 4.0 国际 (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh) 协议发布；
@@ -11,10 +13,16 @@
 
 ## 1.1 基本概念
 
-- host/end systems：主机/端系统；
+- host/end systems：主机/端系统，通过通信链路和分组交换机实现互联；
+  - 客户机；
+  - 服务器；
 - ISP：Internet service provider；
+- LAN：Local Area Network，局域网；
 - RFC：Request for Comments，请求评议文档，定义公开协议；
-- 交换网络/交换节点：路由器（routers）、交换机（switches）；
+- 分组交换机：
+  - 链路层交换机：link-layer switch，常用于接入网；
+  - 路由器：routers，常用于网络核心；
+- 以太网：ethernet，一种目前应用最广泛的局域网技术；
 
 
 
@@ -24,13 +32,13 @@
   - 网络边缘：主机/端系统；
     - client-server 模型；
     - peer-peer (P2P) 模型；
-  - 接入网络/物理介质：有线、无线通信链路；
+  - 接入网：将端系统连接到边缘路由器的物理链路；
     - 带宽：bandwidth，bps；
     - 共享/独占；
-  - 网络核心/核心网络：分组转发设备；
+  - 网络核心：分组转发设备；
 - 常见的接入网络：
   - DSL & ADSL：
-    - DSL： Digital Subscriber Line，数字用户线路，使用 FDM（频分复用），借助已有的电话线连接至中心局；
+    - DSL： Digital Subscriber Line，数字用户线，使用 FDM（频分复用），借助已有的电话线连接至中心局；
     - ADSL： Asymmetric Digital Subscriber Line，非对称数字用户线路；
       - 下行传输速率高于上行传输速率；
       - 用户独占接入网络；
@@ -145,6 +153,9 @@
 
 ### 1.5.2 TCP/IP 模型
 
+- TCP/IP 协议：
+  - TCP：Transmission Control protocol，传输控制协议；
+  - IP ：Internet protocol，网际协议，定义路由器和端系统间收发分组的格式；
 - TCP/IP 模型：
   - 应用层；
   - 运输层；
@@ -295,6 +306,7 @@
 - 邮件访问协议：access protocol，从服务器获取邮件；
   - POP：Post Office Protocol；
   - IMAP：Internet Mail Access Protocol；
+  - HTTP；
 - POP：
   - 认证阶段：
     - 客户端命令：用户名和密码；
@@ -329,6 +341,17 @@
 
 
 
+## 2.6 Socket 编程
+
+- Socket API：套接字接口；
+  - socket，n. 插座；
+  - 介于应用层和传输层之间；
+  - 区分不同的套接字：
+    - 对外：使用 IP 地址 + 端口号；
+    - 对内：使用套接字描述符；
+
+
+
 # 待整理内容
 
 
@@ -337,12 +360,20 @@
 
 # ==Schedule==
 
-- 起始时间：2020年02月03日；
-- 13次完成全部内容；
-- 课程进度：2.3已完成；
+- 教材：
+  - 起始时间：2020年02月08日；
+  - 每次10页，38次完成全部内容；
+  - 课程进度：Page 13， 1.2.1 已完成；
+- 视频：
+  - 起始时间：2020年02月03日；
+  - 13次完成全部内容；
+  - 课程进度：chapter 2 已完成；
 
 
 
 # References
 
-[1] https://www.icourse163.org/learn/HIT-154005?tid=1206679208#/learn/announce.
+[1] Kurose, F. J, Ross, K. W. 计算机网络自顶向下方法[M]. 北京: 机械工业出版社, 2014.
+[2] https://www.icourse163.org/learn/HIT-154005?tid=1206679208#/learn/announce.
+
+
