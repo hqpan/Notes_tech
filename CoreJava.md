@@ -1845,6 +1845,48 @@ graph LR
 
 
 
+## 14.6 线程的同步与死锁
+
+### 14.6.1 线程同步
+
+- `synchronized`：
+  - 定义同步方法、同步代码块，其中的代码仅允许一个线程执行；
+  - 同步将造成性能降低；
+
+
+
+### 14.6.2 死锁
+
+- 死锁：多个线程相互等待；
+  - 多个线程访问同一资源时，需进行同步处理，而过多的同步处理将造成死锁；
+
+
+
+### 14.6.3 等待唤醒机制
+
+- 使用 Object 类中的方法处理：
+  - 持续等待：`public final void wait() throws InterruptedException`；
+  - 设置等待时间：
+    - `public final void wait(long timeout) throws InterruptedException`；
+    - `public final void wait(long timeout, int nanos) throws InterruptedException`；
+  - 唤醒线程：
+    - 唤醒首个处于等待状态的线程：`public final void notify()`；
+    - 唤醒所有线程：`public final void notifyAll()`；
+
+
+
+### 14.6.4 停止线程
+
+- 
+
+
+
+# Unsolved
+
+- 可使用 Runnable 描述多个线程操作资源，Thread 描述每个线程对象；当多个线程访问同一资源时，将产生数据错误；
+
+
+
 # ==Schedule==
 
 - Java 编程入门课时3；
