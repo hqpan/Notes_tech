@@ -99,6 +99,109 @@
 
 
 
+# 2. DTD
+
+## 2.1 DTD Overview
+
+- DTD：Document Type Definition，文档定义类型;
+  - 文件名后缀为`.dtd`；
+  - 对根标签、子标签分别加以约束；
+
+```dtd
+<!ELEMENT tagName (subTagName1,subTagName2,...)>
+<!ELEMENT subTagName1 (#PCDATA)>
+<!ELEMENT subTagName2 (#PCDATA)>
+```
+
+
+
+## 2.2 DTD 的引入方式
+
+- DTD 的引入方式::
+  - 内部 DTD 文件；
+  - 外部 DTD 文件；
+  - 网络上的 DTD 文件；
+
+```dtd
+<!-- Inner DTD file-->
+<!DOCTYPE rootTagName [
+    <!ELEMENT person (name,age)>
+    <!ELEMENT name (#PCDATA)>
+    <!ELEMENT age (#PCDATA)>
+]>
+
+<!-- Outer DTD file -->
+<!DOCTYPE rootTagName SYSTEM "FilePath">
+
+<!-- DTD file from Internet -->
+<!DOCTYPE rootTagName PUBLIC "fileName" "URL">
+```
+
+
+
+## 2.3 使用 DTD 定义元素
+
+- 使用 DTD 定义元素：
+  - 定义简单元素：无嵌套；
+  - 定义复杂元素：有嵌套；
+- 定义简单元素时的约束：
+  - `(#PCDATA)`：元素为字符串类型；
+  - `EMPTY`：元素为空；
+  - `ANY`：元素可为任意值；
+- 约束复杂元素的出现次数：
+  - `?`：出现0次或1次；
+  - `*`：出现0次或多次；
+  - `+`：出现1次或多次；
+  - `|`：只出现多个元素中的某1个；
+  - `,`：用逗号分隔的元素按顺序出现；
+
+```dtd
+<!-- 定义简单元素 -->
+<!ELEMENT tagName constraint>
+<!-- 定义复杂元素 -->
+<!ELEMENT person (name,age,sex,school)>
+```
+
+
+
+
+
+## 2.4 使用 DTD 定义属性
+
+- 使用 DTD 定义属性的格式：跟在元素定义之后；
+
+```dtd
+<!ATTLIST tagName
+	tagName tagType constraint
+    ...
+>
+```
+
+- 属性值类型：
+  - `CDATA`：属性值为字符串；
+  - `ID`：属性值不能重复，且只能由字母和下划线组成，不能有空白；
+  - `(Value1|Value2|...)`：枚举类型无关键字，由`|`符号体现；
+- 属性约束：
+  - `#REQUIRED`：该属性必须出现；
+  - `#IMPLIED`：该属性可有可无；
+  - `#FIXED`：该属性的取值为一个固定值；
+  - 直接值：无关键字，即给出默认值；
+
+
+
+## 2.6 定义实体
+
+- 实体：尽量将实体定义在内部 DTD 中，因为部分浏览器无法正常读取外部 DTD 中的实体；
+  - 定义实体；
+  - 引用实体；
+
+```dtd
+<!-- Definition -->
+<!ENTITY name "value">
+<!-- Reference -->
+&name;
+```
+
 
 
 
