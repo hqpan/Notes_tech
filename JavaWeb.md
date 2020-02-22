@@ -204,6 +204,41 @@
 
 
 
+# 3. 解析XML
+
+## 3.1 Overview
+
+- W3C：World Wide Web Consortium，万维网联盟；
+- XML 解析方式：
+  - DOM：Document Object Model，文档对象模型，W3C 推荐的解析方式；
+    - 根据 XML 的层级结构，在内存中分配一个树形结构，将文件中的标签、属性和文本都封装成对象；
+    - 优点：便于实现增删改操作；
+    - 缺点：若文件过大，则内存溢出；
+  - SAX：Simple API for XML，几乎所有的 XML 解析器都支持；
+    - 采用事件驱动，边读边解析，解析到某个对象后返回对象名称；
+    - 优点：不会造成内存溢出，便于实现查询操作；
+    - 缺点：无法实现增删改操作；
+- XML 解析开发包：
+  - JAXP：SUN 公司推出的解析标准实现；
+  - dom4J：由开源组织 dom4J 推出，更常用；
+  - JDOM：由开源组织 JDOM 推出；
+
+
+
+## 3.2 JAXP
+
+- JAXP：Java API for XML Processing，是 Java SE 的一部分；
+  - org.w3c.dom：提供 DOM 方式解析 XML 的标准接口；
+  - org.xml.sax：提供 SAX 方式解析 XML 的标准接口；
+  - javax.xml：提供解析 XML 的类；
+  - javax.xml.parsers：定义了几个工厂类，借助其可得到对 XML 进行解析的 DOM 和 SAX 解析器对象；
+    - DOM：
+      - DocumentBuilder：解析器类；
+        - 抽象类，可通过解析器工厂类获取实例；
+      - DocumentBuilderFactory：解析器工厂；
+    - SAXParserFactory：parser，n. 解析器；
+- 注意：添加节点时，由于对 XML 的操作均在内存中进行，因此需要将操作后的结果回写到 XML 文件中；
+
 
 
 # ==待整理的内容==
