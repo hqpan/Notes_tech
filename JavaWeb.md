@@ -103,6 +103,9 @@
 
 ## 2.1 DTD Overview
 
+- XML 约束：
+  - DTD 约束；
+  - Schema 约束；
 - DTD：Document Type Definition，文档定义类型;
   - 文件名后缀为`.dtd`；
   - 对根标签、子标签分别加以约束；
@@ -241,8 +244,21 @@
 
 
 
+# 4. Schema
+
+## 4.1 Overview
+
+- Schema：W3C 组织的标准，逐步取代 DTD；
+  - 优点：
+    - 符合 XML 语法，即为 XML 语句；
+    - 对名称空间支持较好；
+    - 支持的数据类型多于 DTD，且支持用户自定义的数据类型；
+    - 可对 XML 做出细致的语意限制；
+  - 缺点：语法比 DTD 更复杂；
+- 一个 XML 中可有多个 Schema，多个 Schema 使用名称空间区分（类似于 Java 中的包名）；
+
+
+
 # ==待整理的内容==
 
-- XML 约束：
-  - DTD 约束；
-  - Schema 约束；
+- 
