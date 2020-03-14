@@ -20,9 +20,19 @@
 
 # 2. 策略模式
 
+## 2.1 Overview
+
 - 策略模式：
   - 定义算法族，并分别封装，算法之间可相互替换；
-  - 策略模式使得算法的变化独立于使用算法的客户；
+  - 优点：使得算法的变化独立于使用算法的客户；
+
+
+
+## 2.2 策略模式 UML 示例
+
+- 策略模式 UML 示例：
+
+![StrategyPattern](D:\Git_setup\Git\Notes_tech\DesignPatterns\Pictures\StrategyPattern.png)
 
 
 
@@ -44,7 +54,7 @@
 
 - 正文页数：630；
   - 自3月13日起，每日21页，30天完成；
-- 进度：Page 21；
+- 进度：Page 42；
 
 
 
