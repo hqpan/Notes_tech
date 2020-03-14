@@ -32,7 +32,7 @@
 
 - 策略模式 UML 示例：
 
-![StrategyPattern](D:\Git_setup\Git\Notes_tech\DesignPatterns\Pictures\StrategyPattern.png)
+![StrategyPattern](./Pictures/StrategyPattern.png)
 
 
 
