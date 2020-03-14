@@ -15,6 +15,7 @@
 # 3. Basic courses
 
 - [计算机网络](./ComputeNetworks.md)；
+- [设计模式](./DesignPatterns/DesignPatterns.md)；
 - [数据库](./Database.md)；
 - [算法](./Algorithm.md)；
 
@@ -31,6 +32,6 @@
 # 5. Unsolved
 
 - OS；
-- 设计模式；
 - Java 并发；
 - JVM；
+- Spring、SpringMVC，Tomcat；
