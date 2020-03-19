@@ -81,6 +81,23 @@
 
 ## 4.2 UML 示例
 
+- 装饰者模式：
+  - 每个组件可单独使用，亦可被装饰者包装后使用；
+  - 装饰者中含有一个实例变量，用于保存某个组件的引用，即装饰者“包装”了组件；
+  - Decorator 是装饰者共同实现的接口或抽象类；
+
+```mermaid
+graph BT
+   2[Concrete Component] --> Component
+   Decorator --> Component
+   3[Concrete DecoratorA] --> Decorator
+   4[Concrete DecoratorB] --> Decorator
+```
+
+
+
+- UML 示例：
+
 ![ObserverPattern](./Pictures/DecoratorPattern.png)
 
 
@@ -89,13 +106,34 @@
 
 ## 5.1 Overview
 
-- 
+- Factory pattern：工厂模式，封装**对象的创建过程**，在父类中声明对象并对对象执行相关操作，在子类中创建对象，避免耦合；
+  - 工厂方法：是一个抽象方法；
+  - 创建者类：是一个抽象类，含有一个工厂方法和对实例化对象进行操作的方法；
+  - 具体创建者类：
+    - 继承创建者类，实现工厂方法，并在工厂方法中完成对象实例化；
+    - 可根据需要，创建多个不同的具体创建者类；
+  - 产品类：是一个抽象类；
+  - 具体产品类：继承产品类，为产品类中的状态赋值；
+- 静态工厂：将工厂定义为一个静态方法；
+  - 优点：相较于将工厂定义为一个类，静态工厂无需实例化对象；
+  - 缺点：无法通过继承改变方法的行为；
 
 
 
 ## 5.2 UML 示例
 
+- 工厂模式：
 
+```mermaid
+graph BT
+   1[Concrete Creator] --> Creator
+   2[Concrete Product] --> Product
+   
+```
+
+- UML 示例：
+
+![ObserverPattern](./Pictures/FactoryPattern.png)
 
 
 
@@ -108,9 +146,10 @@
 - 正文页数：630；
   - 自03月13日起，每日21页，30天完成；
 - 进度：
-  - 当前进度：Page 113；
+  - 当前进度：Page 136；
   - 延期页数：从03月16日起，每天额外增加2页；
     - 03月15日，21页；
+- 每天整理一个模式；
 
 
 
