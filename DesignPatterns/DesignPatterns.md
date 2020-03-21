@@ -23,6 +23,10 @@
   - 尽可能使得2个交互对象之间为松耦合；
   - 类对扩展开放，对修改关闭；
     - 注意：不是每个部分均适用该原则，否则将使得代码过于复杂，难以理解；
+  - 依赖倒置原则：依赖抽象，不依赖具体类；
+    - 变量不持有对具体类的引用；
+    - 使类不派生于具体类；
+    - 不覆盖基类中已实现的方法；
 
 
 
@@ -104,9 +108,14 @@ graph BT
 
 # 5. 工厂模式
 
-## 5.1 Overview
+## 5.1 工厂方法模式
 
-- Factory pattern：工厂模式，封装**对象的创建过程**，在父类中声明对象并对对象执行相关操作，在子类中创建对象，避免耦合；
+### 5.1.1 Overview
+
+- Factory pattern：工厂模式，封装**对象的创建过程**；
+  - 工厂方法模式；
+  - 抽象工厂模式；
+- 工厂方法模式：把对象的创建委托给子类，在子类中实现工厂方法，创建对象，将客户程序和具体类解耦；
   - 工厂方法：是一个抽象方法；
   - 创建者类：是一个抽象类，含有一个工厂方法和对实例化对象进行操作的方法；
   - 具体创建者类：
@@ -120,20 +129,140 @@ graph BT
 
 
 
-## 5.2 UML 示例
+### 5.1.2 UML 示例
 
-- 工厂模式：
+- 工厂方法模式：
 
 ```mermaid
 graph BT
-   1[Concrete Creator] --> Creator
-   2[Concrete Product] --> Product
+   1[Concrete Creator 1] --> Creator
+   2[Concrete Creator 2] --> Creator
+   3[Concrete Product 1] --> Product
+   4[Concrete Product 2] --> Product
    
 ```
 
 - UML 示例：
 
 ![ObserverPattern](./Pictures/FactoryPattern.png)
+
+
+
+## 5.2 抽象工厂模式
+
+### 5.2.1 Overview
+
+- 抽象工厂模式：
+  - 提供一个接口，便于客户创建产品家族，无需指定具体产品类，使得客户和产品解耦；
+  - 抽象工厂中的每个方法都是工厂方法；
+- 工厂方法和抽象工厂的区别：
+  - 工厂方法：通过继承创建对象，即扩展一个类来创建对象，并覆写工厂方法；
+  - 抽象工厂：通过对象的组合，创建对象；
+
+
+
+### 5.2.2 UML 示例
+
+![ObserverPattern](./Pictures/AbstractFactoryPattern.png)
+
+
+
+# 6. 单例模式
+
+## 6.1 Overview
+
+- Singletom pattern：单例模式，亦称单件模式；
+  - 确保1个类仅有1个实例；
+  - 提供1个全局访问点；
+- 全局变量和单例模式的对比：
+  - 全局变量：
+    - 不能确保仅产生1个实例；
+    - 必须在程序一开始就创建对象；
+    - 若运行过程中长时间未使用该对象，将浪费大量资源；
+  - 单例模式：
+    - 确保仅产生1个实例；
+    - 通过延迟实例化，可在需要时创建对象；
+- 若程序中使用单例模式，且使用多个类加载器，则各个类加载器可能产生各自的实例；
+  - Solution：自行指定同一个类加载器；
+
+
+
+## 6.2 程序示例
+
+### 6.2.1 饿汉式和懒汉式对比
+
+- 饿汉式：在单例模式类被加载时，完成实例创建；
+  - 线程安全；
+  - 若运行过程中长时间未使用该对象，将浪费大量资源；
+- 懒汉式：用户第一次获取实例时，完成实例创建；
+  - 非线程安全，需要改进；
+    - Approach 1：使用`synchronized`关键字，将方法定义为同步方法；
+      - 仅当第一次获取实例时，需要同步，实现线程安全；
+      - 此后若仍有同步，将使程序性能下降；
+    - Approach 2：使用`volatile`关键字，双重检查加锁；
+      - 仅当第一次获取实例时，进行同步，实现线程安全；
+      - 此后不再进行同步，提升程序性能；
+
+
+
+### 6.2.2 饿汉式程序
+
+- ==面试题== 手写单例模式——饿汉式程序：
+
+```java
+public class Singeton {
+    private static Singleton uniqueInstance = new Singleton();
+    
+    private Singleton() {}
+    
+    public static Singleton getInstance() {
+        return uniqueInstance;
+    }
+}
+```
+
+
+
+### 6.2.3 懒汉式程序
+
+- ==面试题== 手写单例模式——饿汉式程序：
+  - Approach 1：使用`synchronized`关键字，将方法定义为同步方法；
+  - Approach 2：使用`volatile`关键字，双重检查加锁；
+
+```java
+// Approach 1: synchronized
+public class Singleton {
+    private static Singleton uniqueInstance;
+    
+    private Singleton() {}
+    
+    public static synchronized Singleton getInstance() {
+        if (uniqueInstance == null)
+            uniqueInstance = new Singleton();
+        return uniqueInstance;
+    }
+}
+```
+
+```java
+// Approach 2: volatile
+public class Singleton {
+    private volatile Singleton uniqueInstance;
+    
+    private Singleton() {}
+    
+    public static Singleton getInstance() {
+        if (uniqueInstance == null) {
+            synchronized (Singleton.class) {
+                if (uniqueInstance == null)
+                    uniqueInstance = new Singleton();
+            }
+        }
+    }
+}
+```
+
+
 
 
 
@@ -144,12 +273,9 @@ graph BT
 # ==Schedule==
 
 - 正文页数：630；
-  - 自03月13日起，每日21页，30天完成；
-- 进度：
-  - 当前进度：Page 136；
-  - 延期页数：从03月16日起，每天额外增加2页；
-    - 03月15日，21页；
-- 每天整理一个模式；
+  - 自03月13日起，每日21页，4月11日完成；
+  - 当前进度：Page 190；
+- 对照牛客网和面经，每天整理几个面试题；
 
 
 

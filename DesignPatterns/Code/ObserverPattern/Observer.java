@@ -1,5 +1,5 @@
 package ObserverPattern;
 
 public interface Observer {
-    public void update(float temp, float humidity, float pressure);     // review
+    public void update(float temp, float humidity, float pressure);
 }
