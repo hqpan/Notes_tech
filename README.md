@@ -4,22 +4,17 @@
 
 - Course notes for computer science;
 
-
-
 # 2. Math
 
 - [线性代数](./Essence_of_linear_algebra.md)；
 
-
-
 # 3. Basic courses
 
+- [操作系统](./OS/OS.md)；
 - [计算机网络](./ComputeNetworks.md)；
 - [设计模式](./DesignPatterns/DesignPatterns.md)；
 - [数据库](./Database.md)；
 - [算法](./Algorithm.md)；
-
-
 
 # 4. Java
 
@@ -28,11 +23,8 @@
 - [Spring in Action](./Java/SpringInAction.md)；
 - [常见语法问题清单](./Programme.md)；
 
-
-
 # 5. Unsolved
 
-- OS；
 - Java 并发；
 - JVM；
 - Tomcat；
