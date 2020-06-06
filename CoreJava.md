@@ -1506,9 +1506,9 @@ public abstract double doubleValue();
   - 前者是后者的父类；
   - `Exception`强制要求在程序中使用语句处理，`RuntimeException`不强制要求；
   - 常见的`RuntimeException`异常：`NullPointerException`，`IndexOutOfBoundsException`、`NumberFormatException`、`ClassCastException`；
-- 异常分类：
-  - unchecked exception：非受查异常，派生于`Error`、`RuntimeException`的异常，编译器将不检查是否提供了处理器（handler），这些问题可通过精心编写代码解决；
+- ==面试题== 受查异常和非受查异常：
   - checked exception：受查异常，编译器将核查是否为所有的受查异常提供了异常处理器；
+  - unchecked exception：非受查异常，派生于`Error`、`RuntimeException`的异常，编译器将不检查是否提供了处理器（handler），这些问题可通过精心编写代码解决；
 - 若子类覆盖超类中的一个方法，则子类中的受查异常不能比超类中声明的异常更通用；
   - 子类中可选择抛出更特定的异常；
   - 子类中可选择不抛出异常；
