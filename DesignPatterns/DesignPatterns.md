@@ -538,8 +538,6 @@ public class Singleton {
   - 控制器：Servlet；
   - JSP、HTML：实现视图；
 
-
-
 # ==面试题==
 
 - Q：简述XX设计模式？
@@ -552,14 +550,10 @@ public class Singleton {
   - 动态代理；
   - Cglib 代理；
 
-
-
-# ==Schedule==
+# ==TODO==
 
 - 对照面经，每天整理几个面试题；
 - 复习进度：Chapter 4；
-
-
 
 # References
 
