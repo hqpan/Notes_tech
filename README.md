@@ -20,7 +20,7 @@
 
 - [Java基本语法](./CoreJava.md)；
 - [Java Web](./JavaWeb.md)；
-- [JVM](./Java/JVM.md)；
+- [JVM](./Java/JVM/JVM.md)；
 - [Spring](./Java/SpringInAction.md)；
 - [常见语法问题清单](./Programme.md)；
 
