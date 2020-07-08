@@ -18,10 +18,10 @@
 
 # 4. 语言和框架
 
-- [Java基本语法](./CoreJava.md)；
+- [Java基本语法](./Java/CoreJava.md)；
 - [Java Web](./JavaWeb.md)；
 - [JVM](./Java/JVM/JVM.md)；
-- [Spring](./Java/SpringInAction.md)；
+- [Spring](./Java/Spring/SpringInAction.md)；
 - [常见语法问题清单](./Programme.md)；
 
 # ==TODO==
