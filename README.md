@@ -13,10 +13,10 @@
 - [操作系统](./OS/OS.md)；
 - [计算机网络](./ComputeNetworks.md)；
 - [设计模式](./DesignPatterns/DesignPatterns.md)；
-- [数据库](./Database.md)；
+- [数据库](./Database/Database.md)；
 - [算法](./Algorithm.md)；
 
-# 4. Java
+# 4. 语言和框架
 
 - [Java基本语法](./CoreJava.md)；
 - [Java Web](./JavaWeb.md)；
@@ -27,4 +27,3 @@
 # ==TODO==
 
 - [ ] Java 并发；
-- [ ] Tomcat；

@@ -147,7 +147,6 @@
 - 表示数值：
   - float：后缀`F`或`f`
   - （可选）double：后缀`D`或`d`；
-  
 - 特殊的浮点数：
   
   - 浮点数的最大最小值：
@@ -168,9 +167,13 @@
     - `if(x==Double.NaN)`；
       - 错误；
   
-  
-
-
+- ==面试题== float、double 表示数值的方式和取值范围？
+  - 浮点数的存储方式：
+    - IEEE 754 标准；
+    - 符号位、指数位、小数位；
+  - 取值范围：
+    - float：$[2^{-149},2^{128}-1]$；
+    - double：$[2^{-1074},2^{1024}-1]$；
 
 ### 3.3.3 char 类型
 
@@ -1571,7 +1574,7 @@ catch (FileNotFoundException | UnknownHostException e)
 
 
 
-## 7.5 日志（==unsolved==）
+## 7.5 日志
 
 - 未被任何变量引用的日志记录器可能会被垃圾回收；
   - 因此可使用一个静态变量存储日志记录器的一个引用；
@@ -1854,24 +1857,9 @@ graph LR
     - 唤醒首个处于等待状态的线程：`public final void notify()`；
     - 唤醒所有线程：`public final void notifyAll()`；
 
-
-
-### 14.6.4 停止线程
-
-- 
-
-
-
 # Unsolved
 
 - 可使用 Runnable 描述多个线程操作资源，Thread 描述每个线程对象；当多个线程访问同一资源时，将产生数据错误；
-
-
-
-# ==Schedule==
-
-- Java 编程入门课时3；
-- 每天5课时，12月上旬完成《编程入门》；
 
 # References
 
