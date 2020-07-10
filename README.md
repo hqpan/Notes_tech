@@ -1,8 +1,8 @@
 [TOC]
 
-# 1. Background
+# 1. Resume
 
-- Course notes for computer science;
+- [通用版个人简历（更新时间：2020.07.10）](./Resume/研发工程师_潘汉祺_大连理工大学.pdf)；
 
 # 2. Math
 
