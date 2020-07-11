@@ -2,7 +2,7 @@
 
 # 版权声明
 
-- SQL 系列学习笔记来源于 Ben Forta 的著作《SQL必知必会》[1]；
+- MySQL 系列学习笔记来源于 Ben Forta 的著作《MySQL必知必会》[1]；
 - 该系列笔记不以盈利为目的，仅用于个人学习、课后复习及科学研究；
 - 如有侵权，请与本人联系（hqpan@foxmail.com），经核实后即刻删除；
 - 本文采用 [署名-非商业性使用-禁止演绎 4.0 国际 (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh) 协议发布；
@@ -740,12 +740,12 @@ SELECT *
 FROM Customers;
 ```
 
-  
+# TODO
 
-# Schedule
-
-- 空值会给数据的访问和更新带来不便，应减少使用；
+- 总页数：192 页；
+- 每天 10 页，7 月 30 日完成；
+- 当前进度：Page 0；
 
 # References
 
-[1] Forta B, 钟鸣, 刘晓霞. SQL 必知必会[J]. 2013.
+[1] Forta B. MySQL 必知必会[M]. 北京: 人民邮电出版社, 2020.
