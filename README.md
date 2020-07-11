@@ -13,7 +13,7 @@
 - [操作系统](./OS/OS.md)；
 - [计算机网络](./ComputeNetworks.md)；
 - [设计模式](./DesignPatterns/DesignPatterns.md)；
-- [数据库](./Database/Database.md)；
+- [数据库系统概念](./Database/Database.md)；
 - [算法](./Algorithm.md)；
 
 # 4. 语言和框架
@@ -22,6 +22,7 @@
 - [Java Web](./JavaWeb.md)；
 - [JVM](./Java/JVM/JVM.md)；
 - [Spring](./Java/Spring/SpringInAction.md)；
+- [SQL](./Database/SQL/SQL.md)；
 - [常见语法问题清单](./Programme.md)；
 
 # ==TODO==
