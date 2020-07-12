@@ -25,8 +25,6 @@
     - 单行注释：`-- `、`#`；
     - 多行注释：`/*...*/ `；
 
-
-
 ### 3.1.2 DDL
 
 #### 3.1.2.1 数据库和表的创建修改
@@ -81,8 +79,6 @@ ALTER TABLE tableName RENAME TO newTableName;
   - 创建表时，在`PRIMARY KEY`关键字后加`AUTO_INCREMENT`；	
 - 非空约束：创建表时，在变量类型后加关键字`NOT NULL`；
 - 唯一约束：创建表时，在变量类型后加关键字`UNIQUE`；
-
-
 
 #### 3.1.2.2 插入
 
@@ -744,8 +740,9 @@ FROM Customers;
 
 - 总页数：192 页；
 - 每天 10 页，7 月 30 日完成；
-- 当前进度：Page 0；
+- [ ] 当前进度：Page 7，Chapter 1 已完成；
+- [ ] 学习附录 A、B；
 
 # References
 
-[1] Forta B. MySQL 必知必会[M]. 北京: 人民邮电出版社, 2020.
+[1] Forta B. MySQL 必知必会[M]. 北京: 人民邮电出版社, 2009.

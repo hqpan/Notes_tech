@@ -14,7 +14,7 @@
 - DBS：Database System，数据库系统；
   - 数据库：相互关联的数据集合；
   - 访问数据的应用程序；
-- DBMS：database management system ;
+- DBMS：database management system，E.g. MySQL;
 - SQL:  Structured Query Language ，结构化查询语言；
   - 发音：为字母 S-Q-L 或 sequel ['sikwəl] ；
   - query，n. & vt. 查询；
@@ -85,7 +85,7 @@
 - 属性：指代列；
 - 导出列：即给列取别名；
 - field：字段/计算字段，计算后得到的列，便于区分表中原有的列；
-- row / record: 行 / 记录；
+- 行：亦称记录；
 - n 元组：有 n 个值的元组，对应于表中的一行；
 - 超码：一个或多个属性的集合，可用于唯一标识一个元组；
   - 候选码：最小的超码；
