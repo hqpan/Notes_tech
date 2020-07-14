@@ -7,16 +7,12 @@
 - 如有侵权，请与本人联系（hqpan@foxmail.com），经核实后即刻删除；
 - 本文采用 [署名-非商业性使用-禁止演绎 4.0 国际 (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh) 协议发布；
 
-# 3. 初级 SQL
-
-## 3.1 定义和语言特点
-
-### 3.1.1 定义和语言特点
+# 1. MySQL 概述
 
 - DDL 和 DML：
   - DDL：Data-Defination Language，数据定义语言；
   - DML：Data-Manipulation Language，数据操纵语言；
-- SQL语句书写要求：
+- MySQL ：
   - 不区分大小写；
   - 建议将关键字大写，列名和表名小写，提高代码可读性；
   - 语句执行时，忽略其中所有空格，多条语句用分号分隔；
@@ -25,7 +21,13 @@
     - 单行注释：`-- `、`#`；
     - 多行注释：`/*...*/ `；
 
-### 3.1.2 DDL
+# 2. 检索数据
+
+- ==unsolved==
+
+## 3.1 定义和语言特点
+
+### 3.1.1 DDL
 
 #### 3.1.2.1 数据库和表的创建修改
 
@@ -33,7 +35,6 @@
   - `SHOW DATABASES`：查看所有数据库名单；
   - `SHOW TABLES`：查看所有表名；
   - `DESC tableName`：查看表的详细信息，description；
-- `USE databaseName`：选择待操作的数据库；
 - 创建：
   - 创建数据库：
     - `CREATE DATABASE test`；
@@ -48,6 +49,7 @@ columnName type,
 );
 ```
 
+- 使用并选择数据库：`USE databaseName`；
 - 删除：
   - 删除数据库：
     - `DROP DATABASE databaseName`；
@@ -740,8 +742,9 @@ FROM Customers;
 
 - 总页数：192 页；
 - 每天 10 页，7 月 30 日完成；
-- [ ] 当前进度：Page 7，Chapter 1 已完成；
-- [ ] 学习附录 A、B；
+- 当前进度：Page 25，Chapter 4.5 已完成；
+- 延误进度：7 页；
+- 参考笔记整理进度：Chapter 1 已完成；
 
 # References
 
