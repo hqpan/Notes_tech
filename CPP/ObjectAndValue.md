@@ -7,9 +7,9 @@
 - 如有侵权，请与本人联系（hqpan@foxmail.com），经核实后即刻删除；
 - 转载请注明出处；
 
-# 3.1 input
+# 1. input
 
-## 3.1.1 notation & explanation
+## 1.1 notation & explanation
 
 - cin: abbreviation of "character input" ;
 - cin 读取 string 时，遇空白符则终止， e.g. 空格、换行、tab ；
@@ -22,13 +22,13 @@
 - decltype；
   - `decltype(i) a`：定义变量 a，其变量类型与 i 相同；
 
-## 3.1.2 function
+## 1.2 function
 
 | function | description |
 | :------: | :---------: |
 |  sqrt()  |  求平方根   |
 
-# 3.2 变量
+# 2. 变量
 
 ```cpp
 // ***********************************************************************************************
@@ -81,7 +81,7 @@ remark:
 
 ```
 
-# 3.3 类型安全
+# 3. 类型安全
 
 - 在 CPP 中，养成初始化变量的习惯；
 - 安全转换；
@@ -108,11 +108,9 @@ remark:
  int a {1000};
  // true;
  char b {a};
- // false, narrowing;
- 
+ // false, narrowing; 
 ```
 
-## 3.3.1 显式类型转换
 - 显式类型转换：使读者易于看出代码思路；
 ```cpp
 int x1 = int(x);

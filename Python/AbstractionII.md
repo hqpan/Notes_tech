@@ -1,4 +1,4 @@
-@[toc]
+[toc]
 # 版权声明
 
 - Python 系列笔记来源于 Magnus Lie Hetland 的著作《Python基础教程》[1]；
