@@ -30,8 +30,28 @@
 
 # 4. 语言和框架
 
+- C++：
+  - [Chapter 1 C++基本概念](./CPP/Introduction.md)；
+  - [Chapter 2 对象、类型和值](./CPP/ObjectAndValue.md)；
+  - [Chapter 3 计算](./CPP/Compute.md)；
+  - [Chapter 4 错误](./CPP/Error.md)；
+  - [Chapter 5 编写一个程序](./CPP/WriteACode.md)；
+  - [Chapter 6 函数](./CPP/Function.md)；
+  - [Chapter 7 类](./CPP/Class.md)；
+  - [Chapter 8 输入输出流-未完成](./CPP/InputAndOutput.md)；
+  - [Chapter 9 向量和自由空间](./CPP/Vector.md)；
 - [Java基本语法](./Java/CoreJava.md)；
 - [JVM](./Java/JVM/JVM.md)；
+- Python：
+  - [Chapter 1 字符串](./Python/String.md)；
+  - [Chapter 2 映射](./Python/Mapping.md)；
+  - [Chapter 3 条件、循环及其它语句](./Python/Statement.md)；
+  - [Chapter 4 抽象](./Python/Abstraction.md)；
+  - [Chapter 5 抽象II](./Python/AbstractionII.md)；
+  - [Chapter 6 异常](./Python/Exception.md)；
+  - [Chapter 7 特殊方法、特性和迭代器](./Python/Iterator.md)；
+  - [Chapter 8 Module](./Python/Module.md)；
+  - [Chapter 9 文件](./Python/File.md)；
 - [Spring](./Java/Spring/SpringInAction.md)；
 - [SQL](./Database/SQL/SQL.md)；
 - [XML](./Java/XML/XML.md)；
