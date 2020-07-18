@@ -2,7 +2,7 @@
 
 # 版权声明
 
-- 设计模式系列学习笔记来源 Andrew S. Tanenbaum 和 Herbert Bos 的著作《现代操作系统》第4版[1]；
+- 操作系统系列学习笔记来源 Andrew S. Tanenbaum 和 Herbert Bos 的著作《现代操作系统》第4版[1]；
 - 该系列笔记不以盈利为目的，仅用于个人学习、课后复习及科学研究；
 - 如有侵权，请与本人联系（hqpan@foxmail.com），经核实后即刻删除；
 - 本文采用 [署名-非商业性使用-禁止演绎 4.0 国际 (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh) 协议发布；

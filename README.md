@@ -6,12 +6,12 @@
 
 # 2. Math
 
-- [线性代数](./Essence_of_linear_algebra.md)；
+- [线性代数](./Math/Essence_of_linear_algebra.md)；
 
 # 3. Basic courses
 
 - [操作系统](./OS/OS.md)；
-- [计算机网络](./ComputeNetworks.md)；
+- [计算机网络](./Network/ComputeNetworks.md)；
 - [设计模式](./DesignPatterns/DesignPatterns.md)；
 - [数据库系统概念](./Database/Database.md)；
 - [算法](./Algorithm/Algorithm.md)；
