@@ -1,6 +1,7 @@
 [TOC]
 
-# 0. 版权声明
+# 版权声明
+
 - Essence of linear algebra 系列笔记来源于 3Blue1Brown 在 YouTube 网站上发布的课程 *Essence of linear algebra*，bilibili 网站的 3Blue1Brown 中国官方账号亦提供了该课程资源 [1]；
 - 该系列笔记不以盈利为目的，仅用于个人学习、课后复习及科学研究；
 - 如有侵权，请与本人联系（hqpan@foxmail.com），经核实后即刻删除；
@@ -59,7 +60,7 @@
   - bc 表示平行四边形在对角方向上拉伸或压缩了多少；
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190507164738411.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L01heGltaXplMQ==,size_16,color_FFFFFF,t_70)
 
-- 行列式$\begin{vmatrix}a & b\\ c & d\end{vmatrix}$还可表示由向量$\begin{bmatrix}a  \\ c  \end{bmatrix}$、$\begin{bmatrix}b  \\d  \end{bmatrix}​$组成的平行四边形的面积；
+- 行列式$\begin{vmatrix}a & b\\ c & d\end{vmatrix}$还可表示由向量$\begin{bmatrix}a  \\ c  \end{bmatrix}$、$\begin{bmatrix}b  \\d  \end{bmatrix}$组成的平行四边形的面积；
 
 # 6. Inverse matrices, column space, rank and null space（逆矩阵，列空间，秩，零向量）
 
@@ -106,9 +107,9 @@
 - 点积的数学含义：
   - 令向量$\overrightarrow{x}$对向量$\overrightarrow{y}$做投影，将投影结果与向量$\overrightarrow{y}$相乘，结果即为点积；
     - 点积结果可正可负，取决于两个向量之间的相对位置关系；
-  - Intuition: $\begin{bmatrix}x_1 & y_1 \end{bmatrix}\begin{bmatrix}x_2 \\y_2 \end{bmatrix}=x_1\cdot x_2+y_1\cdot y_2​$;
+  - Intuition: $\begin{bmatrix}x_1 & y_1 \end{bmatrix}\begin{bmatrix}x_2 \\y_2 \end{bmatrix}=x_1\cdot x_2+y_1\cdot y_2$;
     - 将$\begin{bmatrix}x_1 & y_1 \end{bmatrix}$视为一种空间变换，将二维空间压缩为一维空间；
-  - 更一般的情况，$\begin{bmatrix}x_1 & x_2 & \cdots & x_n \end{bmatrix}\begin{bmatrix}y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}=\sum_{i=1}^nx_iy_i​$;
+  - 更一般的情况，$\begin{bmatrix}x_1 & x_2 & \cdots & x_n \end{bmatrix}\begin{bmatrix}y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}=\sum_{i=1}^nx_iy_i$;
       - 向量（空间变化）$\begin{bmatrix}x_1 & x_2 & \cdots & x_n \end{bmatrix}$将n维空间压缩为一维空间；
       - 换言之，每个从n维空间压缩为一维空间的变换，都对应一个n维空间中的向量；
 
@@ -117,21 +118,21 @@
 # 9. Cross products in the light of linear transformations
 
 - `Cross product/Vector product`：叉积 [2];
-  - $\overrightarrow{c}=\overrightarrow{a}\times \overrightarrow{b}​$；
-  - $\overrightarrow{c}$的模长：等于以$\overrightarrow{a}，\overrightarrow{b}​$为边的平行四边形的面积；
+  - $\overrightarrow{c}=\overrightarrow{a}\times \overrightarrow{b}$；
+  - $\overrightarrow{c}$的模长：等于以$\overrightarrow{a}，\overrightarrow{b}$为边的平行四边形的面积；
   - $\overrightarrow{c}$的方向：满足右手定则；
     - 在计算结果上表现为，叉积的结果有正负之分；
   - 若两个向量方向相同或相反（即它们非线性无关），亦或任意一个的模长为零，那么它们的叉积为零；
 - 叉积与线性变换的关系：
-  - 对某个线性变换（即矩阵）求行列式，行列式的值表示，相对于空间变换前的单位面积$\overrightarrow{i}\times \overrightarrow{j}​$变化的比例，即平行四边形的面积；
+  - 对某个线性变换（即矩阵）求行列式，行列式的值表示，相对于空间变换前的单位面积$\overrightarrow{i}\times \overrightarrow{j}$变化的比例，即平行四边形的面积；
   - 二维向量的叉积：对两个二维向量组成的矩阵求行列式，即可得模长；
-- 三维向量的叉积：$\begin{bmatrix}x_1 \\ y_1 \\ z_1 \end{bmatrix} \times \begin{bmatrix}x_2 \\ y_2 \\ z_2 \end{bmatrix}=det\left(\begin{bmatrix}\widehat{i} & x_1 & x_2 \\ \widehat{j} & y_1 & y_2 \\ \widehat{k} & z_1 & z_2 \end{bmatrix}\right)​$；
+- 三维向量的叉积：$\begin{bmatrix}x_1 \\ y_1 \\ z_1 \end{bmatrix} \times \begin{bmatrix}x_2 \\ y_2 \\ z_2 \end{bmatrix}=det\left(\begin{bmatrix}\widehat{i} & x_1 & x_2 \\ \widehat{j} & y_1 & y_2 \\ \widehat{k} & z_1 & z_2 \end{bmatrix}\right)$；
   - 等式右侧的行列式的几何意义：由三个向量在空间中构成的六边形的体积；
   - 推导过程：
-    - 对于$\begin{bmatrix}p_1 \\ p_2 \\ p_3 \end{bmatrix} \times \begin{bmatrix}x \\ y \\ z \end{bmatrix}=det\left(\begin{bmatrix}x & x_1 & x_2 \\ y & y_1 & y_2 \\ z & z_1 & z_2 \end{bmatrix}\right)​$，当且仅当向量$\begin{bmatrix}p_1 \\ p_2 \\ p_3 \end{bmatrix}​$模长等于$\begin{bmatrix}x_1 \\ y_1 \\ z_1 \end{bmatrix}​$和$\begin{bmatrix}x_2 \\ y_2 \\ z_2 \end{bmatrix}​$构成的平行四边形的面积时，该式成立；
+    - 对于$\begin{bmatrix}p_1 \\ p_2 \\ p_3 \end{bmatrix} \times \begin{bmatrix}x \\ y \\ z \end{bmatrix}=det\left(\begin{bmatrix}x & x_1 & x_2 \\ y & y_1 & y_2 \\ z & z_1 & z_2 \end{bmatrix}\right)$，当且仅当向量$\begin{bmatrix}p_1 \\ p_2 \\ p_3 \end{bmatrix}$模长等于$\begin{bmatrix}x_1 \\ y_1 \\ z_1 \end{bmatrix}$和$\begin{bmatrix}x_2 \\ y_2 \\ z_2 \end{bmatrix}$构成的平行四边形的面积时，该式成立；
     - 若取$\begin{bmatrix}x \\ y \\ z \end{bmatrix}=\begin{bmatrix}\widehat{i} \\ \widehat{j} \\ \widehat{k} \end{bmatrix}$，则$\begin{bmatrix}p_1 \\ p_2 \\ p_3 \end{bmatrix} \times \begin{bmatrix}\widehat{i} \\ \widehat{j} \\ \widehat{k} \end{bmatrix}=det\left(\begin{bmatrix}\widehat{i} & x_1 & x_2 \\ \widehat{j} & y_1 & y_2 \\ \widehat{k} & z_1 & z_2 \end{bmatrix}\right)$；
       - 等式左侧表示向量$\overrightarrow{p}=p_1\overrightarrow{i}+p_2\overrightarrow{j}+p_3\overrightarrow{k}$，该向量的模长等于$\begin{bmatrix}x_1 \\ y_1 \\ z_1 \end{bmatrix}$和$\begin{bmatrix}x_2 \\ y_2 \\ z_2 \end{bmatrix}$构成的平行四边形的面积；
-      - 因此可用$det\left(\begin{bmatrix}\widehat{i} & x_1 & x_2 \\ \widehat{j} & y_1 & y_2 \\ \widehat{k} & z_1 & z_2 \end{bmatrix}\right)​$表示叉积所得的向量；
+      - 因此可用$det\left(\begin{bmatrix}\widehat{i} & x_1 & x_2 \\ \widehat{j} & y_1 & y_2 \\ \widehat{k} & z_1 & z_2 \end{bmatrix}\right)$表示叉积所得的向量；
 
 # 10. Change of basis（基变换）
 
@@ -183,19 +184,19 @@
 
     - 特征基：用特征向量作为基向量；
     - 矩阵对角化带来的计算优势：
-      - E.g. $\begin{bmatrix}1 & -1 \\0 & 1 \end{bmatrix}^1\begin{bmatrix}3 & 1 \\0 & 2 \end{bmatrix}\begin{bmatrix}1 & -1 \\0 & 1 \end{bmatrix}=\begin{bmatrix}3 & 0 \\0 & 2 \end{bmatrix}​$；
-      - 计算$\begin{bmatrix}3 & 1 \\0 & 2 \end{bmatrix}^{100}​$；
+      - E.g. $\begin{bmatrix}1 & -1 \\0 & 1 \end{bmatrix}^1\begin{bmatrix}3 & 1 \\0 & 2 \end{bmatrix}\begin{bmatrix}1 & -1 \\0 & 1 \end{bmatrix}=\begin{bmatrix}3 & 0 \\0 & 2 \end{bmatrix}$；
+      - 计算$\begin{bmatrix}3 & 1 \\0 & 2 \end{bmatrix}^{100}$；
 
 
 
 # 12. 抽象向量空间
 
 - 用矩阵实现求导：由于求导是线性变换，因此该过程得以实现；
-  - $\begin{bmatrix}0 & 1 & 0 & 0 & \cdots \\0 & 0 & 2 & 0 & \cdots \\ 0 & 0 & 0 & 3 & \cdots \\ 0 & 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \\ \end{bmatrix}​$；
-    - 该矩阵中的非零值分别表示$x^n\rightarrow nx^{n-1}​$中乘上的系数n；
-  - 直接求导：$\frac{\text{d}}{\text{d}x}(1x^3+5x^2+4x+5)=3x^2+10x+4​$；
-  - 矩阵求导：$\begin{bmatrix}0 & 1 & 0 & 0 & \cdots \\0 & 0 & 2 & 0 & \cdots \\ 0 & 0 & 0 & 3 & \cdots \\ 0 & 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \\ \end{bmatrix}\begin{bmatrix}5 \\ 4 \\ 5 \\ 1 \\ \vdots \end{bmatrix}=\begin{bmatrix}1\cdot 4 \\ 2\cdot 5 \\ 3\cdot 1 \\ 0 \\ \vdots \end{bmatrix}​$；
-    - 向量$\begin{bmatrix}5 \\ 4 \\ 5 \\ 1 \\ \vdots \end{bmatrix}​$中的元素表示各次项的系数；
+  - $\begin{bmatrix}0 & 1 & 0 & 0 & \cdots \\0 & 0 & 2 & 0 & \cdots \\ 0 & 0 & 0 & 3 & \cdots \\ 0 & 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \\ \end{bmatrix}$；
+    - 该矩阵中的非零值分别表示$x^n\rightarrow nx^{n-1}$中乘上的系数n；
+  - 直接求导：$\frac{\text{d}}{\text{d}x}(1x^3+5x^2+4x+5)=3x^2+10x+4$；
+  - 矩阵求导：$\begin{bmatrix}0 & 1 & 0 & 0 & \cdots \\0 & 0 & 2 & 0 & \cdots \\ 0 & 0 & 0 & 3 & \cdots \\ 0 & 0 & 0 & 0 & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \\ \end{bmatrix}\begin{bmatrix}5 \\ 4 \\ 5 \\ 1 \\ \vdots \end{bmatrix}=\begin{bmatrix}1\cdot 4 \\ 2\cdot 5 \\ 3\cdot 1 \\ 0 \\ \vdots \end{bmatrix}$；
+    - 向量$\begin{bmatrix}5 \\ 4 \\ 5 \\ 1 \\ \vdots \end{bmatrix}$中的元素表示各次项的系数；
     - 向量$\begin{bmatrix}1\cdot 4 \\ 2\cdot 5 \\ 3\cdot 1 \\ 0 \\ \vdots \end{bmatrix}$表示求导结果；
 
 - 如果一个理论或概念满足的8条公理 [3]，则该概念适用于一个线性空间；
@@ -204,20 +205,14 @@
 
 - Cramer 法则不是求解线性方程组最有效率的方法；
   - 未知数与方程个数相等时适用于该方法；
-- E.g. $\begin{bmatrix}3 & 2 \\-1 & 2 \end{bmatrix}\begin{bmatrix}x \\ y \end{bmatrix}=\begin{bmatrix}-4 \\ -2 \end{bmatrix}​$；
+- E.g. $\begin{bmatrix}3 & 2 \\-1 & 2 \end{bmatrix}\begin{bmatrix}x \\ y \end{bmatrix}=\begin{bmatrix}-4 \\ -2 \end{bmatrix}$；
   - 求解该方程组的几何含义：对向量$\begin{bmatrix}x \\ y \end{bmatrix}$执行线性变换$\begin{bmatrix}3 & 2 \\-1 & 2 \end{bmatrix}$，可得向量$\begin{bmatrix}-4 \\ -2 \end{bmatrix}$；
-  - 对上式变形有 $x\begin{bmatrix}3  \\-1  \end{bmatrix}+y\begin{bmatrix}2 \\ 2 \end{bmatrix}=\begin{bmatrix}-4 \\ -2 \end{bmatrix}​$；
-    - $x\begin{bmatrix}3  \\-1  \end{bmatrix}​$表示将新空间中的基向量缩放 x 倍；
-    - $y\begin{bmatrix}2 \\ 2 \end{bmatrix}​$表示将新空间中的基向量缩放 y 倍；
-
-
-
-10:21
-
-
-
+  - 对上式变形有 $x\begin{bmatrix}3  \\-1  \end{bmatrix}+y\begin{bmatrix}2 \\ 2 \end{bmatrix}=\begin{bmatrix}-4 \\ -2 \end{bmatrix}$；
+    - $x\begin{bmatrix}3  \\-1  \end{bmatrix}$表示将新空间中的基向量缩放 x 倍；
+    - $y\begin{bmatrix}2 \\ 2 \end{bmatrix}$表示将新空间中的基向量缩放 y 倍；
 
 # References
+
 [1] 3Blue1Brown. 线性代数的本质[DB/OL]. https://www.bilibili.com/video/av6731067. 2016-10-18/2019-06-24.
 
 [2] 维基百科. 叉积[DB/OL]. https://zh.wikipedia.org/wiki/叉积. 2019-01-05/2019-06-24.

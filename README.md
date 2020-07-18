@@ -14,15 +14,27 @@
 - [计算机网络](./ComputeNetworks.md)；
 - [设计模式](./DesignPatterns/DesignPatterns.md)；
 - [数据库系统概念](./Database/Database.md)；
-- [算法](./Algorithm.md)；
+- [算法](./Algorithm/Algorithm.md)；
+- 机器学习：
+  - [Chapter 1 机器学习基本概念](./ML/Introduction.md)；
+  - [Chapter 2 线性回归与多元变量](./ML/LinearRegressionWithMultipleVariables.md)；
+  - [Chapter 3 逻辑回归](./ML/LogisticRegression.md)；
+  - [Chapter 4 神经网络的表示](./ML/NeuralNetworksRepresentation.md)；
+  - [Chapter 5 神经网络的学习](./ML/NeuralNetworksLearning.md)；
+  - [Chapter 6 应用机器学习的建议](./ML/AdviceForApplyingMachineLearning.md)；
+  - [Chapter 7 SVM](./ML/SVM.md)；
+  - [Chapter 8 无监督学习与数据降维](./ML/UnsupervisedLearning.md)；
+  - [Chapter 9 异常检测与推荐系统](./ML/AnomalyDetection.md)；
+  - [Chapter 10 大规模机器学习](./ML/LargeScaleMachineLearning.md)；
+  - [Chapter 11 应用案例：OCR](./ML/ApplicationExamplePhotoOCR.md)；
 
 # 4. 语言和框架
 
 - [Java基本语法](./Java/CoreJava.md)；
-- [Java Web](./JavaWeb.md)；
 - [JVM](./Java/JVM/JVM.md)；
 - [Spring](./Java/Spring/SpringInAction.md)；
 - [SQL](./Database/SQL/SQL.md)；
+- [XML](./Java/XML/XML.md)；
 - [常见语法问题清单](./Programme.md)；
 
 # ==TODO==
