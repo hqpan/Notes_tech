@@ -1585,7 +1585,63 @@ class MessageImpl implements IMessage<String> {}
 
 
 
-# 9. 集合
+# 9. 容器
+
+## 9.1 容器类别
+
+- 容器：
+  - Collection：存储对象的集合；
+  - Map：储存键值对，即两个对象的映射关系；
+
+## 9.2 Collection
+
+- Collection 的继承、实现关系：
+
+```mermaid
+graph BT
+	1(TreeSet) --> 2(<< interface>> SortedSet)
+	2(<< interface>> SortedSet) --> 3(<< interface>> Set)
+	4(HashSet) --> 3(<< interface>> Set)
+	5(LinkedHashSet) --> 3(<< interface>> Set)
+	6(ArrayList) --> 7(<< interface>> List)
+	8(Vector) --> 7(<< interface>> List)
+	9(LinkedList) --> 7(<< interface>> List)
+	9(LinkedList) --> 10(<< interface>> Queue)
+	11(PriorityQueue) --> 10(<< interface>> Queue)
+	3(<< interface>> Set) --> 12(<< interface>> Collection)
+	7(<< interface>> List) --> 12(<< interface>> Collection)
+	10(<< interface>> Queue) --> 12(<< interface>> Collection)
+```
+
+- Set：
+  - Treeset：
+    - 实现方式：红黑树，支持有序性操作；
+    - 查找的时间复杂度：$O(logn)$；
+  - HashSet：
+    - 实现方式：哈希表，不支持有序性操作；
+    - 查找的时间复杂度：$O(1)$；
+    - 缺陷：不保存数据插入顺序信息，遍历时得到无序结果；
+  - LinkedHashSet：
+    - 实现方式：哈希表，不支持有序性操作；
+    - 查找的时间复杂度：$O(1)$；
+    - 优点：用双向链表保存数据插入顺序信息，遍历时得到有序结果；
+
+## 9.3 Map
+
+- Map 的继承、实现关系：
+
+```mermaid
+graph BT
+	1(TreeMap) --> 2(<< interface>> SortedMap)
+	2(<< interface>> SortedMap) --> 3(<< interface>> Map)
+	4(HashTable) --> 3(<< interface>> Map)
+	5(LinkedHashMap) --> 3(<< interface>> Map)
+	6(HashMap) --> 3(<< interface>> Map)
+```
+
+
+
+
 
 - 链表不支持快速随机访问，查找元素时均需从链表的头部开始搜索；
 - 使用动态数组时，在`ArrayList`与`Vector`之间的取舍：
@@ -1804,7 +1860,9 @@ graph LR
 
 # TODO
 
-- [ ] 当前进度：Java 基础 Chapter 1 已复习完成；
+- [ ] 当前进度：
+  - [ ] Java 基础 Chapter 1 已复习完成；
+  - [ ] Java 容器 Chapter 1 处理中；
 
 # References
 
