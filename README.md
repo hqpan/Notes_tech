@@ -27,6 +27,7 @@
   - [Chapter 9 异常检测与推荐系统](./ML/AnomalyDetection.md)；
   - [Chapter 10 大规模机器学习](./ML/LargeScaleMachineLearning.md)；
   - [Chapter 11 应用案例：OCR](./ML/ApplicationExamplePhotoOCR.md)；
+- [动手学深度学习](./DL/DiveIntoDL.md)；
 
 # 4. 语言和框架
 
