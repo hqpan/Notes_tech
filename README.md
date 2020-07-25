@@ -13,7 +13,7 @@
 - [操作系统](./OS/OS.md)；
 - [计算机网络](./Network/ComputeNetworks.md)；
 - [设计模式](./DesignPatterns/DesignPatterns.md)；
-- [数据库系统概念](./Database/Database.md)；
+- [数据库系统概念](./Database/Database/Database.md)；
 - [算法](./Algorithm/Algorithm.md)；
 - 机器学习：
   - [Chapter 1 机器学习基本概念](./ML/Introduction.md)；
