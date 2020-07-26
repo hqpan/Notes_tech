@@ -345,6 +345,117 @@
     - 保留右表中没有关联行的行，将缺失的内容记为 NULL；
     - 关键字`RIGHT OUTER JOIN … ON`；
 
+# 10. 集合运算
+
+## 10.1 定义
+
+- 集合运算：将多个`SELECT`语句的返回结果执行集合运算后输出；
+  - 并运算：`union`；
+  - 交运算：`intersect`；
+  - 并运算：`except`；
+
+## 10.2 集合运算
+
+- 并运算：
+  - `union`：对重复行，只返回一次；
+  - `union all`：返回所有重复行；
+- 交运算：
+  - `intersect`；
+  - `intersect all`；
+- 并运算：
+  - `except`；
+  - `except all`：当前者的重复元素数量大于后者时，才会出现在结果中；
+- 组合查询的使用原则：
+  - 仅在最后一个`SELECT`语句后加分号；
+  - 各查询必须包含相同的列、表达式、聚集函数（不必以相同的次序列出）；
+  - 各列的数据类型必须兼容，即是 DBMS 可以隐含转换的类型；
+  - 对组合查询结果排序：`ORDER BY`子句仅在最后一条`SELECT`语句后出现一次；
+
+# 11. 全文本搜索
+
+- MySQL 支持的数据库引擎：
+  - MyISAM：支持全文本搜索；
+  - InnoDB：不支持全文本搜索；
+- 在创建表时启用全文本搜索：
+  - 在 CREATE TABLE 语句中添加 FULLTEXT() 子句，以待索引的列名作为子句参数；
+  - 索引被定义后，MySQL 在增删改查时自动更新该索引；
+- 全文本搜索示例：
+
+```SQL
+SELECT note_text
+FROM productnotes
+WHERE Match(note_text) Against('rabbit');
+```
+
+|   函数    |      作用      |
+| :-------: | :------------: |
+|  Match()  | 指定待搜索的列 |
+| Against() | 指定搜索表达式 |
+
+- 全文本搜索对结果排序，先返回具有较高等级的行；
+  - 根据词的数目、唯一词的数目、整个索引中词的总数以及包含该词的行的数目计算等级；
+  - 排序多行时考虑多个待检索词的出现频率；
+
+```SQL
+SELECT note_text, Match(note_text) Against('rabbit') AS rank
+FROM productnotes
+```
+
+# 12. 插入数据
+
+## 12.1 INSERT 语句
+
+- `INSERT`语句的功能：
+  - 插入完整行；
+  - 插入行中的部分项；
+  - 插入某些查询的结果；
+
+## 12.2 插入完整行
+
+- INSERT 语句使用要求：
+  - 尽量使用指定列名的 INSERT 语句；
+  - 对未指定值的项，赋值为 NULL；
+  - 对于自动增量的列，赋值为 NULL；
+  - 对于满足如下条件的列，可在赋值时省略：
+    - 该列允许为 NULL；
+    - 表定义时提供了默认值；
+
+```SQL
+-- 指定列名的填充
+INSERT INTO Customers(cust_id,cust_name)
+VALUES('1000000006', 'Toy Land');
+-- 不指定列名的填充
+INSERT INTO Customers				
+VALUES('1000000006', 'Toy Land');
+```
+
+## 12.3 插入行中的部分项
+
+- 使用指定列名的`INSERT`语句，可省略部分项不填充，但须满足以下某个条件：
+  - 在表的定义中，允许该列的值为`NULL`；
+  - 在表的定义中给出默认值；
+  - 即省略部分项时，将使用`NULL`或默认值；
+
+12.4 插入某些查询的检索结果
+
+- `INSERT  ... SELECT ...`语句根据列的位置填充，而非根据列名填充；
+
+  - 即`SELECT`中的第一列填充至`INSERT`中的第一列；
+
+  ```sql
+  INSERT INTO Customers(cust_name, cust_id)
+  SELECT cust_name, cust_id
+  FROM CustNew;
+  ```
+
+## 12.5 将数据从一张表复制到另一张表
+
+```sql
+CREATE TABLE Customers AS
+SELECT *
+FROM Customers;
+```
+
 # Unsolved
 
 ## 3.1 定义和语言特点
@@ -403,22 +514,6 @@ ALTER TABLE tableName RENAME TO newTableName;
   - 创建表时，在`PRIMARY KEY`关键字后加`AUTO_INCREMENT`；	
 - 非空约束：创建表时，在变量类型后加关键字`NOT NULL`；
 - 唯一约束：创建表时，在变量类型后加关键字`UNIQUE`；
-
-#### 3.1.2.2 插入
-
-```mysql
-INSERT INTO tableName (
-	columnName1, columnNaem2, ...
-) VALUES (
-	...
-);
--- 不指出列名
-INSERT INTO tableName VALUES (
-	...
-);
-```
-
-
 
 #### 3.1.2.3 更新和删除
 
@@ -863,110 +958,14 @@ FOREIGN KEY (dept_name) REFERENCES department
 - 过程：
   - 允许过程同名，只需保持参数个数不同即可；
 
-
-
-# 旧版本笔记分割线
-
-
-# 14. 集合运算
-
-## 14.1 定义
-
-- 集合运算：将多个`SELECT`语句的返回结果执行集合运算后输出；
-  - 并运算：`union`；
-  - 交运算：`intersect`；
-  - 并运算：`except`；
-
-## 14.2 集合运算
-
-- 并运算：
-  - `union`：对重复行，只返回一次；
-  - `union all`：返回所有重复行；
-- 交运算：
-  - `intersect`；
-  - `intersect all`；
-- 并运算：
-  - `except`；
-  - `except all`：当前者的重复元素数量大于后者时，才会出现在结果中；
-- 组合查询的使用原则：
-  - 仅在最后一个`SELECT`语句后加分号；
-  - 各查询必须包含相同的列、表达式、聚集函数（不必以相同的次序列出）；
-  - 各列的数据类型必须兼容，即是 DBMS 可以隐含转换的类型；
-  - `ORDER BY`子句仅在最后一条`SELECT`语句中出现一次；
-
-
-
-# 15. 插入数据
-
-## 15.1 INSERT 语句
-
-- `INSERT`语句的功能：
-  - 插入完整行；
-  - 插入行中的部分项；
-  - 插入某些查询的结果；
-
-
-
-## 15.2 插入完整行
-
-- 对未指定值的项，将其赋值为`NULL`；
-
-- 尽量使用明确指定列名的`INSERT`语句；
-
-  - 即使列的次序发生变化，也能正确填充数据；
-
-  ```sql
-  INSERT INTO Customers(cust_id,cust_name)
-  VALUES('1000000006', 'Toy Land');
-  
-  INSERT INTO Customers				-- 不指定列名的填充；
-  VALUES('1000000006', 'Toy Land');
-  
-  
-  
-  ```
-
-
-
-## 15.3 插入行中的部分项
-
-- 使用指定列名的`INSERT`语句，可省略部分项不填充，但须满足以下某个条件：
-  - 在表的定义中，允许该列的值为`NULL`；
-  - 在表的定义中给出默认值；
-  - 即省略部分项时，将使用`NULL`或默认值；
-
-
-
-## 15.4 插入某些查询的检索结果
-
-- `INSERT  ... SELECT ...`语句根据列的位置填充，而非根据列名填充；
-
-  - 即`SELECT`中的第一列填充至`INSERT`中的第一列；
-
-  ```sql
-  INSERT INTO Customers(cust_name, cust_id)
-  SELECT cust_name, cust_id
-  FROM CustNew;
-  ```
-
-
-
-## 15.5 将数据从一张表复制到另一张表
-
-```sql
-CREATE TABLE Customers AS
-SELECT *
-FROM Customers;
-```
-
 # TODO
 
 - 总页数：192 页；
 - 每天 20 页，7 月 30 日完成；
-- 当前进度：Page 112，Chapter 16 已完成；
+- 当前进度：Page 134，Chapter 19.2 已完成；
 - 参考笔记整理进度：
   - 每次整理2节；
-  - 已完成：1 、7-15；
+  - 已完成：1 、7-16；
 
 # References
 
