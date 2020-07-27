@@ -70,7 +70,9 @@
 
 - WHERE 和 HAVING 的区别：
   - WHERE：在分组前过滤行；
-  - HAVING：在分组后过滤分组，应用于分组中聚集计算的结果；
+  - HAVING：
+    - 在分组后过滤分组，应用于分组中聚集计算的结果；
+    - 任意出现在`having`子句中，且未被聚集的属性，必须出现在`group by`中；
 
 ## 2.2 LIMIT
 
@@ -104,10 +106,13 @@
 
 ## 2.5 通配符
 
+- 字符串的表示：
+  - SQL 中使用单引号表示字符串；
+  - 若字符串中含有单引号，则使用连续两个单引号表示一个单引号，E.g. `''`；
 - 搜索模式：由字面量和通配符组成的搜索条件；
-  - 通配符：与`LIKE`一同使用，只能匹配文本字段；
-  - `%`：匹配$[0,+\infty)$个任意字符，不能匹配空值；
-  - `_`：匹配1个任意字符；
+  - 通配符：不使用等号，使用比较运算符`LIKE`，只能匹配文本字段；
+    - `%`：匹配$[0,+\infty)$个任意字符，不能匹配空值；
+    - `_`：匹配1个任意字符；
   - 使用示例：`WHERE column_name LIKE '[abc]'`；
     - `[abc]`：匹配集合内的所有字符；
     - `[^abc]`：不匹配集合内的所有字符；
@@ -191,13 +196,11 @@
 
 # 4. 计算字段
 
-- 字段：field，指代通过计算得到的列；
-  - `Concat()`函数使用示例：`SELECT Concat(vand_name, '(', vend_country, ')')`；
-  - 通过四则运算得到计算字段；
-
-|   函数   |      作用      |
-| :------: | :------------: |
-| Concat() | 拼接列或字符串 |
+- 字段：field，指通过计算得到的列；
+- `Concat()`函数：拼接列或字符串；
+  - concatenate， vt. 把...联系起来；
+  - 使用示例：`SELECT Concat(vand_name, '(', vend_country, ')')`；
+  - 
 
 - AS：用于指定列别名或表别名；
   - 列别名：为列或计算字段指定别名，别名亦称导出列（derived column）；
@@ -207,21 +210,27 @@
 
 ## 5.1 文本处理函数
 
-- `Soundex()`：返回字符串的 Soundex 值，用于读音相似的字符串匹配；
+|    函数     |                   作用                    |
+| :---------: | :---------------------------------------: |
+|   LTrim()   |            去除字符串左侧空格             |
+|   RTrim()   |            去除字符串右侧空格             |
+|   Trim()    | 去除字符串两侧空格，trim， vt. & n.修剪； |
+|   Left()    |             返回串左边的字符              |
+|   Right()   |             返回串右边的字符              |
+|   Upper()   |              将串转换为大写               |
+|   Lower()   |              将串转换为小写               |
+|  Locate()   |            找出串的第一个子串             |
+| SubString() |                  取子串                   |
+|  Length()   |              返回字符串长度               |
+|  Soundex()  |           返回字符串的Soundex值           |
 
-|    函数     |         作用          |
-| :---------: | :-------------------: |
-|   LTrim()   |  去除字符串左侧空格   |
-|   RTrim()   |  去除字符串右侧空格   |
-|   Trim()    |  去除字符串两侧空格   |
-|   Left()    |   返回串左边的字符    |
-|   Right()   |   返回串右边的字符    |
-|   Upper()   |    将串转换为大写     |
-|   Lower()   |    将串转换为小写     |
-|  Locate()   |  找出串的第一个子串   |
-| SubString() |        取子串         |
-|  Length()   |    返回字符串长度     |
-|  Soundex()  | 返回字符串的Soundex值 |
+- `Soundex()`：
+  - 返回字符串的 Soundex 值，用于读音相似的字符串匹配；
+  - 用于检索虽拼写错误，但发音相近的文本串；
+
+```sql
+WHERE SOUNDEX(cust_contact) = SOUNDEX('Michael Green');
+```
 
 ## 5.2 日期和时间处理函数
 
@@ -267,18 +276,18 @@
 
 - 5 个聚集函数：
   - AVG：
-    - 仅接受单个列名作为参数；
+    - 只能用于单个列，如需获得多个列的均值，则使用多个`AVG()`；
     - 计算时忽略值为 NULL 的行；
   - COUNT：
     - 若以`*`作为参数，则不忽略值为 NULL 的行；
     - 若以列名为参数，则忽略值为 NULL 的行；
   - MAX：
-    - 可用于返回数值或文本的最大值；
-    - 用于文本数据时，若数据按相应的列排序，则其返回最后一行；
+    - 返回数值或文本的最大值；
+    - 若用于文本数据，则返回该列排序后的最后一行；
     - 计算时忽略值为 NULL 的行；
   - MIN;
-    - 可用于返回数值或文本的最小值；
-    - 用于文本数据时，若数据按相应的列排序，则其返回第一行；
+    - 返回数值或文本的最小值；
+    - 若用于文本数据，则返回该列排序后的第一行；
     - 计算时忽略值为 NULL 的行；
   - SUM：计算时忽略值为 NULL 的行；
 
@@ -296,17 +305,18 @@
   - DISTINCT：去重；
     - 仅能作用于列名；
     - 不能用于`*`、计算或表达式；
+    - 由于该关键字必须作用于列名，因此不可用于`COUNT(*)`中，即使用`*`统计元组数量时不得去重；
 
 # 7. 分组数据
 
 - 使用 GROUP BY 分组后，聚集函数作用于各个分组而非整个关系；
-- 若分组列中存在 NULL 值，则将 NULL 作为一个分组返回，若列
-  中多行值为 NULL，则将其分为一组；
-- GROUP BY 子句可包含任意数目的列，对分组进行嵌套，数据将在最后规定的分组上进行汇总；
-- GROUP BY 子句中的每个列都必须为检索列或表达式，不能为聚集函数
-  - 若在 SELECT 中使用表达式，则必须在 GROUP BY 子句中指定相同的表达式；
-  - 不能使用别名；
-  - 除聚集计算语句外，SELECT 语句中的每个列都必须出现在 GROUP BY 子句中；
+- `group by`的使用要求：
+  - 可包含任意数目的列，实现嵌套分组，数据将在最后规定的分组上进行汇总；
+  - 后接的每一列必须是检索列或有效的表达式，而不能是聚集函数；
+
+  - 若在`SELECT`中使用表达式，则必须在`group by`子句中指定相同的表达式，不能使用别名；
+  - 除聚集函数中的属性之外，`SELECT`语句中的其它属性必须均在`GROUP BY`中给出；
+  - 该子句将待分组列中值为`null`的所有行视为一组；
 
 # 8. 使用子查询
 
@@ -343,7 +353,7 @@
     - 关键字：`LEFT OUTER JOIN … ON`；
   - 右外连接：
     - 保留右表中没有关联行的行，将缺失的内容记为 NULL；
-    - 关键字`RIGHT OUTER JOIN … ON`；
+    - 关键字：`RIGHT OUTER JOIN … ON`；
 
 # 10. 集合运算
 
@@ -403,52 +413,43 @@ FROM productnotes
 
 # 12. 插入数据
 
-## 12.1 INSERT 语句
-
-- `INSERT`语句的功能：
-  - 插入完整行；
-  - 插入行中的部分项；
-  - 插入某些查询的结果；
-
-## 12.2 插入完整行
+## 12.1 插入完整行
 
 - INSERT 语句使用要求：
   - 尽量使用指定列名的 INSERT 语句；
   - 对未指定值的项，赋值为 NULL；
   - 对于自动增量的列，赋值为 NULL；
-  - 对于满足如下条件的列，可在赋值时省略：
-    - 该列允许为 NULL；
-    - 表定义时提供了默认值；
 
 ```SQL
--- 指定列名的填充
-INSERT INTO Customers(cust_id,cust_name)
+-- 插入时指定列名
+INSERT INTO Customers (cust_id, cust_name)
 VALUES('1000000006', 'Toy Land');
--- 不指定列名的填充
+-- 插入时不指定列名
 INSERT INTO Customers				
 VALUES('1000000006', 'Toy Land');
 ```
 
-## 12.3 插入行中的部分项
+## 12.2 插入行中的部分项
 
 - 使用指定列名的`INSERT`语句，可省略部分项不填充，但须满足以下某个条件：
   - 在表的定义中，允许该列的值为`NULL`；
-  - 在表的定义中给出默认值；
+  - 在表的定义中，该属性具有默认值；
   - 即省略部分项时，将使用`NULL`或默认值；
 
-12.4 插入某些查询的检索结果
+## 12.3 插入检索出的数据
 
-- `INSERT  ... SELECT ...`语句根据列的位置填充，而非根据列名填充；
+- `INSERT  ... SELECT ...`语句：
 
-  - 即`SELECT`中的第一列填充至`INSERT`中的第一列；
+  - 根据列的位置填充，而非根据列名填充；
+- 即`SELECT`中的第一列填充至`INSERT`中的第一列；
+  
+```sql
+INSERT INTO Customers(cust_name, cust_id)
+SELECT cust_name, cust_id
+FROM CustNew;
+```
 
-  ```sql
-  INSERT INTO Customers(cust_name, cust_id)
-  SELECT cust_name, cust_id
-  FROM CustNew;
-  ```
-
-## 12.5 将数据从一张表复制到另一张表
+## 12.4 将数据从一张表复制到另一张表
 
 ```sql
 CREATE TABLE Customers AS
@@ -456,9 +457,104 @@ SELECT *
 FROM Customers;
 ```
 
-# Unsolved
+# 13. 更新和删除
 
-## 3.1 定义和语言特点
+## 13.1 更新
+
+- 更新：UPDATE 语句中可使用子查询；
+
+```mysql
+UPDATE tableName SET
+	columnName1 = value1,
+    columnName2 = value2,
+    ...
+WHERE ...;
+```
+
+## 13.2 删除
+
+- 删除：DELETE 删除表中的行，但不删除表本身；
+
+```mysql
+-- 删除关系r及其模式
+DROP FROM r;			
+WHERE ...;
+-- 仅删除关系r中的所有记录
+DELETE FROM r;			
+WHERE ...;
+```
+
+# 14. 创建和操纵表
+
+## 14.1 创建表
+
+- 创建表：
+  - IF NOT EXISTS：仅当不存在同名表时创建该表；
+  - AUTO_INCREMENT：设置主键自增长，应对整数类型使用；
+    - 每个表仅有一列可被设置为自增长；
+    - 通过使该列成为主键，确保其被索引；
+  - NOT NULL：键值非空约束；
+  - DEFAULT：设置默认值，默认值必须为常量，不能为函数；
+  - UNIQUE：键值唯一性约束；
+  - `ENGINE=InnoDB`：设置引擎为`InnoDB`；
+- ==面试题== 手写创建表的 SQL 代码：
+
+```mysql
+-- 创建表
+CREATE TABLE IF NOT EXISTS customers 
+(
+	cust_id		int			NOT NULL	AUTO_INCREMENT,
+	cust_name 	char(50)	NOT NULL,
+    cust_address	varchar(10)	NULL,
+    quantity		int		NOT	NULL	DEFAULT 1,
+    PRIMARY KEY (cust_id)
+)	ENGINE=InnoDB;
+```
+
+- 创建表后设置主键的方式：
+  - 添加主键，`ALTER TABLE tableName ADD PRIMARY KEY(columnName)`；
+  - 删除主键：`ALTER TABLE tableName DROP PRIMARY KEY`；
+-  last_insert_id()：返回最后一个 AUTO_INCREMENT 值；
+- 引擎：管理数据；
+  - MyISAM：性能高，支持全文本搜索；
+  - InnoDB：可靠，支持事务处理；
+
+## 14.2 更新表
+
+- 添加和删除列：
+
+```mysql
+-- 添加列
+ALTER TABLE Vendors
+ADD vend_phone CHAR(20);
+-- 删除列
+ALTER TABLE Vendors
+DROP COLUMN vend_phone;
+```
+
+- 定义外键：
+  - 一对一关系：一个表的主键同时也是外键；
+  - 多对多关系：创建中间表（关联表），即需要三张表，关联表使用两个外键分别引用另两张表的主键；
+
+```mysql
+-- 创建表时添加外键
+CONSTRAINT foreignKeyName
+FOREIGN KEY (columnName)
+REFERENCES tableName(primaryKeyName);
+-- 修改表时添加外键约束
+ALTER TABLE tableName
+ADD CONSTRAINT foreignKeyName
+FOREIGN KEY (columnName)
+REFERENCES tableName (primaryKeyName);
+-- 删除外键
+ALTER TABLE tableName
+DROP FOREIGN KEY foreignKeyName;
+```
+
+- 删除表：`DROP TABLE tableName`；
+- 重命名表：`RENAME TABLE tableName1 TO tableName2`；
+
+# ==旧版本笔记==
 
 ### 3.1.1 DDL
 
@@ -468,26 +564,14 @@ FROM Customers;
   - `SHOW DATABASES`：查看所有数据库名单；
   - `SHOW TABLES`：查看所有表名；
   - `DESC tableName`：查看表的详细信息，description；
-- 创建：
-  - 创建数据库：
-    - `CREATE DATABASE test`；
-    - `CREATE DATABASE IF NOT EXISTS test`；
-  - 创建表：
-
-```mysql
--- CREATE TABLE tableName
-CREATE TABLE IF NOT EXISTS tableName (
-columnName type,
-...
-);
-```
-
 - 使用并选择数据库：`USE databaseName`；
+- 创建数据库：
+  - `CREATE DATABASE test`；
+  - `CREATE DATABASE IF NOT EXISTS test`；
 - 删除：
   - 删除数据库：
     - `DROP DATABASE databaseName`；
     - `DROP DATABASE IF EXISTS databaseName`；
-  - 删除表：`DROP TABLE tableName`；
 - 修改：
 
 ```mysql
@@ -505,48 +589,6 @@ ALTER TABLE tableName DROP columnName;
 -- 修改表名
 ALTER TABLE tableName RENAME TO newTableName; 
 ```
-
-- 设置主键：
-  - 创建表时，在变量类型后加关键字`PRIMARY KEY`；
-  - 添加主键，`ALTER TABLE tableName ADD PRIMARY KEY(columnName)`；
-  - 删除主键：`ALTER TABLE tableName DROP PRIMARY KEY`；
-- 设置主键自增长：应对整数类型使用自增长；
-  - 创建表时，在`PRIMARY KEY`关键字后加`AUTO_INCREMENT`；	
-- 非空约束：创建表时，在变量类型后加关键字`NOT NULL`；
-- 唯一约束：创建表时，在变量类型后加关键字`UNIQUE`；
-
-#### 3.1.2.3 更新和删除
-
-```mysql
-UPDATE tableName SET
-	columnName1 = value1,
-    columnName2 = value2,
-    ...
-WHERE ...;
-
-DELETE FROM tableName
-WHERE ...;
-```
-
-
-
-#### 3.1.2.4 添加外键
-
-```mysql
--- 创建表时添加外键
-CONSTRAINT foreignKeyName
-FOREIGN KEY (columnName) REFERENCES tableName(primaryKeyName);
--- 修改表时添加外键约束
-ALTER TABLE tableName ADD CONSTRAINT foreignKeyName
-FOREIGN KEY (columnName) REFERENCES tableName(primaryKeyName);
--- 删除外键
-ALTER TABLE tableName DROP FOREIGN KEY foreignKeyName;
-```
-
-- 一对一关系：一个表的主键同时也是外键；
-- 多对多关系：创建中间表（关联表），即需要三张表，关联表使用两个外键分别引用另两张表的主键；
-
-
 
 ### 3.1.3 DCL
 
@@ -571,60 +613,9 @@ DROP USER userName@IPAddress;
 
 ### 3.1.5 函数
 
-- `CONCAT(str1, str2, ...)`：连接多个字符串，concatenate, vt. 把...联系起来；
-- 去除字符串中的空格：trim, vt. & n.修剪；
-  - `TRIM()`：除去字符串两侧空格；
-  - `LTRIM()`：除去字符串左侧空格；
-  - `RTRIM()`：除去字符串右侧空格；
 - `ifnull(expression1, expression2)`:
   - 若表达式1不为空，则返回该表达式；
   - 否则返回表达式2；
-
-```mysql
-SUBSTRING();		-- 提取字符串的组成部分；
-CONVERT();			-- 数据类型转换；
-  
-CURDATE();			-- 取当前日期；
-YEAR();				-- 从日期中提取年份；
-DATEDIFF(date1, date2);		-- 返回两个日期相差的天数
-  
-LENGTH();			-- 返回字符串的长度；
-SOUNDEX();			-- 返回字符串的SOUNDEX值；
-  
-LEFT();				-- 返回字符串左边的字符；
-RIGHT(); 			-- 返回字符串右边的字符；
-  
-LOWER();			-- 将字符串转换为小写；
-UPPER();			-- 将字符串转换为大写；
-```
-
--  `SOUNDEX()` 函数：
-
-   - 将文本串转换为其语音表示的字母数字模式；
-
-   - 用于检索虽拼写错误，但发音相近的文本串；
-
-```mysql
-WHERE SOUNDEX(cust_contact) = SOUNDEX('Michael Green');
-```
-
-- 数值处理函数：
-
-```mysql
-PI();				-- 返回圆周率；
-  
-ABS();				-- 返回一个数的绝对值；
-SQRT();				-- 返回一个数的平方根；
-EXP();				-- 返回一个数的指数值；
- 
-SIN();				-- 返回一个角度的正弦值；
-COS();				-- 返回一个角度的余弦值；
-TAN();				-- 返回一个角度的正切；
-```
-
-
-
-
 
 ## 3.2 数据定义
 
@@ -659,18 +650,6 @@ TAN();				-- 返回一个角度的正切；
   - `char`和`varchar`比较时，无法自动追加空格补齐长度，建议将两者均设置为`varchar`便于比较；
   - 字符串使用单引号括起；
 
-
-
-### 3.2.2 基本模式定义
-
-```mysql
-... not null;			-- 属性值不得为空；
-alter table r add A D;	-- 向关系r中添加属性A，该属性的域为D；
-alter table r drop A;	-- 删除关系r中的属性A；
-```
-
-
-
 ## 3.3 SQL 查询的基本结构
 
 ### 3.3.1 查询、排序和自然连接
@@ -682,11 +661,6 @@ alter table r drop A;	-- 删除关系r中的属性A；
   - 返回一个关系中的所有属性：`SELECT R1.*;`；
 
 ### 3.3.2 附加基本运算
-
-- 重命名：`as`用于`select`或`from`语句中，可省略;
-
-  - 相关名称/相关变量/元组变量：将关系重命名的标识符；
-  - 临时表必须命名；
 
 - 字符串运算：
 
@@ -700,6 +674,7 @@ alter table r drop A;	-- 删除关系r中的属性A；
   ```mysql
   like 'ab\%' escape '\';		-- 定义反斜杠为转义字符
   ```
+
 
 
 
@@ -718,66 +693,6 @@ alter table r drop A;	-- 删除关系r中的属性A；
   - `is not null`；
   - `is unknown`；
   - `is not unknown`；
-
-
-
-### 3.3.4 聚集函数和分组聚集
-
-- 聚集函数：聚集函数忽略输入中的空值，若所有输入值均为空，则返回`null`；
-
-  - `MAX()`；
-  - `MIN()`；
-  - `SUM()`；
-  - `AVG()`；
-  - `COUNT()`；
-
-- `MAX()`：
-
-  - 可找出最大的数值或日期值；
-  - 可用于文本数据，返回该列排序后的最后一行；
-
-- `MIN()`：可用于文本数据，返回该列排序后的最后一行；
-
-- `AVG()`:
-
-  - 必须指定列名作为参数；
-  - 只能用于单个列，若要获得多个列的均值，则需使用多个`AVG()`；
-
-- `COUNT()`：不允许在`count(*)`中使用`distinct`，即使用`*`统计元组数量时不得去重；
-
-  ```mysql
-  SELECT COUNT(*) AS num_cust		
-  -- 以星号为参数，返回该列所有行的数量；
-  SELECT COUNT(cust_email) AS num_cust  
-  -- 以列名为参数，返回该列所有非空值的行的数量；
-  ```
-
-- `DISTINCT`：
-
-  - 可用于聚集函数中；
-  - 由于该参数必须使用列名，因此不可用于`COUNT(*)`中；
-
-- `group by`的使用要求：
-
-  - 可包含任意数目的列，实现嵌套分组；
-  - 后接的每一列必须是检索列或有效的表达式，而不能是聚集函数；
-
-    - 若在`SELECT`中使用表达式，则必须在`group by`子句中指定相同的表达式，不能使用别名；
-  - 大多数 DBMS 不允许该子句后接长度可变的数据类型，E.g. 文本、备注型字段；
-  - 除聚集函数中的属性之外，`SELECT`语句中的其它属性必须均在`GROUP BY`中给出；
-  - 该子句将待分组列中值为`null`的所有行视为一组；
-
-- `having`子句：
-
-  - 用于筛选`group by`产生的分组；
-  - 任意出现在`having`子句中，且未被聚集的属性，必须出现在`group by`中；
-
-- `where`与`having`的区别：
-
-  - `where`：在数据分组前过滤，无法和聚集函数一起使用；
-  - `having`：在数据分组后过滤，可以和聚集函数一起使用；
-
-
 
 ### 3.3.5 嵌套子查询
 
@@ -808,27 +723,6 @@ alter table r drop A;	-- 删除关系r中的属性A；
 
 ## 3.4 修改数据库
 
-- 删除：
-
-```mysql
-DROP FROM r;			-- 删除关系r及其模式
-DELETE FROM r;			-- 仅删除关系r中的所有记录
-```
-
-- 插入：
-
-```mysql
-INSERT INTO r VALUES (...);	-- 向关系r中插入一个记录
-INSERT INTO r (a1, a2, ...) VALUES (...);	-- 插入时指定属性名
-```
-
-- 更新：
-
-```mysql
-UPDATE r
-SET a1 = ...;	-- 更改关系r中的属性值
-```
-
 - `CASE`语句：选择；
 
 ```mysql
@@ -842,33 +736,6 @@ END;
 
 
 # 4. 中级 SQL
-
-## 4.1 连接
-
-- 连接类型：
-  - 自联结：
-    - 将一个表与其自身进行联结；
-    - 实现方法：为同一个表取两个不同的别名，然后投影所有列；
-  - 自然连接：两个关系中对应的属性名和属性值均相同，返回的结果中不包含重复属性；
-  - 等值连接：两个关系中指定的属性值相等，属性名可以不同，返回的结果中包含重复属性；
-  - 内连接：
-    - 使用`WHERE`子句；
-    - `INNER JOIN`，可简写为`INNER`，不保留未匹配的元组；
-  - 外连接：保留未匹配的元组；
-    - 左外连接：`LEFT OUTER JOIN`；
-    - 右外连接：`RIGHT OUTER JOIN`；
-    - 全外连接：`FULL OUTER JOIN`，MySQL 不支持，可使用左外连接和右外连接求并集替代；
-- 连接条件：
-  - `NATURAL`：连接共有属性**全部**相同的元组，共有属性在结果中仅出现一次；
-  - `USING`：指定需要匹配的属性名，仅当两个关系中对应的属性名相同时才能使用，相较于`ON`语法更简洁；
-  - `ON`：指定连接条件；
-
-```mysql
-FROM r1 JOIN r2 USING A;	-- 连接属性A相等的元组；
-FROM student LEFT OUTER JOIN takes ON student.ID = takes.ID; 
-```
-
-
 
 ## 4.2 视图
 
@@ -949,23 +816,19 @@ FOREIGN KEY (dept_name) REFERENCES department
   - 编译一次，修改参数执行多次；
   - 防止 SQL 注入：`setString`、`setInt`等方法将自动检查语法错误，必要时插入转义字符；
 
-
-
 # 6. 函数和过程
 
-- 函数：
-  - 允许函数同名，只需保持函数的参数个数或类型不完全相同即可；
-- 过程：
-  - 允许过程同名，只需保持参数个数不同即可；
+- 函数：允许函数同名，只需保持函数的参数个数或类型不完全相同即可；
+- 过程：允许过程同名，只需保持参数个数不同即可；
 
 # TODO
 
 - 总页数：192 页；
 - 每天 20 页，7 月 30 日完成；
-- 当前进度：Page 134，Chapter 19.2 已完成；
+- 当前进度：Page 154，Chapter 21 已完成；
 - 参考笔记整理进度：
   - 每次整理2节；
-  - 已完成：1 、7-16；
+  - 已完成：1-16；
 
 # References
 
