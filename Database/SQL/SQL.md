@@ -554,6 +554,10 @@ DROP FOREIGN KEY foreignKeyName;
 - 删除表：`DROP TABLE tableName`；
 - 重命名表：`RENAME TABLE tableName1 TO tableName2`；
 
+# 15. 视图
+
+- 
+
 # ==旧版本笔记==
 
 ### 3.1.1 DDL
@@ -823,9 +827,8 @@ FOREIGN KEY (dept_name) REFERENCES department
 
 # TODO
 
-- 总页数：192 页；
-- 每天 20 页，7 月 30 日完成；
-- 当前进度：Page 154，Chapter 21 已完成；
+- Task：Chapter 1-22；
+- 当前进度：Chapter 21 已完成；
 - 参考笔记整理进度：
   - 每次整理2节；
   - 已完成：1-16；
