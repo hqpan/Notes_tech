@@ -556,13 +556,27 @@ DROP FOREIGN KEY foreignKeyName;
 
 # 15. 视图
 
-- 
+- 视图：
+  - 视图自身不包含数据，而是用于封装查询语句；
+  - 复用 SQL 语句，简化操作；
+  - 视图不能被索引，也不能有关联的触发器或默认值；
+  - 限制用户访问权限，保证数据安全性；
 
-# ==旧版本笔记==
+```mysql
+CREATE VIEW viewname AS
+...;						-- 此处为查询表达式
+CREATE VIEW viewname(a1, a2, ...) AS
+...;						-- 显示指定视图名和属性名
+```
 
-### 3.1.1 DDL
+- 物化视图：materialized view，数据库系统存储结果；
+- 视图维护/物化视图维护：更新物化视图；
 
-#### 3.1.2.1 数据库和表的创建修改
+# 16. 创建数据库
+
+## 16.1 DDL & DCL 对数据库的操作
+
+### 16.1.1 数据库的创建修改
 
 - 查看：
   - `SHOW DATABASES`：查看所有数据库名单；
@@ -572,10 +586,9 @@ DROP FOREIGN KEY foreignKeyName;
 - 创建数据库：
   - `CREATE DATABASE test`；
   - `CREATE DATABASE IF NOT EXISTS test`；
-- 删除：
-  - 删除数据库：
-    - `DROP DATABASE databaseName`；
-    - `DROP DATABASE IF EXISTS databaseName`；
+- 删除数据库：
+  - `DROP DATABASE databaseName`；
+  - `DROP DATABASE IF EXISTS databaseName`；
 - 修改：
 
 ```mysql
@@ -594,7 +607,7 @@ ALTER TABLE tableName DROP columnName;
 ALTER TABLE tableName RENAME TO newTableName; 
 ```
 
-### 3.1.3 DCL
+### 16.1.2 用户权限管理
 
 - DCL：数据控制语言；
 - 一个项目创建一个数据库用户权限，一个项目只对应一个数据库；
@@ -615,15 +628,7 @@ SHOW GRANTS FOR userName@IPAddress;
 DROP USER userName@IPAddress;
 ```
 
-### 3.1.5 函数
-
-- `ifnull(expression1, expression2)`:
-  - 若表达式1不为空，则返回该表达式；
-  - 否则返回表达式2；
-
-## 3.2 数据定义
-
-### 3.2.1 基本类型
+## 16.2 数据定义
 
 - 基本类型：
   - `char(n)`；固定长度字符串，2字节，$n<255$；
@@ -654,9 +659,9 @@ DROP USER userName@IPAddress;
   - `char`和`varchar`比较时，无法自动追加空格补齐长度，建议将两者均设置为`varchar`便于比较；
   - 字符串使用单引号括起；
 
-## 3.3 SQL 查询的基本结构
+## 16.3 SQL 查询的基本结构
 
-### 3.3.1 查询、排序和自然连接
+### 16.3.1 查询、排序和自然连接
 
 - `select`子句中可使用运算符：$+、-、\times、\div$；
   - 运算对象：常数、属性；
@@ -664,7 +669,7 @@ DROP USER userName@IPAddress;
   - 若运算对象不为数值，则视为0参与计算；
   - 返回一个关系中的所有属性：`SELECT R1.*;`；
 
-### 3.3.2 附加基本运算
+### 16.3.2 附加基本运算
 
 - 字符串运算：
 
@@ -675,14 +680,12 @@ DROP USER userName@IPAddress;
     - 下划线：匹配任意一个字符；
   - 定义转义字符：关键字`escape`；
 
-  ```mysql
-  like 'ab\%' escape '\';		-- 定义反斜杠为转义字符
-  ```
+```mysql
+like 'ab\%' escape '\';		-- 定义反斜杠为转义字符
+```
 
 
-
-
-### 3.3.3 空值
+### 16.3.3 空值
 
 - 涉及空值的运算：
   - 算术运算：结果为空；
@@ -698,7 +701,7 @@ DROP USER userName@IPAddress;
   - `is unknown`；
   - `is not unknown`；
 
-### 3.3.5 嵌套子查询
+### 16.3.4 嵌套子查询
 
 - 嵌套子查询可用于`from`或`where`子句中；
 - 集合成员资格查询：使用`in`、`not in`连接词；
@@ -723,41 +726,9 @@ DROP USER userName@IPAddress;
 - `with`子句：定义临时关系，该关系仅在包含该子句的查询中有效；
 - 标量子查询：返回包含单个属性的单个元组；
 
+# 17. 事务和完整性约束
 
-
-## 3.4 修改数据库
-
-- `CASE`语句：选择；
-
-```mysql
-CASE
-	WHEN pred1 THEN result1
-	WHEN pred2 THEN result2
-	ELSE result0
-END;
-```
-
-
-
-# 4. 中级 SQL
-
-## 4.2 视图
-
-- 视图：view，数据库系统存储查询表达式，但不存储结果；
-
-```mysql
-CREATE VIEW viewname AS
-...;						-- 此处为查询表达式
-CREATE VIEW viewname(a1, a2, ...) AS
-...;						-- 显示指定视图名和属性名
-```
-
-- 物化视图：materialized view，数据库系统存储结果；
-- 视图维护/物化视图维护：更新物化视图；
-
-
-
-## 4.3 事务
+## 17.1 事务
 
 - 事务的开始和结束：
   - 事务的开始：一条 SQL 语句被执行时；
@@ -765,9 +736,7 @@ CREATE VIEW viewname(a1, a2, ...) AS
     - 提交事务：`Commit/Commit work`；
     - 回滚事务：`Rollback/Rollback work`；
 
-
-
-## 4.4 完整性约束
+## 17.2 完整性约束
 
 - 单个关系上的约束：
   - `NOT NULL`：主键默认非空，无需显式声明；
@@ -792,17 +761,15 @@ FOREIGN KEY (dept_name) REFERENCES department
 	ON DELETE SET DEFAULT
 ```
 
+# 18. JDBC
 
-
-# 5. JDBC
-
-## 5.1 定义
+## 18.1 定义
 
 - ODBC：Open Database Connectivity，开放数据库互联；
 - JDBC：Java Database Connectivity，Java 数据库连接；
   - JDBC 相关接口定义位于`java.sql.*`；
 
-## 5.2 从通用程序语言中访问数据库
+## 18.2 从通用程序语言中访问数据库
 
 - 从通用程序语言中访问数据库的方法：
   - 动态 SQL：
@@ -819,19 +786,6 @@ FOREIGN KEY (dept_name) REFERENCES department
 - 预备语句：先给出问号，后给出实际值；
   - 编译一次，修改参数执行多次；
   - 防止 SQL 注入：`setString`、`setInt`等方法将自动检查语法错误，必要时插入转义字符；
-
-# 6. 函数和过程
-
-- 函数：允许函数同名，只需保持函数的参数个数或类型不完全相同即可；
-- 过程：允许过程同名，只需保持参数个数不同即可；
-
-# TODO
-
-- Task：Chapter 1-22；
-- 当前进度：Chapter 21 已完成；
-- 参考笔记整理进度：
-  - 每次整理2节；
-  - 已完成：1-16；
 
 # References
 
