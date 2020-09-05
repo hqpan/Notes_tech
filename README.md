@@ -53,6 +53,7 @@
   - [Chapter 7 特殊方法、特性和迭代器](./Python/Iterator.md)；
   - [Chapter 8 Module](./Python/Module.md)；
   - [Chapter 9 文件](./Python/File.md)；
+- [利用 Python 进行数据分析](./Python/DataAnalysis.md)；
 - [Spring](./Java/Spring/SpringInAction.md)；
 - [SQL](./Database/SQL/SQL.md)；
 - [XML](./Java/XML/XML.md)；
