@@ -51,9 +51,7 @@
 
 # TODO
 
-- 完成 Numpy：共计 164 页；
-- 每天 50 页，9 月 07 日完成；
-- 当前进度：Page 108；
+- 当前进度：Page 122，NumPy 已完成；
 
 # References
 
