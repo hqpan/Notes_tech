@@ -17,7 +17,7 @@
 
 ## 1.2 数据操作
 
-- `torch.Tensor`：用于存储和变换数据，类似于多维数组；
+- `torch.Tensor`：用于存储和变换数据，类似于多维数组，支持GPU加速；
   - tensor：n. 张量，可视为一个多维数组；
   - 标量：0维张量；
   - 向量：1维张量；
@@ -27,7 +27,7 @@
   - `view()`；
   - `torch.add(x, y, out = y)`；
   - `y += x`；
-  - `y.add_(x)`；
+  - `y.add_(x)`：函数名中带下划线的函数，会修改Tensor本身，不带下划线的函数将返回一个新的Tensor；
 - 非内存共享的操作：
   - `clone()`：还有⼀个好处是会被记录在计算图中，即梯度回传到副本时也会传到源 Tensor；
   - `y = x + y`；
@@ -38,10 +38,19 @@
     - `torch.tensor()`可将 NumPy 中的 array 转换为 Tensor，且不共享内存；
     - 所有在CPU上的 Tensor （除了 CharTensor ）都⽀持与NumPy数组相互转换；
 - ⽅法 to() ：可将 Tensor 在CPU和GPU（需要硬件⽀持）之间相互移动；
+- `.cuda()`方法：将Tensor转换为GPU的Tensor，以便使用GPU加速；
+- 3 种加法：
+  - x + y；
+  - t.add(x, y)；
+  - t.add(x, y, out = result)；
+- 函数名以`_`结尾的函数：均为 inplace 方式，即会修改原始数据；
 
 ## 1.3 自动求梯度
 
-- 
+- grad 在反向传播过程中是累加的，每次反向传播过程中都会累加此前的梯度，因此反向传播之前需将梯度清零；
+- Variable：
+  - 简单封装了Tensor，支持几乎所有的Tensor操作，`.backward()`方法可实现反向传播；
+  - 与Tensor接口几乎一致，可等同使用；
 
 # 2. 深度学习基础
 
@@ -68,8 +77,7 @@
 
 - 总页数：364 页；
 - 每天 10 页，9 月 30 日完成；
-- 当前进度：Chapter 3.2 已完成；
-- 二次学习进度：Chapter 2.2 已完成；
+- 当前进度：Chapter 3.1 已完成，Page 47；
 
 # References
 
