@@ -1,9 +1,13 @@
+[toc]
+
 # 版权声明
 
--  Deep Learning 系列笔记来源于Andrew Ng 教授在 Coursera 网站上所授课程《Deep Learning》[^1]；
--  该系列笔记不以盈利为目的，仅用于个人学习、课后复习及交流讨论；
--  如有侵权，请与本人联系（hqpan@foxmail.com），经核实后即刻删除；
--  转载请注明出处；
+- 深度学习系列学习笔记来源于：
+  - Aston Zhang，Zack C. Lipton，李沐和 Alex J. Smola 所著 *Dive into Deep Learning* [1]；
+  - Andrew Ng 教授在 Coursera 网站上所授课程《Deep Learning》[2]；；
+- 该系列笔记不以盈利为目的，仅用于个人学习、课后复习及科学研究；
+- 如有侵权，请与本人联系（hqpan@foxmail.com），经核实后即刻删除；
+- 本文采用 [署名-非商业性使用-禁止演绎 4.0 国际 (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh) 协议发布；
 
 # 1. 深度学习概论
 
@@ -46,11 +50,13 @@
 
 # 2. 神经网络基础
 
-- 
+- 计算图的导数计算：
+  - 前向传播；
+  - 反向传播；
 
 # Unsolved
-
-- 
+- 表征学习：是机器学习中的一类方法，用于自动找出适合表示数据的方式，而深度学习是具有多级表示的表征学习方法，可以逐级表示越来越抽象的概念或模式；
+- 链式法则：即反向传播，用于更新网络参数；
 
 # TODO
 
@@ -58,8 +64,12 @@
 - 每月完成 2 门课程，11 月底完成 Andrew Ng 全部课程；
 - 12 月完成 CS 224；
 - 当前进度：Course 1，Week 2，2.2 已完成；
+- 《动手学深度学习》进度：	
+  - 总页数：390 页；
+  - 每天 10 页，8 月 30 日完成；
+  - 当前进度：Page 24，Chapter 1 已完成；
 
 # References
 
-[^1]: https://www.coursera.org/specializations/deep-learning?
-
+[1] Aston Zhang, Zack C. Lipton, Mu Li, Alex J. Smola. Dive into Deep Learning[M]. 人民邮电出版社, 2019. 
+[2] https://www.coursera.org/specializations/deep-learning?
