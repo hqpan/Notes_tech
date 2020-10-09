@@ -70,10 +70,12 @@
 
 ## 5.1 过拟合问题
 
-- underfitting(欠拟合)/high bias(高偏差)：所用假设函数太简单或所用特征较少；
+- underfitting(欠拟合)/high bias(高偏差)：
+  - 所用假设函数太简单或所用特征较少；
+  - 即在训练集上的误差过大；
 - overfitting(过拟合) /high variance(高方差)：所用假设函数过于复杂或所用特征过多；  
   - 过拟合：以高阶多项式（too many features）作为假设函数，能拟合几乎所有的数据，此时函数变量太多，缺少足够的数据约束该函数；
-  - 过拟合的假设函数泛化能力差；
+  - 过拟合的假设函数泛化能力差，即在训练集和交叉验证集上性能差距过大；
 - 正则化的作用：避免过拟合，适用于存在大量特征，且每个特征对 y 均有微弱贡献；
 - 处理过拟合的方法：
   - 减少特征数量：筛选特征的过程将丢失部分有用信息；
@@ -83,12 +85,12 @@
     - 保留所有特征，但减少参数 $\theta_{j}$ 的量级；
 
 ## 5.2 带有正则化项的代价函数
-- 参数 $\theta_{i}$ 较小时，hypothesis function 较简单，不容易出现 overfitting；
-- 由于不知道需要缩小哪些参数，因此在 cost function 表达式后，新增一个正则化项，缩小每个参数的值；
+- 参数 $\theta_{i}$ 较小时，假设函数比较简单，不容易出现 overfitting；
+- 由于不知道需要缩小哪些参数，因此在代价函数表达式后，新增一个正则化项，缩小每个参数的值；
   - $J(\theta)=\frac{1}{2m}[\sum_{i=1}^m{(h_{\theta}(x^{(i)})-y^{(i)})}^{2}+\lambda\sum_{j=1}^n\theta_j^2]$ ;
   - $\lambda$：正则化参数；
-    - $\lambda$ 的作用：使 hypothesis function 在拟合训练集的同时，保持参数较小（保持 hypothesis function 较简单）；
-    - 若 $\lambda$ 设置过大，则对 $\theta_{i}$ 的惩罚过大，$h_{\theta}(x)\approx\theta_{0}$，出现 underfitting 的情况；
+    - $\lambda$ 的作用：使假设函数在拟合训练集的同时，保持参数较小（保持 hypothesis function 较简单）；
+    - 若 $\lambda$ 设置过大，则对 $\theta_{i}$ 的惩罚过大，$h_{\theta}(x)\approx\theta_{0}$，出现 欠拟合的情况；
   - 在正则化项中，未对 $\theta_{0}$ 正则化，是否对 $\theta_{0}$ 正则化不影响结果；
 
 ## 5.3 线性回归正则化
@@ -142,14 +144,14 @@
   - advanced optimization methods；
   - 以上两种算法均需要计算 $J(\theta)$ 及其倒数的值；
 - 逻辑回归中应用梯度下降算法，更新 $\theta_{i}$ 的值；
-  - $J(\theta)=-\frac{1}{m}[\sum_{i=1}^my^{(i)}log(h_{\theta}(x^{(i)}))+(1-y^{(i)})log(1-h_{\theta}(x^{(i)}))]+\frac{\lambda}{2m}\sum_{j=1}^n\theta_j^2$;
+  - $J(\theta)=-\frac{1}{m}[\sum_{i=1}^my^{(i)}log(h_{\theta}(x^{(i)}))+(1-y^{(i)})log(1-h_{\theta}(x^{(i)}))]+\frac{\lambda}{2m}\sum_{j=1}^n\theta_j^2$；
     - 式中添加项 $\frac{\lambda}{2m}\sum_{j=1}^n\theta_j^2$ 为正则化项；
     - 由于不对 $\theta_{0}$ 做正则化，故正则化项从 j=1 开始；
     - 注意 MATLAB、octave 中元素索引从1开始；
   - $\theta_{0}:=\theta_{0}-\alpha\frac{1}{m}\sum_{i=1}^m{(h_{\theta}(x^{(i)})-y^{(i)})}x_0^{(i)}$ ；
   - $\theta_{j}:=\theta_{j}(1-\alpha\frac{\lambda}{m})-\alpha\frac{1}{m}\sum_{i=1}^m{(h_{\theta}(x^{(i)})-y^{(i)})}x_j^{(i)},j\epsilon\{1,2...,n\}$ ；
-  - 此处 hypothesis function 不同于 linear function；
-- logistic regression 中应用 advanced optimization methods 求解参数值；
+  - 此处假设函数不同于线性函数；
+- 逻辑回归中应用 advanced optimization methods 求解参数值；
   - advanced optimization methods 包括：
     - conjugate gradient（共轭梯度法）；
     - Broyden fletcher goldfarb shann/BFGS（局部优化法）；
