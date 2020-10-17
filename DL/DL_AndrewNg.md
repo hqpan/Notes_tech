@@ -234,38 +234,88 @@
   - $v_1=0.9v_0+0.1\theta _1$；
   - $v_i=0.9v_{i-1}+0.1\theta _i$；
   - 注意：参数可记为$\beta$，$v_i=\beta v_{i-1}+(1-\beta)\theta _i$；
-- ~~指数加权平均的偏差修正~~：
+- 指数加权平均的偏差修正：
   - 由于$v_0=0$，因此指数加权平均算法在预测初期估计不准确；
   - 偏差修正后的公式：$v_i=\frac{\beta v_{i-1}+(1-\beta)\theta _i}{1-\beta ^i}$；
   - 分母中的$\beta^i$将随着$i$的增大而逐渐失效；
   - 实际使用梯度下降过程中，一般不使用偏差修正，因为移动平均已通过初始阶段；
 
-## 6.3 动量梯度下降算法
+## 6.3 Momentum 优化算法
 
-- 动量梯度下降算法：
+- Momentum：动量梯度下降算法；
   - 优点：运行速度快于梯度下降算法；
   - 原理：
     - 消除梯度下降中的摆动；
     - 增大部分方向上的学习率，减小部分方向上的学习率，从而缩短梯度下降的时间开销；
   - 实现方式：
     - $\beta$：超参数，用于控制指数加权平均值，一般取 0.9；
-    - $v_{dW}=\beta v_{dW}+(1-\beta)dW$；
-    - $v_{db}=\beta v_{db}+(1-\beta)db$；
+    - $V_{dW}=\beta V_{dW}+(1-\beta)dW$；
+    - $V_{db}=\beta V_{db}+(1-\beta)db$；
     - $W=W-\alpha V_{dW}$；
-    - $b=b-\alpha v_{db}$；
+    - $b=b-\alpha V_{db}$；
 
-## 6.4 RMSprop
+## 6.4 RMSprop 优化算法
 
-- RMSprop：Root mean square prop 算法；
+- RMSprop 优化算法：Root mean square prop 优化算法；
   - 消除梯度下降中的摆动；
+  - $\beta$：超参数，用于控制指数加权平均值，一般取 0.999；
   - $S_{dW}=\beta S_{dW}+(1-\beta)(dW)^2$；
   - $S_{db}=\beta S_{db}+(1-\beta)(db)^2$；
-  - $W:=W-\alpha \frac{dW}{\sqrt{S_{dW}}}$；
-  - $b:=b-\alpha \frac{db}{\sqrt{S_{db}}}$；
+  - $W:=W-\alpha \frac{dW}{\sqrt{S_{dW}}+\xi}$；
+  - $b:=b-\alpha \frac{db}{\sqrt{S_{db}}+\xi}$；
+  - 注意：$\xi$为一个较小常数，避免分母趋近于 0，一般取$\xi=10^{-8}$；
 
-## 6.5 Adam 算法
+## 6.5 Adam 优化算法
 
-- 
+- Adam 优化算法：将 Momentum、RMSprop 两种优化算法结合；
+  - 注意：使用 Adam 优化算法时，需进行偏差修正；
+  - 实现方式：
+    - $V_{dW}=\beta _1 V_{dW}+(1-\beta _1)dW$；
+    - $V_{db}=\beta _1 V_{db}+(1-\beta _1)db$；
+    - $S_{dW}=\beta _2 S_{dW}+(1-\beta _2)(dW)^2$；
+    - $S_{db}=\beta _2 S_{db}+(1-\beta _2)(db)^2$；
+    - $V^{corrected}_{dW}=\frac{V_{dW}}{1-\beta ^t_1}$；
+    - $V^{corrected}_{db}=\frac{V_{db}}{1-\beta ^t_1}$；
+    - $S^{corrected}_{dW}=\frac{S_{dW}}{1-\beta ^t_2}$；
+    - $S^{corrected}_{db}=\frac{S_{db}}{1-\beta ^t_2}$；
+    - $W:=W-\alpha \frac{V^{corrected}_{dW}}{\sqrt{S^{corrected}_{dW}}+\xi}$；
+    - $b:=b-\alpha \frac{V^{corrected}_{db}}{\sqrt{S^{corrected}_{db}}+\xi}$；
+
+## 6.6 学习率衰减
+
+- 超参数：
+  - $a_0$：初始学习率；
+  - $decayRate$：衰减率；
+- 常见的学习率衰减方法：
+  - $a=\frac{1}{1+deayRate*epochNum}a_0$；
+  - epochNum：训练集遍历的次数，epoch 代数；
+
+## 6.7 局部最优问题
+
+- 当神经网络规模较大，参数较多时，一般不会困在局部最优解之中；
+
+# 7. 超参数调试和 Batch 正则化
+
+## 7.1 超参数调试
+
+- 超参数：超参数需要人为设置，而非学习得到，其将影响学得的参数结果；
+  - 学习率$\alpha$；
+  - 各隐藏层单元数；
+  - Mini-batch size；
+  - 隐藏层数$L$；
+  - 学习率衰减参数：decayRate，epochNum；
+  - Adam 优化算法中的超参数：$\beta _1$，$\beta _2$，$\xi$（无需调试，一般取默认值）；
+  - 每个隐藏层的激活函数类型；
+  - 梯度下降法循环的次数；
+  - $\lambda$：正则化参数；
+- 选取超参数的方式：以两个超参数为例；
+  - 在二维平面中随机选取若干个坐标点，取最优参数；
+  - 缩小搜索范围，重复上述步骤；
+
+## 7.2 Batch 归一化
+
+- Batch 归一化：Batch Norm（BN），将归一化过程从输入层扩大到各个隐藏层；
+- 归一化$Z^{[l]}$，便于更快训练$W^{[l+1]}$和$b^{[l+1]}$；
 
 # Unsolved
 
